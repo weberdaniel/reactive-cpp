@@ -1,4 +1,6 @@
 # initialize the project
+cmake_minimum_required(VERSION 3.21)
+
 project(ActorDemo 
         VERSION 0.1
         DESCRIPTION "A demonstrator for C++ Actor Framework")

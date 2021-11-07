@@ -1,0 +1,3 @@
+[submodule "external/caf/actor-framework"]
+	path = external/caf/actor-framework
+	url = https://github.com/weberdaniel/actor-framework.git

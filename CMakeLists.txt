@@ -5,7 +5,7 @@ project(ActorDemo
         VERSION 0.1
         DESCRIPTION "A demonstrator for C++ Actor Framework")
 
-option(CAF "Enable C++ Actor Framework Build" OFF)
+option(CAF "Enable C++ Actor Framework Build" ON)
 option(DOCKER "Enable Docker Build" OFF)
 
 # if docker is being used, it is not necessary to download all of the depenencies.
@@ -36,3 +36,7 @@ endif()
 elseif()  # if NOT DOCKER
 
 endif()
+
+add_subdirectory(external)
+add_subdirectory(doc)
+add_subdirectory(src)

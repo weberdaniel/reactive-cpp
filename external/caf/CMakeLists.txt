@@ -42,10 +42,9 @@ else()
 		         ${source_dir}/libcaf_test
 		         ${source_dir})
     # Define the libraries directory of the external project
-    set(CAF_LIBRARIES ${binary_dir}/libcaf_core/)
-	              #${binary_dir}/libcaf_io/
-		      #${binary_dir}/libcaf_openssl/
-		      #${binary_dir}/libcaf_test/)
+    set(CAF_LIBRARIES ${binary_dir}/libcaf_core/libcaf_core.so.0.18.5
+	              ${binary_dir}/libcaf_io/libcaf_io.so.0.18.5
+		      ${binary_dir}/libcaf_openssl/libcaf_openssl.so.0.18.5)
     # create a target for CAF which will be imported into the global namespace 
     # to be usable by all other projects.
     add_library(ActorFramework INTERFACE IMPORTED GLOBAL)

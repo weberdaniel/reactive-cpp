@@ -37,6 +37,8 @@ elseif()  # if NOT DOCKER
 
 endif()
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 add_subdirectory(external)
 add_subdirectory(doc)
-add_subdirectory(src)
+add_subdirectory(app)

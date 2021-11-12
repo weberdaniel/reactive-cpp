@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project(external.caf)
 
-set(VERSION 0.17.4)
+set(VERSION 0.18.5)
 set(DESCRIPTION "CAF")
 
 include(ExternalProject)
@@ -34,16 +34,18 @@ else()
     ExternalProject_Add(actorframework URL ${CMAKE_CURRENT_LIST_DIR}/actor-framework
       INSTALL_COMMAND cmake -E echo "-- Skip install step.")
     ExternalProject_Get_Property(actorframework source_dir)
+    ExternalProject_Get_Property(actorframework binary_dir)
     # Define the include directories of the external project
     set(CAF_INCLUDE_DIRS ${source_dir}/libcaf_core
                          ${source_dir}/libcaf_io
-		         ${source_dir}/libcaf_opencl
 		         ${source_dir}/libcaf_openssl
-		         ${source_dir}/libcaf_python
 		         ${source_dir}/libcaf_test
 		         ${source_dir})
     # Define the libraries directory of the external project
-    set(CAF_LIBRARIES ${source_dir}/build/lib)
+    set(CAF_LIBRARIES ${binary_dir}/libcaf_core/)
+	              #${binary_dir}/libcaf_io/
+		      #${binary_dir}/libcaf_openssl/
+		      #${binary_dir}/libcaf_test/)
     # create a target for CAF which will be imported into the global namespace 
     # to be usable by all other projects.
     add_library(ActorFramework INTERFACE IMPORTED GLOBAL)

@@ -32,18 +32,34 @@ else()
     message("-- Creating Target ActorFramework")
     # add the external Cmake project 
     ExternalProject_Add(actorframework URL ${CMAKE_CURRENT_LIST_DIR}/actor-framework
+      UPDATE_COMMAND ./configure
       INSTALL_COMMAND cmake -E echo "-- Skip install step.")
     ExternalProject_Get_Property(actorframework source_dir)
     ExternalProject_Get_Property(actorframework binary_dir)
     # Create dirs of the external project
     file(MAKE_DIRECTORY ${source_dir})
     file(MAKE_DIRECTORY ${source_dir}/libcaf_core)
+    file(MAKE_DIRECTORY ${source_dir}/libcaf_core/caf)
+    file(MAKE_DIRECTORY ${source_dir}/libcaf_core/caf/detail)
     file(MAKE_DIRECTORY ${source_dir}/libcaf_io)
     file(MAKE_DIRECTORY ${source_dir}/libcaf_openssl)
     file(MAKE_DIRECTORY ${source_dir}/libcaf_test)
- 
+
+    file(MAKE_DIRECTORY ${binary_dir})
+    file(MAKE_DIRECTORY ${binary_dir}/libcaf_core)
+    file(MAKE_DIRECTORY ${binary_dir}/libcaf_core/caf)
+    file(MAKE_DIRECTORY ${binary_dir}/libcaf_core/caf/detail)
+    file(MAKE_DIRECTORY ${binary_dir}/libcaf_io)
+    file(MAKE_DIRECTORY ${binary_dir}/libcaf_openssl)
+    file(MAKE_DIRECTORY ${binary_dir}/libcaf_test)
+
     # Define the include directories of the external project
-    set(CAF_INCLUDE_DIRS ${source_dir}/libcaf_core
+    set(CAF_INCLUDE_DIRS ${binary_dir}/libcaf_core
+                         ${binary_dir}/libcaf_io
+		         ${binary_dir}/libcaf_openssl
+		         ${binary_dir}/libcaf_test
+		         ${binary_dir}
+                         ${source_dir}/libcaf_core
                          ${source_dir}/libcaf_io
 		         ${source_dir}/libcaf_openssl
 		         ${source_dir}/libcaf_test

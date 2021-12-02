@@ -35,6 +35,13 @@ else()
       INSTALL_COMMAND cmake -E echo "-- Skip install step.")
     ExternalProject_Get_Property(actorframework source_dir)
     ExternalProject_Get_Property(actorframework binary_dir)
+    # Create dirs of the external project
+    file(MAKE_DIRECTORY ${source_dir})
+    file(MAKE_DIRECTORY ${source_dir}/libcaf_core)
+    file(MAKE_DIRECTORY ${source_dir}/libcaf_io)
+    file(MAKE_DIRECTORY ${source_dir}/libcaf_openssl)
+    file(MAKE_DIRECTORY ${source_dir}/libcaf_test)
+ 
     # Define the include directories of the external project
     set(CAF_INCLUDE_DIRS ${source_dir}/libcaf_core
                          ${source_dir}/libcaf_io

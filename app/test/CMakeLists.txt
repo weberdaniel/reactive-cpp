@@ -4,10 +4,10 @@ project( testit
 	 VERSION 0.1.0
 	 DESCRIPTION "A simple test")
 
-find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
-qt6_wrap_ui(GROUP_CHAT_UI_HDR chatwindow.ui)
-qt6_wrap_cpp(GROUP_CHAT_MOC_SRC chatwidget.hpp)
+qt5_wrap_ui(GROUP_CHAT_UI_HDR chatwindow.ui)
+qt5_wrap_cpp(GROUP_CHAT_MOC_SRC chatwidget.hpp)
 
 add_executable(testit
 	       qt_group_chat.cpp

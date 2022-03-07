@@ -6,7 +6,7 @@ project( svdemo
 
 add_executable(svdemo
         main.cpp
-        supervisor.cpp )
+        supervisor.h)
 
 target_compile_features(svdemo PRIVATE cxx_std_17)
 target_include_directories(svdemo PRIVATE

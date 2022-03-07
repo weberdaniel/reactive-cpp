@@ -4,11 +4,13 @@
 using namespace caf;
 
 struct svstate  {
-  int32_t example = 0;
+  int32_t svid = 0;
 };
 
-behavior supervisor_init(stateful_actor<svstate>* self) {
+behavior supervisor_init(const actor& buddy, stateful_actor<svstate>* self) {
+    self->home_system().registry().put("sv", self);
+    self->monitor(buddy);
   return {
-    [=](int32_t val) { self->state.example = val; }
+    [=](int32_t val) { self->state.svid= val; }
   };
 }

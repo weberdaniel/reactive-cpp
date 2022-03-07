@@ -13,7 +13,7 @@ add_executable(testit
 	       qt_group_chat.cpp
 	       chatwidget.cpp
 	       ${GROUP_CHAT_MOC_SRC}
-	       ${GROUP_CHAT_UI_HDR})
+	       ${GROUP_CHAT_UI_HDR} )
 
 target_compile_features(testit PRIVATE cxx_std_17)
 target_include_directories(testit PRIVATE

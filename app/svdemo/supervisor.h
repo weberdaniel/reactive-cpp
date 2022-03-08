@@ -18,17 +18,28 @@ struct supervisor_state  {
   // how often are we going to restart during a specific period
   int32_t intensity;
   std::chrono::microseconds period;
+  std::string process_name;
 };
 
-behavior supervisor(stateful_actor<supervisor_state>* self, const actor& buddy) {
-  auto v = caf::put_atom_v;
+template<class F>
+behavior supervisor(stateful_actor<supervisor_state>* self,
+                    caf::string_view restart_strategy,
+                    int32_t intensity,
+                    std::chrono::microseconds period,
+                    std::string process_name,
+                    F fun
+                    ) {
   aout(self) << "Supervisor started (Id " << self->id() << ")" << std::endl;
-  self->home_system().registry().put("sv", self);
-  self->monitor(buddy);
-  actor_id mon_id = buddy->id();
+  self->home_system().registry().put(process_name, self);
+  aout(self) << "Actor started (Id " << self->id() << ")" << std::endl;
+  auto child = self->home_system().spawn(fun);
+  self->monitor(child);
+  actor_id mon_id = child->id();
   aout(self) << "Supervisor (Id " << self->id() << ") monitors Actor (Id " << mon_id << ")" << std::endl;
-  self->set_down_handler([=](down_msg&) {
-    aout(self) << "down" << std::endl;
+  self->set_down_handler([=](down_msg& msg) {
+    if (self->state.restart_strategy == type_name<one_for_one>::value) {
+      self->home_system().spawn(fun);
+    }
   });
   return {
     [=](int32_t val) { self->state.restart_strategy = type_name<simple_one_for_one>::value; }

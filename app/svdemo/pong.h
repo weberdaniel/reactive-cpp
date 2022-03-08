@@ -7,10 +7,18 @@
 
 using namespace caf;
 
-behavior pong(event_based_actor* self) {
+struct pong_state {
+  int32_t received = 0;
+};
+
+behavior pong(stateful_actor<pong_state>* self) {
   return {
     [=](const std::string& what) -> std::string {
-      aout(self) << what << std::endl;
+      self->state.received++;
+      aout(self) << "message nr " << self->state.received << std::endl;
+      if(self->state.received == 10) {
+        throw std::bad_alloc();
+      }
       return std::string{what.rbegin(), what.rend()};
     }
   };

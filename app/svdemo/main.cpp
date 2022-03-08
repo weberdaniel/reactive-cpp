@@ -9,7 +9,8 @@ using namespace caf;
 void caf_main(actor_system& system) {
   //std::cout << "hello world" << std::endl;
   auto po = system.spawn(pong);
-  system.spawn(ping, po);
+  auto pi = system.spawn(ping, po);
+  auto sv = system.spawn(supervisor, pi);
 }
 
 CAF_MAIN()

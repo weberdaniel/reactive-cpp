@@ -8,6 +8,7 @@ CAF_ADD_ATOM(supervisor, one_for_one);
 CAF_ADD_ATOM(supervisor, one_for_all);
 CAF_ADD_ATOM(supervisor, rest_for_one);
 CAF_ADD_ATOM(supervisor, simple_one_for_one);
+CAF_ADD_ATOM(supervisor, pinging_atom);
 CAF_END_TYPE_ID_BLOCK(supervisor)
 
 struct supervisor_state  {

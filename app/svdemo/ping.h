@@ -1,38 +1,37 @@
 #ifndef ACTORDEMO_PING_H
 #define ACTORDEMO_PING_H
-
 #include <string>
 #include <iostream>
 #include "caf/all.hpp"
 
 using namespace caf;
 
-behavior ping_fun(event_based_actor* self, actor buddy) {
-  self->request(buddy, std::chrono::seconds(5), "hello!")
-  .then( [=](const std::string& what) {
-    self->become(ping_fun(self,buddy));
-  });
-  return {};
-}
-
 class ping : public event_based_actor {
  public:
   ping(actor_config& cfg, actor buddy):
-     event_based_actor(cfg), m_buddy(buddy)  {
-    // nop
-  }
+    event_based_actor(cfg), m_buddy(buddy)
+    {
+      pinging_.assign([=](pinging_atom){
+          aout(this) << "Actor " << "starts pinging" << std::endl;
+          delayed_send(this,std::chrono::seconds(2), pinging_atom_v);
+        });
+    }
 
+protected:
   behavior make_behavior() override {
-      request(m_buddy, std::chrono::seconds(5), "hello!")
-              .then( [=](const std::string& what) {
-                  become(ping);
-              });
-      return {};
+    send(this, pinging_atom_v);
+    return {
+      [=](pinging_atom) {
+          aout(this) << "Actor " << "starts pinging\n";
+          delayed_send(this,std::chrono::seconds(2), pinging_atom_v);
+          //become(pinging_);
+        },
+    };
   }
 
-  actor m_buddy;
-  behavior
-
+ private:
+   behavior pinging_;
+   actor m_buddy;
 };
 
 #endif //ACTORDEMO_PING_H

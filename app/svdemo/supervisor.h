@@ -22,6 +22,25 @@ struct supervisor_state  {
   std::string process_name;
 };
 
+/*template<class F>
+class supervisor: public event_based_actor {
+ public:
+  supervisor(actor_config& cfg,
+             caf::string_view restart_strategy,
+             int32_t intensity,
+             std::chrono::microseconds period,
+             std::string process_name,
+             F fun) {
+  }
+
+  make_behavior();
+
+ protected:
+
+ private:
+
+};*/
+
 template<class F>
 behavior supervisor(stateful_actor<supervisor_state>* self,
                     caf::string_view restart_strategy,

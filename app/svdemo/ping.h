@@ -20,13 +20,7 @@ class ping : public event_based_actor {
 protected:
   behavior make_behavior() override {
     send(this, pinging_atom_v);
-    return {
-      [=](pinging_atom) {
-          aout(this) << "Actor " << "starts pinging\n";
-          delayed_send(this,std::chrono::seconds(2), pinging_atom_v);
-          //become(pinging_);
-        },
-    };
+    return pinging_;
   }
 
  private:

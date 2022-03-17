@@ -19,7 +19,7 @@ behavior pong(stateful_actor<pong_state>* self) {
       if(self->state.received == 10) {
         throw std::bad_alloc();
       }
-    },
+    }
   };
 }
 

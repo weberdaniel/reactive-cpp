@@ -8,8 +8,11 @@
 using namespace caf;
 
 void caf_main(actor_system& system) {
-  auto po = system.spawn(pong);
-  auto pi = system.spawn<ping>(po);
+  actor po = system.spawn(pong);
+  //auto pi = system.spawn<ping>(po);
+  auto sv = system.spawn< supervisor<ping,actor&> >(
+    type_name<one_for_all>::value, 1, std::chrono::milliseconds(10),
+    "hello", po);
 }
 
 CAF_MAIN(id_block::supervisor)

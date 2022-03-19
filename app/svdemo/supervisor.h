@@ -9,7 +9,9 @@ CAF_ADD_ATOM(supervisor, one_for_all);
 CAF_ADD_ATOM(supervisor, rest_for_one);
 CAF_ADD_ATOM(supervisor, simple_one_for_one);
 CAF_ADD_ATOM(supervisor, pinging_atom);
+CAF_ADD_ATOM(supervisor, get_child);
 CAF_END_TYPE_ID_BLOCK(supervisor)
+
 
 template<class TClassActor, class TClassActorStaticArgs>
 class supervisor: public event_based_actor {
@@ -24,26 +26,30 @@ class supervisor: public event_based_actor {
   process_name(process_name),
   class_actor_static_args_(class_actor_static_args)
   {
-
-
+    return_child_.assign(
+      [=](get_child) -> actor {
+        return child;
+      }
+    );
   }
 
   behavior make_behavior() override {
     this->home_system().registry().put(process_name, this);
-    auto r = spawn<TClassActor>(class_actor_static_args_);
-    return supervising_;
+    child = spawn<TClassActor>(class_actor_static_args_);
+    return return_child_;
   }
 
  protected:
 
  private:
-  std::vector<actor> children;
+  actor child;
   caf::string_view restart_strategy;
   int32_t intensity;
   std::chrono::microseconds period;
   std::string process_name;
   behavior init_;
   behavior supervising_;
+  behavior return_child_;
   TClassActorStaticArgs class_actor_static_args_;
 };
 

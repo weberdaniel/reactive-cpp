@@ -17,26 +17,31 @@ template<class TClassActor, class TClassActorStaticArgs>
 class supervisor: public event_based_actor {
  public:
   supervisor(actor_config& cfg, caf::string_view restart_strategy,
-             int32_t intensity, std::chrono::microseconds period, std::string
-  process_name, TClassActorStaticArgs class_actor_static_args) :
+    int32_t intensity, std::chrono::microseconds period, std::string
+    process_name, TClassActorStaticArgs class_actor_static_args) :
   event_based_actor(cfg),
   restart_strategy(restart_strategy),
   intensity(intensity),
   period(period),
   process_name(process_name),
   class_actor_static_args_(class_actor_static_args)
-  {
-    return_child_.assign(
-      [=](get_child) -> actor {
-        return child;
-      }
-    );
+    {
   }
 
   behavior make_behavior() override {
+    aout(this) << "supervisor make_behavior\n";
     this->home_system().registry().put(process_name, this);
     child = spawn<TClassActor>(class_actor_static_args_);
-    return return_child_;
+    child_addr = child->address();
+    aout(this) << "supervisor working ...\n";
+    return_child_.assign(
+              [=](get_child) -> actor_addr {
+                  aout(this) << "supervisor child addr: " << child_addr << "\n";
+                  aout(this) << "supervisor child id: " << child.id() << "\n";
+                  return child_addr;
+              });
+      aout(this) << "supervisor return stuff: " <<  "\n";
+      return return_child_;
   }
 
  protected:
@@ -48,9 +53,63 @@ class supervisor: public event_based_actor {
   std::chrono::microseconds period;
   std::string process_name;
   behavior init_;
-  behavior supervising_;
   behavior return_child_;
+  actor_addr child_addr;
   TClassActorStaticArgs class_actor_static_args_;
+};
+
+template<class TClassActor>
+class  supervisor<TClassActor, void> : public event_based_actor {
+ public:
+  supervisor(actor_config& cfg, caf::string_view restart_strategy,
+  int32_t intensity, std::chrono::microseconds period, std::string
+  process_name) :
+    event_based_actor(cfg),
+    restart_strategy(restart_strategy),
+    intensity(intensity),
+    period(period),
+    process_name(process_name)
+  {
+  }
+
+  behavior make_behavior() override {
+      aout(this) << "supervisor make_behavior\n";
+      this->home_system().registry().put(process_name, this);
+      child = spawn<TClassActor>();
+      child_addr = child->address();
+      aout(this) << "supervisor working ...\n";
+      this->monitor(child);
+      this->set_down_handler([&](down_msg& msg) {
+          child = spawn<TClassActor>();
+          child_addr = child->address();
+          aout(this) << "Restarting, new id: " << child_addr.id() << "\n";
+          return_child_.assign(
+                  [=](get_child) -> actor_addr {
+                      aout(this) << "supervisor child addr: " << child_addr << "\n";
+                      aout(this) << "supervisor child id: " << child.id() << "\n";
+                      return child_addr;
+                  });
+          become(return_child_);
+      });
+      return_child_.assign(
+              [=](get_child) -> actor_addr {
+                  aout(this) << "supervisor child addr: " << child_addr << "\n";
+                  aout(this) << "supervisor child id: " << child.id() << "\n";
+                  return child_addr;
+              });
+      aout(this) << "supervisor return stuff: " <<  "\n";
+      return return_child_;
+  }
+
+private:
+    actor child;
+    caf::string_view restart_strategy;
+    int32_t intensity;
+    std::chrono::microseconds period;
+    std::string process_name;
+    behavior init_;
+    behavior return_child_;
+    actor_addr child_addr;
 };
 
 /*template<class F>

@@ -8,12 +8,13 @@ using namespace caf;
 
 class ping : public event_based_actor {
  public:
-  ping(actor_config& cfg, actor buddy):
+  ping(actor_config& cfg, actor_addr buddy):
     event_based_actor(cfg), m_buddy(buddy)
     {
       pinging_.assign([=](pinging_atom){
           aout(this) << "Actor " << "starts pinging" << std::endl;
           delayed_send(this,std::chrono::seconds(2), pinging_atom_v);
+          send(actor_cast<actor>(buddy), "a");
         });
     }
 
@@ -25,7 +26,8 @@ protected:
 
  private:
    behavior pinging_;
-   actor m_buddy;
+   actor_addr m_buddy;
 };
+
 
 #endif //ACTORDEMO_PING_H

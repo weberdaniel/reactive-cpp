@@ -11,33 +11,32 @@ struct pong_state {
   int32_t received = 0;
 };
 
-
 class pong : public event_based_actor {
  public:
   pong(actor_config& cfg): event_based_actor(cfg) { }
 
  protected:
   behavior make_behavior() override {
+    this->home_system().registry().erase("pong");
+    this->home_system().registry().put("pong",this);
     delayed_send(this, std::chrono::seconds(3), 3);
     return {
       [=](const std::string& what) {
         received_++;
-        aout(this) << "message nr " << received_ << std::endl;
-        if(received_ == 3) {
+        if(received_ == 3000) {
           received_ = 0;
           throw std::bad_alloc();
         }
       },
-      [=](const int keep_alive) {
+      [=](keep_alive) {
           aout(this) << "keep alive" << received_ << std::endl;
-          delayed_send(this, std::chrono::seconds(3), 3);
+          delayed_send(this, std::chrono::seconds(3), keep_alive_v);
       }
     };
   }
 
  private:
     int received_ {0};
-
 };
 
 /*behavior pong(stateful_actor<pong_state>* self) {

@@ -1,4 +1,4 @@
-# Demonstration of a Supervisor implementation with help of the C++ Actor Framework 
+# Demonstration of a Supervisor implementation using C++ Actor Framework 
 
 This project shall demonstrate the capabilities of the C++ Actor Framework (CAF). 
 For more information on the C++ Actor Framework, please visit:

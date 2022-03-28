@@ -13,7 +13,7 @@ software architectures, but also due to the rise of multi-core systems. Accordin
 telecommunication software like the Erricson Switch AXD301 and the Erlang programming langue, become adopted to other programming 
 languages and domains as well. To foster this spread the Reactive Manifesto has been created https://www.reactivemanifesto.org/de
 
-## The Let it crash pattern
+## The 'Let it crash' pattern
 
 
 

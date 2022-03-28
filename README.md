@@ -6,7 +6,7 @@ C++ process and restarts it in case of an error.
 
 ## Reactive Software Design
 
-<img align='left' src="https://media.giphy.com/media/26uf9QPzzlKPvQG5O/giphy.gif" width="230">
+<img align='left' src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/reactive_design.jpg" width="230">
 
 ## The Actor Model
 

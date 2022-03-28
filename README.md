@@ -1,5 +1,7 @@
 # A supervisor demo of C++ Actor Framework (CAF)
 
+## The Actor Model
+
 This project shall demonstrate the capabilities of the C++ Actor Framework (CAF). 
 For more information on the C++ Actor Framework, please visit:
 

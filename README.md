@@ -13,7 +13,7 @@ software architectures, but also due to the rise of multi-core systems. Accordin
 telecommunication software like used in the Erricson Switch AXD301 enabling its nine-nines reliability (99.9999999%), 
 become adopted to other programming domains as well. 
 
-To spread this design principles the Reactive Manifesto has been created https://www.reactivemanifesto.org/de
+To spread this design principles the Reactive Manifesto has been created: https://www.reactivemanifesto.org
 
 ## The 'Let it crash' pattern
 

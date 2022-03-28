@@ -8,13 +8,13 @@ C++ process and restarts it in case of an error.
 
 <img align='left' src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/reactive_design.jpg" width="230">
 
-The principle of reactive software design patterns have gained significant momentum. In particular due to highly distributed
-software architectures. But also due to the rise of multi-core CPUs. An example of a reactive software design is the AXD301
-Erricson switch, which provides a high nine-nines reliability (99.9999999%). When routing millions of connections, even smallest
-outages can impose high risks on a company. 
+The principle of reactive software design patterns reach back to the 1970s but have gained momentum recently. In particular due 
+to highly distributed software architectures. But also due to the rise of multi-core CPUs. An example of a reactive software 
+design is the AXD301 Ericsson switch, which provides a nine-nines reliability (99.9999999%). Routing millions of connections, 
+even smallest outages can impose high risks on a company. 
 
 The design principles of such devices become more and more adopted to other programming languages and domains, so the Reactive 
-Manifesto has been  created to support the reactive software design: https://www.reactivemanifesto.org
+Manifesto has been created to support reactive software design: https://www.reactivemanifesto.org
 
 ## The 'Let it crash' pattern
 

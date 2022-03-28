@@ -13,8 +13,8 @@ to highly distributed software architectures. But also due to the rise of multi-
 design is the AXD301 Ericsson switch, which provides a nine-nines reliability (99.9999999%). Routing millions of connections, 
 even smallest outages can impose high risks on a company. 
 
-The design principles of such devices become more and more adopted to other programming languages and domains, so the Reactive 
-Manifesto has been created to support reactive software design: https://www.reactivemanifesto.org
+The design principles of such devices become more and more adopted to new and old programming domains, so the Reactive 
+Manifesto has been created to spread the design concepts: https://www.reactivemanifesto.org
 
 ## The 'Let it crash' pattern
 

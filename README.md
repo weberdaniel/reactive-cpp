@@ -13,8 +13,8 @@ software architectures. But also due to the rise of multi-core CPUs. An example 
 Erricson switch, which provides a high nine-nines reliability (99.9999999%). When routing millions of connections, even smallest
 outages can impose high risks on a company. 
 
-The design principles become more and more adopted to other programming languages and domains, so the Reactive Manifesto has been 
-created to show support for reactive software design: https://www.reactivemanifesto.org
+The design principles of such devices become more and more adopted to other programming languages and domains, so the Reactive 
+Manifesto has been  created to support the reactive software design: https://www.reactivemanifesto.org
 
 ## The 'Let it crash' pattern
 

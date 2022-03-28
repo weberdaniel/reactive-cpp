@@ -1,8 +1,8 @@
 # A supervisor demo of C++ Actor Framework (CAF)
 
 This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
-on the example of a supervisor process that monitors other lightweight C++ Processes
-and restarts them in case of error.
+on the example of a lightweight supervisor process that monitors another lightweight 
+C++ Processes and restarts it in case of an error.
 
 ## Reactive Software Design
 

@@ -4,6 +4,10 @@ This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
 on the example of a supervisor process that monitors other lightweight C++ Processes
 and restarts them in case of error.
 
+## Build System
+
+CMake is used according to the Talk of Deniz Bahadir, called "More Modern CMake".
+
 ## The Actor Model
 
 

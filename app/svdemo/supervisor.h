@@ -4,6 +4,9 @@
 using namespace caf;
 
 CAF_BEGIN_TYPE_ID_BLOCK(supervisor, caf::first_custom_type_id)
+// public interface messages
+CAF_ADD_ATOM(supervisor, start_child);
+CAF_ADD_ATOM(supervisor, terminate_child);
 // process_function
 CAF_ADD_ATOM(supervisor, work);
 CAF_ADD_ATOM(supervisor, supervise);
@@ -27,28 +30,17 @@ CAF_ADD_ATOM(supervisor, wait);
 // other
 CAF_ADD_ATOM(supervisor, pinging_atom);
 CAF_ADD_ATOM(supervisor, get_child);
-// other
 CAF_ADD_ATOM(supervisor, keep_alive);
 CAF_END_TYPE_ID_BLOCK(supervisor)
 
 template<class TStaticStartArgs>
 struct childspec {
-    // this is not a PID or Actor Id, it is only a name for the spec
     std::string child_id;
-    // start arguments
     TStaticStartArgs start;
-    // permanent | transient | temporary
     caf::string_view restart;
-    // a supervisor can perform an auto-shutdown in case
-    // significant children are terminated.
     bool significant;
-    // if brtual_kill is set, the child process will be unconditionally killed,
-    // if infinity is set, the child is a supervisor. If wait is set, a time will
-    // be waited, then the actor will be killed unconditionally
     caf::string_view shutdown;
-    // how long to wait in case of "wait" shutdown parameter
     std::chrono::milliseconds wait_time;
-    // type: supervise | work
     caf::string_view type;
 };
 
@@ -61,47 +53,47 @@ class child {
 };
 
 struct sup_flags {
-  sup_flags(caf::string_view restart_strategy,
-            uint32_t restart_intensity,
-            std::chrono::seconds restart_period,
-            caf::string_view auto_shutdown) :
-            restart_strategy(restart_strategy),
-            restart_intensity(restart_intensity),
-            restart_period(restart_period),
-            auto_shutdown(auto_shutdown) {};
-  // one_for_one | one_for_all | rest_for_one | simple_one_for_one
+  sup_flags(caf::string_view restart_strategy, uint32_t restart_intensity,
+    std::chrono::seconds restart_period, caf::string_view auto_shutdown) :
+    restart_strategy(restart_strategy), restart_intensity(restart_intensity),
+    restart_period(restart_period), auto_shutdown(auto_shutdown) {};
+
   caf::string_view restart_strategy;
-  // number of max. restarts during one restart period.
   uint32_t restart_intensity;
-  // duration of the restart period
   std::chrono::seconds restart_period;
-  // never | any_significant | all_significant
   caf::string_view auto_shutdown;
 };
-
 
 template<class TClassActor, class TStaticStartArgs>
 class supervisor: public event_based_actor {
  public:
+  supervisor(actor_config& cfg, sup_flags flags, TStaticStartArgs
+  class_actor_static_args) : event_based_actor(cfg), flags(
+  flags), class_actor_static_args_(class_actor_static_args) { }
 
-  supervisor(actor_config& cfg,
-             caf::string_view restart_strategy,
-             uint32_t intensity,
-             std::chrono::seconds period,
-             caf::string_view auto_shutdown,
-             TStaticStartArgs class_actor_static_args)
-    : event_based_actor(cfg),
-      flags(restart_strategy, intensity, period, auto_shutdown),
-      class_actor_static_args_(class_actor_static_args)
-  {
-    supervising_.assign(
-      [=](keep_alive) {
-        delayed_send(this, std::chrono::seconds(1), keep_alive_v);
-      });
-  }
+  supervisor(actor_config& cfg, caf::string_view restart_strategy,
+  uint32_t intensity, std::chrono::seconds period, caf::string_view
+  auto_shutdown, TStaticStartArgs class_actor_static_args)
+  : event_based_actor(cfg), flags(restart_strategy, intensity,
+  period, auto_shutdown), class_actor_static_args_(class_actor_static_args) { }
 
  protected:
   behavior make_behavior() override {
+
+    supervising_.assign(
+      [=](keep_alive) {
+        delayed_send(this, std::chrono::seconds(1), keep_alive_v);
+      },
+      [=](start_child, childspec<TStaticStartArgs> spec) {
+        actor new_child = spawn<TClassActor>(class_actor_static_args_);
+        this->monitor(new_child);
+        ::child<TStaticStartArgs> storage;
+      },
+      [=](terminate_child, actor_addr child) {
+
+      }
+    );
+
     delayed_send(this, std::chrono::seconds(1), keep_alive_v);
     child = spawn<TClassActor>(class_actor_static_args_);
     this->monitor(child);
@@ -123,34 +115,29 @@ class supervisor: public event_based_actor {
 template<class TClassActor>
 class supervisor<TClassActor, void> : public event_based_actor {
  public:
-  supervisor(actor_config& cfg,
-             caf::string_view restart_strategy,
-             uint32_t intensity,
-             std::chrono::seconds period,
-             caf::string_view auto_shutdown)
-    : event_based_actor(cfg),
-      flags(restart_strategy, intensity, period, auto_shutdown)
-  {
+  supervisor(actor_config& cfg, caf::string_view restart_strategy,
+  uint32_t intensity, std::chrono::seconds period, caf::string_view
+  auto_shutdown) : event_based_actor(cfg), flags(restart_strategy, intensity,
+  period, auto_shutdown) { }
+
+  behavior make_behavior() override {
     supervising_.assign(
       [=](keep_alive) {
         delayed_send(this, std::chrono::seconds(1), keep_alive_v);
       });
-  }
-
-  behavior make_behavior() override {
-      delayed_send(this, std::chrono::seconds(1), keep_alive_v);
+    delayed_send(this, std::chrono::seconds(1), keep_alive_v);
+    child = spawn<TClassActor>();
+    this->monitor(child);
+    this->set_down_handler([&](down_msg& msg) {
       child = spawn<TClassActor>();
       this->monitor(child);
-      this->set_down_handler([&](down_msg& msg) {
-          child = spawn<TClassActor>();
-          this->monitor(child);
-          become(supervising_);
-      });
-      return supervising_;
+      become(supervising_);
+    });
+    return supervising_;
   }
 
-private:
-    actor child;
-    sup_flags flags;
-    behavior supervising_;
+ private:
+   actor child;
+   sup_flags flags;
+   behavior supervising_;
 };

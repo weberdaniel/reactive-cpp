@@ -16,6 +16,14 @@ CAF_ADD_ATOM(supervisor, one_for_one);
 CAF_ADD_ATOM(supervisor, one_for_all);
 CAF_ADD_ATOM(supervisor, rest_for_one);
 CAF_ADD_ATOM(supervisor, simple_one_for_one);
+// auto-shutdown
+CAF_ADD_ATOM(supervisor, never);
+CAF_ADD_ATOM(supervisor, any_significant);
+CAF_ADD_ATOM(supervisor, all_significant);
+// shutdown
+CAF_ADD_ATOM(supervisor, brutal_kill);
+CAF_ADD_ATOM(supervisor, infinity);
+CAF_ADD_ATOM(supervisor, wait);
 // other
 CAF_ADD_ATOM(supervisor, pinging_atom);
 CAF_ADD_ATOM(supervisor, get_child);
@@ -23,32 +31,56 @@ CAF_ADD_ATOM(supervisor, get_child);
 CAF_ADD_ATOM(supervisor, keep_alive);
 CAF_END_TYPE_ID_BLOCK(supervisor)
 
-class childspec {
-  // this is not a PID or Actor Id, it is only a name for the spec
-  std::string child_id;
-  // work | supervise
-  std::string_view process_function;
-  // permanent | transient | temporary
-  std::string_view restart_type;
-  // one_for_one | one_for_all | rest_for_one | simple_one_for_one
-  std::string_view restart_strategy;
-  // a supervisor can perform an auto-shutdown in case
-  // significant children are terminated.
-  bool significant;
-  // number of max. restarts during one restart period
-  int32_t restart_intensity;
-  // duration of the restart period
-  std::chrono::seconds restart_period;
+template<class TStaticStartArgs>
+struct childspec {
+    // this is not a PID or Actor Id, it is only a name for the spec
+    std::string child_id;
+    // start arguments
+    TStaticStartArgs start;
+    // permanent | transient | temporary
+    std::string_view restart;
+    // a supervisor can perform an auto-shutdown in case
+    // significant children are terminated.
+    bool significant;
+    // if brtual_kill is set, the child process will be unconditionally killed,
+    // if infinity is set, the child is a supervisor. If wait is set, a time will
+    // be waited, then the actor will be killed unconditionally
+    std::string_view shutdown;
+    // how long to wait in case of "wait" shutdown parameter
+    std::chrono::milliseconds wait_time;
+    // type: supervise | work
+    std::string_view type;
 };
 
-template<class TClassActor, class TClassActorStaticArgs>
+template<class TStaticStartArgs>
+class child {
+    childspec<TStaticStartArgs> spec;
+    actor child;
+    int restart_count;
+    std::chrono::time_point<std::chrono::system_clock> restart_period_start;
+};
+
+struct sup_flags {
+  // one_for_one | one_for_all | rest_for_one | simple_one_for_one
+  std::string_view restart_strategy;
+  // number of max. restarts during one restart period.
+  uint32_t restart_intensity;
+  // duration of the restart period
+  std::chrono::seconds restart_period;
+  // never | any_significant | all_significant
+  std::string_view auto_shutdown;
+};
+
+
+template<class TClassActor, class TStaticStartArgs>
 class supervisor: public event_based_actor {
  public:
+
   supervisor(actor_config& cfg,
              caf::string_view restart_strategy,
              int32_t intensity,
              std::chrono::seconds period,
-             TClassActorStaticArgs class_actor_static_args)
+             TStaticStartArgs class_actor_static_args)
     : event_based_actor(cfg),
       restart_strategy(restart_strategy),
       intensity(intensity),
@@ -79,7 +111,7 @@ class supervisor: public event_based_actor {
   caf::string_view restart_strategy;
   int32_t intensity;
   std::chrono::microseconds period;
-  TClassActorStaticArgs class_actor_static_args_;
+  TStaticStartArgs class_actor_static_args_;
   behavior supervising_;
 };
 

@@ -20,6 +20,7 @@ class ping : public event_based_actor {
 
 protected:
   behavior make_behavior() override {
+    std::string ping_string("ping");
     this->home_system().registry().erase("ping");
     this->home_system().registry().put("ping",this);
     send(this, pinging_atom_v);

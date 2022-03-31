@@ -38,18 +38,18 @@ struct childspec {
     // start arguments
     TStaticStartArgs start;
     // permanent | transient | temporary
-    std::string_view restart;
+    caf::string_view restart;
     // a supervisor can perform an auto-shutdown in case
     // significant children are terminated.
     bool significant;
     // if brtual_kill is set, the child process will be unconditionally killed,
     // if infinity is set, the child is a supervisor. If wait is set, a time will
     // be waited, then the actor will be killed unconditionally
-    std::string_view shutdown;
+    caf::string_view shutdown;
     // how long to wait in case of "wait" shutdown parameter
     std::chrono::milliseconds wait_time;
     // type: supervise | work
-    std::string_view type;
+    caf::string_view type;
 };
 
 template<class TStaticStartArgs>
@@ -61,14 +61,22 @@ class child {
 };
 
 struct sup_flags {
+  sup_flags(caf::string_view restart_strategy,
+            uint32_t restart_intensity,
+            std::chrono::seconds restart_period,
+            caf::string_view auto_shutdown) :
+            restart_strategy(restart_strategy),
+            restart_intensity(restart_intensity),
+            restart_period(restart_period),
+            auto_shutdown(auto_shutdown) {};
   // one_for_one | one_for_all | rest_for_one | simple_one_for_one
-  std::string_view restart_strategy;
+  caf::string_view restart_strategy;
   // number of max. restarts during one restart period.
   uint32_t restart_intensity;
   // duration of the restart period
   std::chrono::seconds restart_period;
   // never | any_significant | all_significant
-  std::string_view auto_shutdown;
+  caf::string_view auto_shutdown;
 };
 
 
@@ -80,11 +88,10 @@ class supervisor: public event_based_actor {
              caf::string_view restart_strategy,
              int32_t intensity,
              std::chrono::seconds period,
+             caf::string_view auto_shutdown,
              TStaticStartArgs class_actor_static_args)
     : event_based_actor(cfg),
-      restart_strategy(restart_strategy),
-      intensity(intensity),
-      period(period),
+      flags(restart_strategy, intensity, period, auto_shutdown),
       class_actor_static_args_(class_actor_static_args)
   {
     supervising_.assign(
@@ -108,9 +115,7 @@ class supervisor: public event_based_actor {
 
  private:
   actor child;
-  caf::string_view restart_strategy;
-  int32_t intensity;
-  std::chrono::microseconds period;
+  sup_flags flags;
   TStaticStartArgs class_actor_static_args_;
   behavior supervising_;
 };

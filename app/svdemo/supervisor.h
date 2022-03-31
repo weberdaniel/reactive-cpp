@@ -86,7 +86,7 @@ class supervisor: public event_based_actor {
 
   supervisor(actor_config& cfg,
              caf::string_view restart_strategy,
-             int32_t intensity,
+             uint32_t intensity,
              std::chrono::seconds period,
              caf::string_view auto_shutdown,
              TStaticStartArgs class_actor_static_args)
@@ -125,12 +125,11 @@ class supervisor<TClassActor, void> : public event_based_actor {
  public:
   supervisor(actor_config& cfg,
              caf::string_view restart_strategy,
-             int32_t intensity,
-             std::chrono::microseconds period )
+             uint32_t intensity,
+             std::chrono::seconds period,
+             caf::string_view auto_shutdown)
     : event_based_actor(cfg),
-      restart_strategy(restart_strategy),
-      intensity(intensity),
-      period(period)
+      flags(restart_strategy, intensity, period, auto_shutdown)
   {
     supervising_.assign(
       [=](keep_alive) {
@@ -152,8 +151,6 @@ class supervisor<TClassActor, void> : public event_based_actor {
 
 private:
     actor child;
-    caf::string_view restart_strategy;
-    int32_t intensity;
-    std::chrono::microseconds period;
+    sup_flags flags;
     behavior supervising_;
 };

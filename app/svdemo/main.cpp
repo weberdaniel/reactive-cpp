@@ -12,13 +12,15 @@ void startup_actor(event_based_actor* self) {
     self->home_system().spawn< supervisor<pong,void> >(
       type_name<one_for_all>::value,
       1,
-      std::chrono::milliseconds(10)
+      std::chrono::seconds(10),
+      type_name<never>::value
     );
 
     self->home_system().spawn< supervisor<ping,void> >(
       type_name<one_for_all>::value,
       1,
-      std::chrono::milliseconds(10) );
+      std::chrono::seconds(10),
+      type_name<never>::value );
   // please note, simply adding code here after the self->request, does no longer
   // guarantee order of execution.
 };

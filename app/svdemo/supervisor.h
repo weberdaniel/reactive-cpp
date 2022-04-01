@@ -36,8 +36,11 @@ CAF_ADD_ATOM(supervisor, get_child);
 CAF_ADD_ATOM(supervisor, keep_alive);
 CAF_END_TYPE_ID_BLOCK(supervisor)
 
-// TODO: add default CTOR
 struct childspec {
+  childspec() : start(), restart(type_name<transient>::value),
+    significant(false), shutdown(type_name<wait>::value),
+    wait_time(0), type(type_name<work>::value) { }
+
   std::string child_id;
   // instantiated functor with internal variables replaces erlang mfa args
   std::function<void(event_based_actor*)> start;
@@ -48,10 +51,13 @@ struct childspec {
   caf::string_view type;
 };
 
-// TODO: add default CTOR
 struct child {
+  child() : child_id(), address(), restart_count(0),
+            restart_period_start(std::chrono::system_clock::time_point::min()) {}
+
   std::string child_id;
-  actor child;
+  actor_addr address;
+  actor process;
   int restart_count;
   std::chrono::time_point<std::chrono::system_clock> restart_period_start;
 };
@@ -77,38 +83,80 @@ struct sup_flags {
   caf::string_view auto_shutdown;
 };
 
+struct supervisor_state {
+  std::vector<childspec> specs_;
+  std::vector<child> children_;
+  sup_flags flags_;
+};
+
 class supervisor {
  public:
-  supervisor() : specs_(), children_(), flags_() {}
+  supervisor()   {
+      ptr_ = std::make_shared<supervisor_state>();
+  }
 
   // override or call by additional layer of indirection
   virtual void init(const std::vector<childspec>& specs,
-                    sup_flags flags = sup_flags()) {
-    specs_ = specs;
-    flags_ = flags;
+  sup_flags flags = sup_flags()) {
+    ptr_->specs_ = specs;
+    ptr_->flags_ = flags;
   }
 
   void operator()(event_based_actor* self)  {
-    for( auto& e : specs_ ) {
+    for( auto& e : ptr_->specs_ ) {
       actor process = self->home_system().spawn(e.start);
       self->monitor(process);
       child just_started;
       just_started.child_id = e.child_id;
-      just_started.child = std::move(process);
+      just_started.process= std::move(process);
       just_started.restart_count = 0;
       just_started.restart_period_start = std::chrono::system_clock::now();
-      children_.push_back(just_started);
-    }
-    self->set_down_handler([](down_msg& msg) {
-        msg.source
+      ptr_->children_.push_back(just_started);
+    };
+    std::shared_ptr<supervisor_state> ptr = ptr_;
+    self->set_down_handler([self, ptr](down_msg& msg) {
+        aout(self) << "received down \n";
+        auto it = ptr->children_.begin();
+        while (it != ptr->children_.end()) {
+            if (msg.source == (*it).address) {
+              std::string id = (*it).child_id;
+              for( auto& e : ptr->specs_ ) {
+                if( e.child_id == id ) {
+                    // 1. if meassurement interval experied, reset everything
+                    auto delta = std::chrono::system_clock::now() -
+                                            (*it).restart_period_start;
+                    if (delta > ptr->flags_.restart_period) {
+                      (*it).restart_count = 0;
+                    }
 
-    })
+                    // 2. if we start a new meassurement, set the timer
+                    if ((*it).restart_count == 0) {
+                      (*it).restart_period_start = std::chrono::system_clock::now();
+                    }
+
+                    // 3. if we reached the maximum attempts give up
+                    if ((*it).restart_count == ptr->flags_.restart_intensity) {
+                    }
+
+                    // 4. if we don't give up yet, do a restart
+                    actor process = self->home_system().spawn(e.start);
+                    self->monitor(process);
+                    (*it).address = process->address();
+                    (*it).process = std::move(process);
+                    (*it).restart_count++;
+                }
+              }
+            }
+        }
+    });
+    self->become([self,ptr](int msg){
+        aout(self) << "supervising \n";
+        self->delayed_send(self,std::chrono::seconds(3),3);
+    });
+    self->delayed_send(self,std::chrono::seconds(3),3);
   }
 
- private:
-  std::vector<childspec> specs_;
-  std::vector<child> children_;
-  sup_flags flags_;
+  std::shared_ptr<supervisor_state> ptr_;
   //behavior supervising_;
 };
 

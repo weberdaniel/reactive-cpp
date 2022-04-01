@@ -7,7 +7,7 @@
 
 using namespace caf;
 
-void startup_actor(event_based_actor* self) {
+/*void startup_actor(event_based_actor* self) {
   auto pong_sv =
     self->home_system().spawn< supervisor<pong, void> >(
       type_name<one_for_all>::value,
@@ -23,7 +23,7 @@ void startup_actor(event_based_actor* self) {
       type_name<never>::value );
   // please note, simply adding code here after the self->request, does no longer
   // guarantee order of execution.
-};
+};*/
 
 class call {
 public:

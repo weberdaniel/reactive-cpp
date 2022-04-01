@@ -108,6 +108,7 @@ class supervisor {
       self->monitor(process);
       child just_started;
       just_started.child_id = e.child_id;
+      just_started.address = process.address();
       just_started.process= std::move(process);
       just_started.restart_count = 0;
       just_started.restart_period_start = std::chrono::system_clock::now();
@@ -118,9 +119,13 @@ class supervisor {
         aout(self) << "received down \n";
         auto it = ptr->children_.begin();
         while (it != ptr->children_.end()) {
+            aout(self) << "iterating children\n";
+            aout(self) << "source: " << msg.source << "\n";
+            aout(self) << "addr: " << (*it).address<< "\n";
             if (msg.source == (*it).address) {
               std::string id = (*it).child_id;
               for( auto& e : ptr->specs_ ) {
+                aout(self) << "iterating childspecs\n";
                 if( e.child_id == id ) {
                     // 1. if meassurement interval experied, reset everything
                     auto delta = std::chrono::system_clock::now() -
@@ -139,6 +144,7 @@ class supervisor {
                     }
 
                     // 4. if we don't give up yet, do a restart
+                    aout(self) << "respawning \n";
                     actor process = self->home_system().spawn(e.start);
                     self->monitor(process);
                     (*it).address = process->address();
@@ -147,6 +153,7 @@ class supervisor {
                 }
               }
             }
+            it++;
         }
     });
     self->become([self,ptr](int msg){

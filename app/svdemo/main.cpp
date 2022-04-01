@@ -7,18 +7,19 @@
 
 using namespace caf;
 
-struct functor_state {
+struct functor_static_state {
     int delay;
+};
+
+struct functor_dynamic_state {
     int counter;
 };
 
 class functor {
 public:
   functor(int tst) {
-      std::cout << "create" << std::endl;
-      ptr_ = std::make_shared<functor_state>();
-      ptr_->delay = tst;
-      ptr_->counter = 0;
+    ptr_ = std::make_shared<functor_static_state>();
+    ptr_->delay = tst;
   }
 
   functor(const functor& ref) {
@@ -29,10 +30,12 @@ public:
   }
 
   void operator()(event_based_actor* self) {
-    std::shared_ptr<functor_state> ptr = ptr_;
-    a_.assign([ptr,self](int a) {
-        ptr->counter++;
-        if( ptr->counter == 3) {
+    std::shared_ptr<functor_static_state> ptr = ptr_;
+    std::shared_ptr<functor_dynamic_state> ptr_dyn =
+      std::make_shared<functor_dynamic_state>();
+    a_.assign([ptr,ptr_dyn,self](int a) {
+        ptr_dyn->counter++;
+        if( ptr_dyn->counter == 3) {
             throw std::bad_alloc();
         }
         aout(self) << "ongoing\n";
@@ -43,7 +46,7 @@ public:
   }
 
   behavior a_;
-  std::shared_ptr<functor_state> ptr_;
+  std::shared_ptr<functor_static_state> ptr_;
 };
 
 void startup_actor(event_based_actor* self) {

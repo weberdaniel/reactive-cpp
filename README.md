@@ -13,7 +13,7 @@ The principle of reactive software design patterns reaches back to the 1970s. A 
 
 ## The 'Let it crash' pattern
 
-<p align='center' src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/letitcrash.png" width="350">
+<p align='center'><img src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/letitcrash.png" width="350"></p>
 The 'Let it crash' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the applcation usecase - in any other usecase - the process will just crash and be restarted.  
 
 ## A C++ Implementation: The C++ Actor Framework (CAF)

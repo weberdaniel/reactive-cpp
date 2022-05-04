@@ -15,7 +15,7 @@ The principle of reactive software design patterns reaches back to the 1970s. A 
 
 <div align="center">
 <img src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/crash-me-if-you-can.png" alt><br>
-<em>image_caption</em>
+<em>License: CC-BY-NC-ND by Fred Hebert (www.learnyousomeerlang.com)</em>
 </div>
 The 'Let it crash' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the applcation usecase - in any other usecase - the process will just crash and be restarted.  
 

@@ -13,7 +13,7 @@ The principle of reactive software design patterns reaches back to the 1970s. A 
 
 ## The 'Let it crash' pattern
 
-<div align="right">
+<div align="center">
 <img src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/crash-me-if-you-can.png" alt><br>
 <em>image_caption</em>
 </div>

@@ -21,8 +21,8 @@ The principle of reactive software design patterns reaches back to the 1970s. A 
 The 'Let it crash' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the applcation usecase - in any other usecase - the process will just crash and be restarted. The result looks like the following:
 <br>
 <div align="center">
-<img src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/restart-one-for-one.png" alt><br>
-<em>License: CC-BY-NC-ND by Fred Hebert (www.learnyousomeerlang.com)</em>
+<img src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/restart.png" alt><br>
+<em>Child process being restarted</em>
 </div>
 
 ## A C++ Implementation: The C++ Actor Framework (CAF)

@@ -22,7 +22,7 @@ The 'Let it crash' pattern is one of the elementary design patterns of the domai
 <br>
 <div align="center">
 <img src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/restart.png" width="50%" alt><br>
-<em>Child process being restarted</em>
+<em>Child process is being restarted by the supervisor</em>
 </div>
 
 ## A C++ Implementation: The C++ Actor Framework (CAF)

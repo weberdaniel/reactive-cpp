@@ -7,81 +7,65 @@
 
 using namespace caf;
 
-struct functor_static_state {
+struct worker_static_state {
     int delay;
 };
 
-struct functor_dynamic_state {
+struct worker_dynamic_state {
     int counter;
 };
 
-class functor {
+class worker {
 public:
-  functor(int tst) {
-    ptr_ = std::make_shared<functor_static_state>();
-    ptr_->delay = tst;
+  explicit worker(int tst) {
+    static_state = std::make_shared<worker_static_state>();
+    static_state->delay = tst;
   }
 
-  functor(const functor& ref) {
-      ptr_ = ref.ptr_;
+  worker(const worker& ref) {
+    static_state = ref.static_state;
   }
 
-  ~functor() {
-  }
+  ~worker() { }
 
   void operator()(event_based_actor* self) {
-    std::shared_ptr<functor_static_state> ptr = ptr_;
-    std::shared_ptr<functor_dynamic_state> ptr_dyn =
-      std::make_shared<functor_dynamic_state>();
-    a_.assign([ptr,ptr_dyn,self](int a) {
-        ptr_dyn->counter++;
-        if( ptr_dyn->counter == 3) {
+    std::shared_ptr<worker_static_state> config = static_state;
+    std::shared_ptr<worker_dynamic_state> state = std::make_shared<worker_dynamic_state>();
+
+    working.assign([config,state,self](int a) {
+        state->counter++;
+        if( state->counter == 3) {
             throw std::bad_alloc();
         }
         aout(self) << "ongoing\n";
-        self->delayed_send(self, std::chrono::seconds(ptr->delay), 3);
+        self->delayed_send(self, std::chrono::seconds(config->delay), 3);
     });
-    self->delayed_send(self, std::chrono::seconds(ptr->delay), 3);
-    self->become(a_);
+    self->delayed_send(self, std::chrono::seconds(config->delay), 3);
+    self->become(working);
   }
 
-  behavior a_;
-  std::shared_ptr<functor_static_state> ptr_;
+  behavior working;
+  std::shared_ptr<worker_static_state> static_state;
 };
 
-void startup_actor(event_based_actor* self) {
-    /*auto pong_sv =
-      self->home_system().spawn< supervisor<pong, void> >(
-        type_name<one_for_all>::value,
-        1,
-        std::chrono::seconds(10),
-        type_name<never>::value
-      );
+void application(event_based_actor* self) {
+    supervisor supervisor;
+    worker worker(2);
 
-      self->home_system().spawn< supervisor<ping, void> >(
-        type_name<one_for_all>::value,
-        1,
-        std::chrono::seconds(10),
-        type_name<never>::value );*/
-    // please note, simply adding code here after the self->request, does no longer
-    // guarantee order of execution.
-    supervisor sv;
-    functor tester(2);
+    childspec child_specification;
+    child_specification.child_id = "worker";
+    child_specification.start = worker;
 
-    childspec spec;
-    spec.child_id = "tester";
-    spec.start = tester;
+    std::vector<childspec> childspec_list;
+    childspec_list.push_back(child_specification);
 
-    std::vector<childspec> specs;
-    specs.push_back(spec);
-
-    sv.init(specs);
-    self->home_system().spawn(sv);
+    supervisor.init(childspec_list);
+    self->home_system().spawn(supervisor);
 };
 
 
 void caf_main(actor_system& system) {
-    system.spawn(startup_actor);
+    system.spawn(application);
     system.await_actors_before_shutdown();
 }
 

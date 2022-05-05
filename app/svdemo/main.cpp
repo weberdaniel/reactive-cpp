@@ -28,7 +28,7 @@ public:
 
   ~worker() { }
 
-  void operator()(event_based_actor* self) {
+  void init(event_based_actor* self) {
     std::shared_ptr<worker_static_state> config = static_state;
     std::shared_ptr<worker_dynamic_state> state = std::make_shared<worker_dynamic_state>();
 
@@ -42,6 +42,10 @@ public:
     });
     self->delayed_send(self, std::chrono::seconds(config->delay), 3);
     self->become(working);
+  }
+
+  void operator()(event_based_actor* self) {
+      init(self);
   }
 
   behavior working;

@@ -87,13 +87,9 @@ class supervisor {
         aout(self) << "received down \n";
         auto it = ptr->children_.begin();
         while (it != ptr->children_.end()) {
-            aout(self) << "iterating children\n";
-            aout(self) << "source: " << msg.source << "\n";
-            aout(self) << "addr: " << (*it).address<< "\n";
             if (msg.source == (*it).address) {
               std::string id = (*it).child_id;
               for( auto& e : ptr->specs_ ) {
-                aout(self) << "iterating childspecs\n";
                 if( e.child_id == id ) {
                     // 1. if meassurement interval experied, reset everything
                     auto delta = std::chrono::system_clock::now() -
@@ -125,7 +121,7 @@ class supervisor {
         }
     });
     self->become([self,ptr](int msg){
-        aout(self) << "supervising \n";
+        aout(self) << "supervisor receives keep alive\n";
         self->delayed_send(self,std::chrono::seconds(3),3);
     });
     self->delayed_send(self,std::chrono::seconds(3),3);

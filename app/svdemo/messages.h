@@ -9,8 +9,8 @@
 using namespace caf;
 
 struct mail {
-  int source;
-  int destination;
+  uint32_t source {0}; // 0 == invalid source
+  uint32_t destination {0}; // 0 == invalid destination
   std::string content;
 };
 

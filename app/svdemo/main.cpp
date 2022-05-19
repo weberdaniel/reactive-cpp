@@ -10,14 +10,20 @@ using namespace caf;
 
 void application(event_based_actor* self) {
   supervisor supervisor;
-  worker worker( "circle", 0, 2);
+  int n = 5;
 
-  childspec child_specification;
-  child_specification.child_id = "worker";
-  child_specification.start = worker;
-
+  // start n workers and let them be supervised by a central supervisor
   std::vector<childspec> childspec_list;
-  childspec_list.push_back(child_specification);
+  // i = 0 is invalid id by defintion in messages.h
+  for( int i = 1; i <= n; i++) {
+    childspec child_specification;
+    child_specification.child_id =
+      std::string("worker") + "_" + std::to_string(i);
+    child_specification.start =
+      std::move(worker("worker",i,
+      std::chrono::milliseconds(100)) );
+    childspec_list.push_back(std::move(child_specification));
+  }
 
   supervisor.init(childspec_list);
   self->home_system().spawn(supervisor);

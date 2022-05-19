@@ -1,12 +1,24 @@
 #include <iostream>
 #include <functional>
-#include "supervisor_caf_types.h"
+#include "types.h"
 #include "supervisor.h"
-#include "ping.h"
-#include "pong.h"
 #include "worker.h"
 
+CAF_PUSH_WARNINGS
+#include <QApplication>
+#include <QMainWindow>
+CAF_POP_WARNINGS
+
 using namespace caf;
+
+class config : public actor_system_config {
+public:
+    config() {
+        opt_group{custom_options_, "global"}
+                .add<std::string>("name,n", "set name")
+                .add<std::string>("group,g", "join group");
+    }
+};
 
 std::vector<childspec> init_workers(int n) {
   std::vector<childspec> children;
@@ -26,11 +38,19 @@ void application(event_based_actor* self) {
   std::vector<childspec> child_specifications = init_workers(5);
   supervisor.init(child_specifications);
   self->home_system().spawn(supervisor);
+
 };
 
-void caf_main(actor_system& system) {
+int caf_main(actor_system& system, const config& cfg) {
+  auto [argc, argv] = cfg.c_args_remainder();
   system.spawn(application);
-  system.await_actors_before_shutdown();
+  QApplication app{argc,argv};
+  app.setQuitOnLastWindowClosed(true);
+  QMainWindow mw;
+  mw.show();
+  return app.exec();
+  //system.await_actors_before_shutdown();
 }
+
 
 CAF_MAIN(id_block::supervisor)

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <functional>
-#include "supervisor_caf_types.h"
+#include "types.h"
 #include "supervisor.h"
 #include "worker.h"
 

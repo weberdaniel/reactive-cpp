@@ -1,5 +1,5 @@
 #include <iostream>
-#include "supervisor_caf_types.h"
+#include "types.h"
 #pragma once
 
 using namespace caf;

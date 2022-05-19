@@ -1,6 +1,6 @@
 //
-#ifndef ACTORDEMO_SUPERVISOR_CAF_TYPES_H
-#define ACTORDEMO_SUPERVISOR_CAF_TYPES_H
+#ifndef ACTORDEMO_TYPES_H
+#define ACTORDEMO_TYPES_H
 
 #include "caf/all.hpp"
 #include "messages.h"
@@ -42,4 +42,4 @@ CAF_ADD_ATOM(supervisor, get_child);
 CAF_ADD_ATOM(supervisor, keep_alive);
 CAF_END_TYPE_ID_BLOCK(supervisor)
 
-#endif //ACTORDEMO_SUPERVISOR_CAF_TYPES_H
+#endif //ACTORDEMO_TYPES_H

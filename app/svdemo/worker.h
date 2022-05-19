@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 #include <utility>
-#include "supervisor_caf_types.h"
+#include "types.h"
 
 using namespace caf;
 

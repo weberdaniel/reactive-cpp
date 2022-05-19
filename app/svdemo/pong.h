@@ -1,9 +1,10 @@
 //
 #ifndef ACTORDEMO_PONG_H
 #define ACTORDEMO_PONG_H
+#pragma once
 
 #include <iostream>
-#include "caf/all.hpp"
+#include "supervisor_caf_types.h"
 
 using namespace caf;
 

@@ -19,7 +19,7 @@ The principle of reactive software design patterns reaches back to the 1970s. A 
 </div>
 <br>
 The 'Let it crash' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the applcation usecase - in any other usecase - the process will just crash and be restarted. The result looks like the following:
-<br>
+<br><br>
 <div align="center">
 <img src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/restart.png" width="50%" alt><br>
 <em>Child process is being restarted by the supervisor</em>

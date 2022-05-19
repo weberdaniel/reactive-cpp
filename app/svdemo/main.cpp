@@ -2,8 +2,6 @@
 #include <functional>
 #include "supervisor_caf_types.h"
 #include "supervisor.h"
-#include "ping.h"
-#include "pong.h"
 #include "worker.h"
 
 using namespace caf;

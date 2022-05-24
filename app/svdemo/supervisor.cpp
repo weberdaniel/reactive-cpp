@@ -5,6 +5,33 @@ supervisor_flags flags) {
     ptr_->specs_ = specs;
     ptr_->flags_ = flags;
 }
+child::child( child&& copy) noexcept {
+    if(this != &copy) {
+        child_id = std::move(copy.child_id);
+        address = std::move(copy.address);
+        process = std::move(copy.process);
+        restart_count = std::move(copy.restart_count);
+        restart_period_start = std::move(copy.restart_period_start);
+        copy.child_id = "";
+        copy.address = actor_addr();
+        copy.process = nullptr;
+        copy.restart_count = -1;
+    }
+};
+
+child& child::operator=(child&& copy) noexcept {
+    if(this != &copy) {
+        child_id = std::move(copy.child_id);
+        address = std::move(copy.address);
+        process = std::move(copy.process);
+        restart_count = std::move(copy.restart_count);
+        restart_period_start = std::move(copy.restart_period_start);
+        copy.child_id = "";
+        copy.address = actor_addr();
+        copy.process = nullptr;
+        copy.restart_count = -1;
+    }
+}
 
 void supervisor::operator()(event_based_actor* self)  {
     for( auto& e : ptr_->specs_ ) {
@@ -16,7 +43,7 @@ void supervisor::operator()(event_based_actor* self)  {
         child.process= std::move(child_actor);
         child.restart_count = 0;
         child.restart_period_start = std::chrono::system_clock::now();
-        ptr_->children_.push_back(child);
+        ptr_->children_.push_back(std::move(child));
     };
     std::shared_ptr<supervisor_dynamic_state> ptr = ptr_;
     self->set_down_handler([self, ptr](down_msg& msg) {

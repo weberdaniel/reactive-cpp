@@ -19,6 +19,16 @@ struct worker_static_state {
 struct worker_dynamic_state {
     uint32_t received_keep_alives {0};
     uint32_t received_messages {0};
+
+    worker_dynamic_state() = default;
+    worker_dynamic_state( const worker_dynamic_state&)
+    = delete;
+    worker_dynamic_state& operator=(const worker_dynamic_state&)
+    = delete;
+    worker_dynamic_state( worker_dynamic_state&& copy) noexcept
+    = delete;
+    worker_dynamic_state& operator=(worker_dynamic_state&& copy) noexcept
+    = delete;
 };
 
 class worker {

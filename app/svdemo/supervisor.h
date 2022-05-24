@@ -16,6 +16,7 @@ struct child_specification {
   child_specification() : start(), restart(type_name<transient>::value),
   significant(false), shutdown(type_name<wait>::value),
   wait_time(0), type(type_name<work>::value) { }
+  // only allow move semantics
 };
 
 struct child {
@@ -27,6 +28,11 @@ struct child {
 
   child() : child_id(), address(), restart_count(0),
   restart_period_start(std::chrono::system_clock::time_point::min()) {}
+
+  child( const child& ) = delete;
+  child& operator=(const child& ) = delete;
+  child( child&& copy) noexcept;
+  child& operator=(child&& copy) noexcept;
 };
 
 struct supervisor_flags {
@@ -49,6 +55,16 @@ struct supervisor_dynamic_state {
   std::vector<child_specification> specs_;
   std::vector<child> children_;
   supervisor_flags flags_;
+
+  supervisor_dynamic_state() = default;
+  supervisor_dynamic_state( const supervisor_dynamic_state&)
+  = delete;
+  supervisor_dynamic_state& operator=(const supervisor_dynamic_state&)
+  = delete;
+  supervisor_dynamic_state( supervisor_dynamic_state&& copy) noexcept
+  = delete;
+  supervisor_dynamic_state& operator=(supervisor_dynamic_state&& copy) noexcept
+  = delete;
 };
 
 class supervisor {

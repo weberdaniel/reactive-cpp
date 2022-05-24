@@ -5,6 +5,9 @@
 #include "worker.h"
 
 CAF_PUSH_WARNINGS
+#include <QColor>
+#include <QGraphicsView>
+#include <QGraphicsScene>
 #include <QApplication>
 #include <QMainWindow>
 CAF_POP_WARNINGS
@@ -38,7 +41,6 @@ void application(event_based_actor* self) {
   std::vector<childspec> child_specifications = init_workers(5);
   supervisor.init(child_specifications);
   self->home_system().spawn(supervisor);
-
 };
 
 int caf_main(actor_system& system, const config& cfg) {
@@ -47,6 +49,13 @@ int caf_main(actor_system& system, const config& cfg) {
   QApplication app{argc,argv};
   app.setQuitOnLastWindowClosed(true);
   QMainWindow mw;
+  QGraphicsScene scene;
+  QGraphicsView view;
+  view.setScene(&scene);
+  scene.setBackgroundBrush(Qt::blue);
+  scene.addText("Supervisor Demonstration");
+  mw.setCentralWidget(&view);
+  view.update();
   mw.show();
   return app.exec();
   //system.await_actors_before_shutdown();

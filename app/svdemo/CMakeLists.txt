@@ -8,7 +8,7 @@ find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
 add_executable(svdemo
   main.cpp
-  supervisor.h worker.cpp worker.h messages.h types.h)
+  supervisor.h worker.cpp worker.h messages.h types.h ActorGraphicsObject.cpp ActorGraphicsObject.h)
 
 target_compile_features(svdemo PRIVATE cxx_std_17)
 target_include_directories(svdemo PRIVATE

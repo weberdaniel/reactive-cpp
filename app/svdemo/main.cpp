@@ -6,23 +6,23 @@
 
 using namespace caf;
 
-std::vector<childspec> init_workers(int n) {
-  std::vector<childspec> children;
+std::vector<child_specification> init_workers(int n) {
+  std::vector<child_specification> children;
   for( int i = 1; i <= n; i++) {
-    childspec child_specification;
-    child_specification.child_id = std::string("worker_") + std::to_string(i);
-    child_specification.start = std::move(
+    child_specification specification;
+    specification.child_id = std::string("worker_") + std::to_string(i);
+    specification.start = std::move(
       worker("worker",i, std::chrono::milliseconds(100))
     );
-    children.push_back(std::move(child_specification));
+    children.push_back(std::move(specification));
   }
   return children;
 };
 
 void application(event_based_actor* self) {
   supervisor supervisor;
-  std::vector<childspec> child_specifications = init_workers(5);
-  supervisor.init(child_specifications);
+  std::vector<child_specification> specifications = init_workers(5);
+  supervisor.init(specifications);
   self->home_system().spawn(supervisor);
 };
 

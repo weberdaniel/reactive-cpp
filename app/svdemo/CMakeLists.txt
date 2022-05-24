@@ -6,7 +6,7 @@ project( svdemo
 
 add_executable(svdemo
         main.cpp
-        supervisor.h worker.cpp worker.h messages.h types.h)
+        supervisor.h worker.cpp worker.h messages.h types.h supervisor.cpp)
 
 target_compile_features(svdemo PRIVATE cxx_std_17)
 target_include_directories(svdemo PRIVATE

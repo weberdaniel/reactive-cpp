@@ -28,7 +28,8 @@ struct child_specification {
 // it. so this implies that the struct should not be copied but at best be moved.
 // the actor should not be duplicated. in this data structure also dynamic
 // state information is present. like the restart_count may change during
-// execution. if a maximum is reached, the child will no longer be restarted.
+// execution. if a maximum is reached, the child will no longer be restarted and
+// the supervisor will terminate all children and terminate itself.
 
 struct child {
   std::string child_id;

@@ -8,6 +8,8 @@ add_executable(svdemo
         main.cpp
         supervisor.h worker.cpp worker.h messages.h types.h supervisor.cpp)
 
+set(CAF_LOG_LEVEL TRACE)
+
 target_compile_features(svdemo PRIVATE cxx_std_17)
 target_include_directories(svdemo PRIVATE
         ${CMAKE_CURRENT_BINARY_DIR}

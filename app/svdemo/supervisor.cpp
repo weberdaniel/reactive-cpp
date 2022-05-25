@@ -43,6 +43,7 @@ child& child::operator=(child&& copy) noexcept {
 }
 
 void supervisor::operator()(event_based_actor* self)  {
+    CAF_LOG_DEBUG("supervisor entry");
     for( auto& e : ptr_->specs_ ) {
         actor child_actor= self->home_system().spawn(e.start);
         self->monitor(child_actor);

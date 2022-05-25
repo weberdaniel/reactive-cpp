@@ -32,7 +32,7 @@ else()
     message("-- Creating Target ActorFramework")
     # add the external Cmake project 
     ExternalProject_Add(actorframework URL ${CMAKE_CURRENT_LIST_DIR}/actor-framework
-      UPDATE_COMMAND ./configure
+      UPDATE_COMMAND ./configure --log-level=TRACE
       INSTALL_COMMAND cmake -E echo "-- Skip install step.")
     ExternalProject_Get_Property(actorframework source_dir)
     ExternalProject_Get_Property(actorframework binary_dir)
@@ -55,18 +55,18 @@ else()
 
     # Define the include directories of the external project
     set(CAF_INCLUDE_DIRS ${binary_dir}/libcaf_core
-                         ${binary_dir}/libcaf_io
+                 ${binary_dir}/libcaf_io
 		         ${binary_dir}/libcaf_openssl
 		         ${binary_dir}/libcaf_test
 		         ${binary_dir}
-                         ${source_dir}/libcaf_core
-                         ${source_dir}/libcaf_io
+                 ${source_dir}/libcaf_core
+                 ${source_dir}/libcaf_io
 		         ${source_dir}/libcaf_openssl
 		         ${source_dir}/libcaf_test
 		         ${source_dir})
     # Define the libraries directory of the external project
     set(CAF_LIBRARIES ${binary_dir}/libcaf_core/libcaf_core.so.0.18.5
-	              ${binary_dir}/libcaf_io/libcaf_io.so.0.18.5
+	          ${binary_dir}/libcaf_io/libcaf_io.so.0.18.5
 		      ${binary_dir}/libcaf_openssl/libcaf_openssl.so.0.18.5)
     # create a target for CAF which will be imported into the global namespace 
     # to be usable by all other projects.

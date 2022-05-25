@@ -26,6 +26,7 @@ std::vector<child_specification> init_workers(int n) {
 // this resembles kind of the erlang application behaviour.
 
 void application(event_based_actor* self) {
+  CAF_LOG_DEBUG("application");
   supervisor supervisor;
   std::vector<child_specification> specifications = init_workers(5);
   supervisor.init(specifications);

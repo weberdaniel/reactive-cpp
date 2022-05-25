@@ -8,11 +8,17 @@
 
 using namespace caf;
 
+// this is a message from source to destination.
+
 struct mail {
   uint32_t source {0}; // 0 == invalid source
   uint32_t destination {0}; // 0 == invalid destination
   std::string content;
 };
+
+// this function will be serializing the data inside
+// the mail structure, it will be automatically be
+// called by the c++ actor framework
 
 template <class Inspector>
 bool inspect(Inspector& f, mail x) {

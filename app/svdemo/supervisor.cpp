@@ -5,32 +5,41 @@ supervisor_flags flags) {
     ptr_->specs_ = specs;
     ptr_->flags_ = flags;
 }
-child::child( child&& copy) noexcept {
-    if(this != &copy) {
-        child_id = std::move(copy.child_id);
-        address = std::move(copy.address);
-        process = std::move(copy.process);
-        restart_count = std::move(copy.restart_count);
-        restart_period_start = std::move(copy.restart_period_start);
-        copy.child_id = "";
-        copy.address = actor_addr();
-        copy.process = nullptr;
-        copy.restart_count = -1;
-    }
+child::child( child&& copy) noexcept :
+  // transfer copy content into this
+  child_id(std::move(copy.child_id)),
+  address(std::move(copy.address)),
+  process(std::move(copy.process)),
+  restart_count(std::move(copy.restart_count)),
+  restart_period_start(std::move(copy.restart_period_start)) {
+    // leave copy in valid but undefined state
+    copy.child_id = "";
+    copy.address = actor_addr();
+    copy.process = nullptr;
+    copy.restart_count = -1;
+    copy.restart_period_start =
+      std::chrono::time_point<std::chrono::system_clock>::min();
 };
 
+// note move to self leaves object in valid but undefined state,
+// by definition of move operation. therefore move to self should
+// never occur, and if it occurs it is defined to leave an undefined
+// state, so it must not be handled. See Klaus Iglberger 2019, CppCon.
+
 child& child::operator=(child&& copy) noexcept {
-    if(this != &copy) {
-        child_id = std::move(copy.child_id);
-        address = std::move(copy.address);
-        process = std::move(copy.process);
-        restart_count = std::move(copy.restart_count);
-        restart_period_start = std::move(copy.restart_period_start);
-        copy.child_id = "";
-        copy.address = actor_addr();
-        copy.process = nullptr;
-        copy.restart_count = -1;
-    }
+  destroy(process); // clean up all visible ressources
+  child_id = std::move(copy.child_id);
+  address = std::move(copy.address);
+  process = std::move(copy.process);
+  restart_count = std::move(copy.restart_count);
+  restart_period_start = std::move(copy.restart_period_start);
+  copy.child_id = "";
+  copy.address = actor_addr();
+  copy.process = nullptr;
+  copy.restart_count = -1;
+  copy.restart_period_start =
+    std::chrono::time_point<std::chrono::system_clock>::min();
+  return *this;
 }
 
 void supervisor::operator()(event_based_actor* self)  {

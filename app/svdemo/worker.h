@@ -8,6 +8,10 @@
 
 using namespace caf;
 
+// represents the state subset that never changes, even if the
+// worker is restarted. instead of static state, you could also
+// call this the configuration of the worker.
+
 struct worker_static_state {
     uint32_t process_id {0};
     std::string process_name;
@@ -15,6 +19,11 @@ struct worker_static_state {
     std::chrono::seconds keep_alive_delay_sec {3};
     uint32_t max_keep_alive_until_worker_crash {3};
 };
+
+// represents the state subset of worker that may change during
+// execution. the state should not be copied, so all copy/move
+// semantics is disabled. move operations must be marked noexcept
+// (see C++ Core Guideline C.66)
 
 struct worker_dynamic_state {
     uint32_t received_keep_alives {0};
@@ -30,6 +39,12 @@ struct worker_dynamic_state {
     worker_dynamic_state& operator=(worker_dynamic_state&& copy) noexcept
     = delete;
 };
+
+// this class represents a worker. the worker has a keep-alive mechanism,
+// so it will not get terminated due to inactivity by the actor framework.
+// it registers itself with a name and a number. on receiving a message it
+// will try to forward that message to the next worker with the same name.
+// e.g. worker_0 -> worker_1
 
 class worker {
  public:

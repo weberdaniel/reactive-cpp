@@ -6,6 +6,9 @@
 
 using namespace caf;
 
+// this function will create specifications for number n of
+// workers
+
 std::vector<child_specification> init_workers(int n) {
   std::vector<child_specification> children;
   for( int i = 1; i <= n; i++) {
@@ -19,12 +22,18 @@ std::vector<child_specification> init_workers(int n) {
   return children;
 };
 
+// this actor function will setup the application itself.
+// this resembles kind of the erlang application behaviour.
+
 void application(event_based_actor* self) {
   supervisor supervisor;
   std::vector<child_specification> specifications = init_workers(5);
   supervisor.init(specifications);
   self->home_system().spawn(supervisor);
 };
+
+// caf_main will start the application and than will await
+// all actors
 
 void caf_main(actor_system& system) {
   system.spawn(application);

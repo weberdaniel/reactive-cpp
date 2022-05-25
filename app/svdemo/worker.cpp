@@ -8,10 +8,20 @@ std::chrono::milliseconds forward_message_delay_ms) {
   static_state->forward_message_delay_ms = forward_message_delay_ms;
 }
 
+// while worker::operator() is the entry point for spawning an actor,
+// the operator() will call just init(...) to do the real work, since
+// the name is more intuitive.
+
 void worker::init(event_based_actor* self) {
   std::shared_ptr<worker_static_state> static_state_ptr = static_state;
   std::shared_ptr<worker_dynamic_state> dynamic_state_ptr =
   std::make_shared<worker_dynamic_state>();
+
+  // takes a keep_alive message to let the worker stay alive. if maximum
+  // amount of keep_alive messages is reached, the worker throws a
+  // bad_alloc. this shall illustrate that even after throwing a bad_alloc,
+  // the worker can be restarted by a supervisor.
+
   message_handler keep_alive_handler {
     [static_state_ptr,dynamic_state_ptr,self](keep_alive) {
       dynamic_state_ptr->received_keep_alives++;
@@ -25,13 +35,19 @@ void worker::init(event_based_actor* self) {
         static_state_ptr->keep_alive_delay_sec, keep_alive_v);
     },
   };
+
+  // the forwarding handler receives a mail and checks if the sources comes
+  // from the "previous" worker, e.g. "worker_0". Then it will forward that
+  // message to the "next" worker in the chain/circle, e.g. "worker_2".
+
   message_handler forwarding_handler {
     [static_state_ptr, dynamic_state_ptr, self](const mail& request) {
     // forward msg to the next actor if it originates from the previous
       if(request.source == static_state_ptr->process_id-1) {
         auto target =
           self->home_system().registry().get<actor>(static_state_ptr->process_name +
-                                                                    "_" + std::to_string(static_state_ptr->process_id+1) );
+          "_" + std::to_string(static_state_ptr->process_id+1) );
+        // check if the "next" worker does actually exist.
         if( target->address() != nullptr ) {
           mail response;
           response.source = static_state_ptr->process_id;

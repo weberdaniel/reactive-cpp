@@ -14,6 +14,12 @@ $ make -j 24 # in case of 24 cpu cores <br>
 
 Note: CMake should fetch all external dependencies automatically
 
+## Actor Frameworks
+
+Actor Frameworks are a building block for Artificial Intelligence related topics. Actor Frameworks have been first introduced by 
+Carl Hewitt, Peter Bishop und Richard Steiger in 1973. They are based on loosly coupled actors that only communicate via message
+passing and not via a shared memory.
+
 ## Reactive Software Design
 
 <img align='left' src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/reactive_design.jpg" width="230">

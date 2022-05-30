@@ -29,7 +29,7 @@ programming middleware like CORBA or ACE, it uses modern C++ to improve memory m
 
 The C++ Actor Framework provides a direct interface to a Prometheus DB enabling to build dashboards for Grafana.
 
-## Reactive Software Design
+## Reactive Software Design: Make your actor system fault tolerant!
 
 <img align='left' src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/reactive_design.jpg" width="230">
 

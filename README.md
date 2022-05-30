@@ -10,7 +10,7 @@ $ git clone https://github.com/weberdaniel/supervisor-demo <br>
 $ cd supervisor-demo <br>
 $ mkdir build <br>
 $ cmake .. <br> 
-$ make <br>
+$ make -j 24 # in case of 24 cpu cores <br>
 
 Note: CMake should fetch all external dependencies automatically
 

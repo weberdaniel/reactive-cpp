@@ -20,6 +20,11 @@ Actor Frameworks are a building block for Artificial Intelligence related topics
 Carl Hewitt, Peter Bishop und Richard Steiger in 1973. They are based on loosly coupled actors that only communicate via message
 passing and not via a shared memory.
 
+## The C++ Actor Framework
+
+A notable implementation of an Actor Framework in C++ is the C++ Actor Framework (https://www.actor-framework.org). In contrary to
+programming middleware like CORBA or ACE, it uses modern C++ to improve memory management, performance, type safety, etc.
+
 ## Reactive Software Design
 
 <img align='left' src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/reactive_design.jpg" width="230">
@@ -40,8 +45,3 @@ The 'Let it crash' pattern is one of the elementary design patterns of the domai
 <img src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/restart.png" width="50%" alt><br>
 <em>Child process is being restarted by the supervisor</em>
 </div>
-
-## A C++ Implementation: The C++ Actor Framework (CAF)
-
-https://www.actor-framework.org <br>
-https://github.com/actor-framework/actor-framework.git

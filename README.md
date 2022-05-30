@@ -1,4 +1,4 @@
-# A supervisor demo of C++ Actor Framework (CAF)
+# A supervisor implementation for the C++ Actor Framework (CAF)
 
 This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
 on the example of a lightweight C++ supervisor process that monitors another lightweight 
@@ -14,11 +14,10 @@ $ make -j 24 # in case of 24 cpu cores <br>
 
 Note: CMake should fetch all external dependencies automatically
 
-## Actor Frameworks
+# Actor Frameworks and Reactive Design
 
 Actor Frameworks are a building block for Artificial Intelligence related topics. Actor Frameworks have been first introduced by 
-Carl Hewitt, Peter Bishop und Richard Steiger in 1973. They are based on loosly coupled actors that only communicate via message
-passing and not via a shared memory.
+Carl Hewitt, Peter Bishop und Richard Steiger in 1973.
 
 ## The C++ Actor Framework
 

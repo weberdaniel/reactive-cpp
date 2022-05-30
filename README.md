@@ -7,7 +7,7 @@ C++ process and restarts it in case of an error.
 ## Build
 
 $ git clone https://github.com/weberdaniel/supervisor-demo <br>
-$ cd actordemo <br>
+$ cd supervisor-demo <br>
 $ mkdir build <br>
 $ cmake .. <br> 
 $ make <br>

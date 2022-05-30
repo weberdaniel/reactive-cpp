@@ -57,3 +57,9 @@ The 'Let it crash' pattern is one of the elementary design patterns of the domai
 <img src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/restart.png" width="50%" alt><br>
 <em>Child process is being restarted by the supervisor</em>
 </div>
+
+## Aims and Goals
+
+The goal of this project is to implement an Erlang supervision hierarchy inside a C++ high performance application, as closly as possible resembling the principles of Erlang, but in the domain of high performance computing.
+
+

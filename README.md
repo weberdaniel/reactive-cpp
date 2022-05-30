@@ -6,13 +6,11 @@ C++ process and restarts it in case of an error.
 
 ## Build
 
-<code>
 $ git clone https://github.com/weberdaniel/supervisor-demo <br>
 $ cd actordemo <br>
 $ mkdir build <br>
-$ cmake ..
-$ make
-</code>
+$ cmake .. <br> 
+$ make <br>
 
 Note: CMake should fetch all external dependencies automatically
 

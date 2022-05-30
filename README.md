@@ -25,9 +25,12 @@ passing and not via a shared memory.
 A notable implementation of an Actor Framework in C++ is the C++ Actor Framework (https://www.actor-framework.org). In contrary to
 programming middleware like CORBA or ACE, it uses modern C++ to improve memory management, performance, type safety, etc.
 
-## High-performance real-time Data Science 
+Some keypoints here:
 
-The C++ Actor Framework provides a direct interface to a Prometheus DB enabling to build dashboards for Grafana.
+- High performance
+- Low memory footprint
+- Native Bindings to Prometheus DB for high-performance data science in real-time
+- Fault-tolerance due to inherently possible Reactive Design Patterns
 
 ## Reactive Software Design: Make your actor system fault tolerant!
 

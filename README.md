@@ -1,4 +1,4 @@
-# A supervisor implementation with C++ Actor Framework (CAF)
+# A supervisor implementation for C++ Actor Framework (CAF)
 
 This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
 on the example of a lightweight C++ supervisor process that monitors another lightweight 

@@ -2,7 +2,9 @@
 
 This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
 on the example of a lightweight C++ supervisor process that monitors another lightweight 
-C++ process and restarts it in case of an error.
+C++ process and restarts it in case of an error. This shall resemble the capabilities
+of an Erlang Supervisor - which has different supervising strategies and can be used
+to span complex and distributed supervision hierarchies (called applications).
 
 ## Build
 

@@ -36,6 +36,7 @@ Some highlights:
 - Tight memory control
 - modern c++
 - used for high-performance network analysis (Zeek)
+- Actors blend into Qt Widgets seamlessly by deriving from caf::mixin::actor_widget<QWdiget> 
 
 ## Reactive Software Design: Make your software fault tolerant!
 

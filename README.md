@@ -4,6 +4,16 @@ This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
 on the example of a lightweight C++ supervisor process that monitors another lightweight 
 C++ process and restarts it in case of an error.
 
+## Build
+
+$ git clone https://github.com/weberdaniel/supervisor-demo
+$ cd actordemo
+$ mkdir build
+$ cmake ..
+$ make
+
+Note: CMake should fetch all external dependencies automatically
+
 ## Reactive Software Design
 
 <img align='left' src="https://github.com/weberdaniel/supervisor-demo/blob/main/doc/images/reactive_design.jpg" width="230">

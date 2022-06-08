@@ -20,9 +20,9 @@ In the second step, we build the actual build artifacts:
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
-<b> Note: </b> While this might seem tedious, it enables to distinguish both
-external dependencies and the artifacts itself, for e.g. caching the first
-step in a docker container.
+<b> Note: </b> While this might seem tedious, it enables to separate creation of
+dependencies from creation of build artifacts. E.g. to cache the first step in a
+docker container.
 
 # Actor Frameworks and Reactive Design
 

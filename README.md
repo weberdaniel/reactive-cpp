@@ -8,20 +8,21 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 ## Build
 
+# Step A: Build and Download external dependencies:
+
 $ git clone https://github.com/weberdaniel/supervisor-demo <br>
 $ cd supervisor-demo <br>
 $ mkdir build <br>
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
-<b> Important: </b> In the above step only external dependencies will be built.
-In the second step, we build the actual build artifacts:
+# Step B: Repeat to create the actual build artifacts:
 
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
 <b> Note: </b> While this might seem tedious, it enables to separate creation of
-dependencies from creation of build artifacts. E.g. to cache the first step in a
+dependencies from creation of build artifacts, e.g. to cache the first step in a
 docker container.
 
 # Actor Frameworks and Reactive Design

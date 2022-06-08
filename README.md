@@ -20,6 +20,10 @@ In the second step, we build the actual build artifacts:
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
+<b> Note: </b> While this might seem tedious, it enables to distinguish both
+external dependencies and the artifacts itself, for e.g. caching the first
+step in a docker container.
+
 # Actor Frameworks and Reactive Design
 
 Actor Frameworks are a crucial building block for Artificial Intelligence. Actor Frameworks have been first introduced by 

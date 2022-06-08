@@ -5,13 +5,7 @@ project(ActorDemo
         VERSION 0.1
         DESCRIPTION "A demonstrator for C++ Actor Framework")
 
-option(CAF "Enable C++ Actor Framework Build" ON)
-option(DOCKER "Enable Docker Build" OFF)
-
-# if docker is being used, it is not necessary to download all of the depenencies.
-# The dependencies will be taken from previous build stages.
-if(NOT DOCKER)
-# The following code snippet is taken from 
+# The following code snippet is taken from
 # https://cliutils.gitlab.io/modern-cmake/chapters/projects/submodule.html
 # It downloads all the git submodules
 find_package(Git QUIET)
@@ -33,9 +27,7 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/caf/actor-framework/CMakeLists.txt
   message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was "
   "turned off or failed. Please update submodules and try again.")
 endif()
-elseif()  # if NOT DOCKER
 
-endif()
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 

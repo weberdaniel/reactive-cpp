@@ -6,7 +6,7 @@ C++ process and restarts it in case of an error. This shall resemble the capabil
 of an Erlang Supervisor - which has different supervising strategies (e.g. one_for_one) 
 and can be used to span complex and distributed supervision hierarchies (called applications).
 
-## Build
+## Build & Run
 
 ### Step A: Build and Download external dependencies:
 
@@ -24,6 +24,10 @@ $ make -j 24 # in case of 24 cpu cores <br>
 <b> Note: </b> While this might seem tedious, it enables to separate creation of
 dependencies from creation of build artifacts, e.g. to cache the first step in a
 docker container.
+
+### Step C: Run:
+
+$ ./app/svdemo/svdemo
 
 # Actor Frameworks and Reactive Design
 

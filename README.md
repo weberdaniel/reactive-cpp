@@ -8,7 +8,7 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 ## Build
 
-# Step A: Build and Download external dependencies:
+### Step A: Build and Download external dependencies:
 
 $ git clone https://github.com/weberdaniel/supervisor-demo <br>
 $ cd supervisor-demo <br>
@@ -16,7 +16,7 @@ $ mkdir build <br>
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
-# Step B: Repeat to create the actual build artifacts:
+### Step B: Repeat to create the actual build artifacts:
 
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>

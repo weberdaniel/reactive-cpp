@@ -14,7 +14,11 @@ $ mkdir build <br>
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
-Note: CMake should fetch all external dependencies automatically
+<b> Important: </b> In the above step only external dependencies will be built.
+In the second step, we build the actual build artifacts:
+
+$ cmake .. <br> 
+$ make -j 24 # in case of 24 cpu cores <br>
 
 # Actor Frameworks and Reactive Design
 

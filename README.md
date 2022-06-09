@@ -1,5 +1,7 @@
 # Supervisor for C++ Actor Framework (CAF)
 
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/crash-me-if-you-can.png" alt><br>
+
 This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
 on the example of a lightweight C++ supervisor process that monitors another lightweight 
 C++ process and restarts it in case of an error. This shall resemble the capabilities

@@ -69,6 +69,16 @@ The principle of reactive software design patterns reaches back to the 1970s. A 
 (Book Cover: Reactive Design Patterns, Roland Kuhn)
 
 ## An example design pattern: "Crash me if you can"
+  
+<table>
+<tbody>
+<tr>
+<td>baz</td>
+<td>bim</td>
+</tr>
+</tbody>
+</table>
+  
 <img align='left' src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/reactive_design.jpg" width="230">
 
 The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the applcation usecase - in any other usecase - the process will just crash and be restarted. The result looks like the following:

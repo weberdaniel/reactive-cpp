@@ -50,7 +50,7 @@ Carl Hewitt, Peter Bishop und Richard Steiger in 1973.
 <table>
 <tbody>
 <tr>
-<td width="33%"> <img src="https://www.actor-framework.org/static/img/caf-logo.png" width="200">  </td>
+<td width="33%"> <div align="center"><img src="https://www.actor-framework.org/static/img/caf-logo.png" width="200"> </div> </td>
 <td> A notable modern implementation of an Actor Framework in C++ is CAF, the C++ Actor Framework (https://www.actor-framework.org). In contrary to programming middleware like CORBA or ACE, it uses modern C++ to improve memory management, performance and type safety. </td>
 </tr>
 </tbody>

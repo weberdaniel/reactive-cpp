@@ -5,6 +5,8 @@
 <em>License: CC-BY-NC-ND by Fred Hebert (www.learnyousomeerlang.com)</em>
 </div>
 
+<br>
+
 This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
 on the example of a lightweight C++ supervisor process that monitors another lightweight 
 C++ process and restarts it in case of an error. This shall resemble the capabilities

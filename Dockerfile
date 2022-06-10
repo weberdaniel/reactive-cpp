@@ -1,8 +1,8 @@
 FROM ubuntu:latest AS copystage 
 WORKDIR /project
 COPY . .
-RUN apt-get install cmake && \\
-    cd /project && \
+RUN apt-get update && apt-get -y install cmake protobuf-compiler
+RUN cd /project && \
     mkdir build && \
     cd build  &&  \
     cmake .. && \

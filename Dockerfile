@@ -1,3 +1,6 @@
+##################################################
+# create environment for build (including CAF)
+##################################################
 FROM ubuntu:latest AS copystage 
 WORKDIR /project
 COPY . .
@@ -12,6 +15,18 @@ RUN cd /project && \
     cd build  &&  \
     cmake .. && \
     make
-
-# Code file to execute when the docker container starts up (`entrypoint.sh`)
 RUN cd /project; ls -la
+
+##################################################
+# create the actual build artifact
+##################################################
+FROM copystage as buildstage
+WORKDIR /project
+RUN cd /project/build && make 
+
+##################################################
+#  Do a cpplint on everything and check result
+##################################################
+#FROM copystage as lintstage
+#WORKDIR /project
+#RUN cd /project/build 

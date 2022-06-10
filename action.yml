@@ -3,4 +3,4 @@ name: 'Default'
 description: 'Build the software on push'
 runs:
   using: 'docker'
-  image: 'etc/Dockerfile'
+  image: 'Dockerfile'

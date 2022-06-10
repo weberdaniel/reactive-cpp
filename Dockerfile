@@ -1,6 +1,7 @@
 FROM ubuntu:latest AS copystage 
 WORKDIR /project
 COPY . .
+RUN apt-get update && apt-get -y install apt-utils
 RUN apt-get update && apt-get -y install cmake protobuf-compiler g++ gcc
 RUN cd /project && \
     mkdir build && \

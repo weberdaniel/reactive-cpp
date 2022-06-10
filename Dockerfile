@@ -1,7 +1,8 @@
 FROM ubuntu:latest AS copystage 
 WORKDIR /project
 COPY . .
-RUN apt-get update && apt-get -y install apt-utils
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+RUN apt-get update && apt-get -y install dialog apt-utils
 RUN apt-get update && apt-get -y install cmake protobuf-compiler g++ gcc
 RUN cd /project && \
     mkdir build && \

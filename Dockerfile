@@ -1,7 +1,8 @@
 FROM ubuntu:latest AS copystage 
 WORKDIR /project
 COPY . .
-RUN cd /project && \
+RUN apt-get install cmake && \\
+    cd /project && \
     mkdir build && \
     cd build  &&  \
     cmake .. && \

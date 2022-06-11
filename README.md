@@ -36,16 +36,16 @@ docker container.
 
 $ ./app/svdemo/svdemo
 
-## Build & Run in Docker Container
+### Build & Run in Docker Container
 
 T.B.D.
 
-# Actor Frameworks and Reactive Design
+## Actor Frameworks and Reactive Design
 
 Actor Frameworks are a crucial building block for Artificial Intelligence. Actor Frameworks have been first introduced by 
 Carl Hewitt, Peter Bishop und Richard Steiger in 1973.
 
-## The C++ Actor Framework
+### The C++ Actor Framework
 
 <table>
 <tbody>
@@ -68,7 +68,7 @@ Some highlights:
 - used for high-performance network analysis (Zeek)
 - Actors blend into Qt Widgets seamlessly by deriving from caf::mixin::actor_widget<QWdiget> 
 
-## Reactive Software Design: Make your software fault tolerant!
+### Reactive Software Design: Make your software fault tolerant!
   
 <table>
 <tbody>
@@ -80,7 +80,7 @@ Some highlights:
 </tbody>
 </table>
 
-## An example design pattern: "Crash me if you can"
+### An example design pattern: "Crash me if you can"
   
 The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the applcation usecase - in any other usecase - the process will just crash and be restarted. The result looks like the following:
 
@@ -90,20 +90,20 @@ The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design
 <em>Child process is being restarted by the supervisor</em>
 </div>
   
-# One for One Strategy
+#### One for One Strategy
   
 <br><br>
 <div align="center">
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="50%" alt style="fill: blue"><br>
 </div>
   
-# One for All Strategy
+#### One for All Strategy
 <br><br>
 <div align="center">
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_all.png" width="50%" alt><br>
 </div>
   
-# Rest for One Strategy
+#### Rest for One Strategy
 <br><br>
 <div align="center">
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-rest_for_one.png" width="50%" alt><br>
@@ -118,7 +118,7 @@ The goal of this project is to implement an Erlang supervision hierarchy inside 
 
 In SCRUM you usually find a DEFINITION OF DONE, telling what is expected of the code quality. In this case there is no scrum team, but still a Definition of Done is used as far as possible (Reviews are not always possible)
 
-# The Definition of Done:
+### The Definition of Done:
   
 - Fullfillment of Google Coding Style (cpplint must give 0 errors)
 - C++ Core Guidelines must be kept : https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines

@@ -89,6 +89,27 @@ The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/restart.png" width="50%" alt><br>
 <em>Child process is being restarted by the supervisor</em>
 </div>
+  
+# One for One Strategy
+  
+<br><br>
+<div align="center">
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.svg" width="50%" alt><br>
+</div>
+  
+# One for All Strategy
+<br><br>
+<div align="center">
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_all.svg" width="50%" alt><br>
+</div>
+  
+# Rest for One Strategy
+<br><br>
+<div align="center">
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-rest_for_one.svg" width="50%" alt><br>
+</div>
+
+ 
 
 ## Aims and Goals
 

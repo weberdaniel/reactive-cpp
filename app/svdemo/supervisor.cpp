@@ -71,12 +71,101 @@ event_based_actor* self) {
     it++;
   }
 }
-
 void rest_for_one_strategy(
-  const std::shared_ptr<supervisor_dynamic_state>& ptr,
-  const down_msg& msg,
-  event_based_actor* self) {
+const std::shared_ptr<supervisor_dynamic_state>& ptr,
+const down_msg& msg,
+event_based_actor* self) {
+    auto it = ptr->children_.begin();
+    while (it != ptr->children_.end()) {
+        if (msg.source == (*it).address) {
+            CAF_LOG_INFO("Received Down Message from " + (*it).child_id);
+            CAF_LOG_INFO("Apply one_for_all strategy");
+            std::string id = (*it).child_id;
+            for (auto &e: ptr->specs_) {
+                if (e.child_id == id) {
+                    auto duration =
+                            std::chrono::system_clock::now().time_since_epoch();
+                    auto millis =
+                            std::chrono::duration_cast<std::chrono::milliseconds>(duration)
+                                    .count();
+                    auto delta = millis -
+                                 std::chrono::duration_cast<std::chrono::milliseconds>(
+                                         (*it).restart_period_start.time_since_epoch()).count();
 
+                    CAF_LOG_INFO("Iterating Child " + e.child_id);
+                    CAF_LOG_INFO(" -- time passed (ms): " + std::to_string(delta));
+                    CAF_LOG_INFO(" -- restarts during time passed (#): "
+                                 + std::to_string((*it).restart_count)
+                                 + " (max. " + std::to_string(ptr->flags_.restart_intensity) + ")");
+
+                    // 1. reset the restart count if period expired
+                    if (delta > ptr->flags_.restart_period.count()) {
+                        CAF_LOG_INFO(" -- reset restarts during time passed " + e.child_id);
+                        (*it).restart_period_start = std::chrono::system_clock::now();
+                    }
+
+                    // 2. if we start a new meassurement/ the old meassurement expired,
+                    //    set the timer
+                    if ((*it).restart_count == 0) {
+                        CAF_LOG_INFO(" -- reset time passed " + e.child_id);
+                        (*it).restart_period_start = std::chrono::system_clock::now();
+                    }
+
+                    // 3. if we reached the maximum attempts give up entirely
+                    if ((*it).restart_count == ptr->flags_.restart_intensity) {
+                        CAF_LOG_INFO(" -- maximum restarts reached for " + e.child_id);
+                        CAF_LOG_INFO(" -- shut down all children ");
+                        for (auto &a: ptr->children_) {
+                            self->demonitor(a.address);
+                            self->send_exit(a.address, exit_reason::unknown);
+                            a.restart_count = 0;
+                            a.process = nullptr;
+                            a.child_id = "";
+                            a.address = nullptr;
+                        }
+                        ptr->children_.clear();
+                        CAF_LOG_INFO(" -- shut down self:");
+                        self->quit();
+                        return;
+                    }
+
+                    // 4. if we don't give up yet, do a restart, but since this is
+                    // the rest_for_one, the last child will be stopped first until
+                    // we reach the crashed supervisor. Then we restart the crashed
+                    // supervisor and restart everything from left to right
+
+                    // 4.1. find the index of the crashed child
+                    unsigned int index_of_crashed_child = 0;
+                    for (; index_of_crashed_child < ptr->children_.size();
+                           index_of_crashed_child++ ) {
+                        if( ptr->children_.at(index_of_crashed_child).child_id == id)
+                            break;
+                    }
+
+                    // 4.2. start at the end and iterate backwards to stop all children
+                    for( int i = ptr->children_.size(); i >= index_of_crashed_child; i--) {
+                      self->demonitor(ptr->children_.at(i).address);
+                      self->send_exit(ptr->children_.at(i).address, exit_reason::unknown);
+                      ptr->children_.at(i).process = nullptr;
+                      ptr->children_.at(i).address = nullptr;
+                    }
+
+                    // 4.3. start at the child and restart everything
+                    for( int i = index_of_crashed_child; i < ptr->children_.size(); i++) {
+                        for( auto& k : ptr->specs_) {
+                            if( k.child_id == ptr->children_.at(i).child_id) {
+                                actor process = self->home_system().spawn(k.start);
+                                self->monitor(process);
+                                ptr->children_.at(i).address = process->address();
+                                ptr->children_.at(i).process = std::move(process);
+                                ptr->children_.at(i).restart_count++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void one_for_all_strategy(
@@ -119,11 +208,12 @@ event_based_actor* self) {
             (*it).restart_period_start = std::chrono::system_clock::now();
           }
 
-          // 3. if we reached the maximum attempts give up
+          // 3. if we reached the maximum attempts give up entirely
           if ((*it).restart_count == ptr->flags_.restart_intensity) {
             CAF_LOG_INFO(" -- maximum restarts reached for " + e.child_id);
             CAF_LOG_INFO(" -- shut down all children ");
             for (auto &a: ptr->children_) {
+              self->demonitor(a.address);
               self->send_exit(a.address, exit_reason::unknown);
               a.restart_count = 0;
               a.process = nullptr;
@@ -141,7 +231,7 @@ event_based_actor* self) {
           // all of them
 
           // 4.1. find the child that crashed
-          unsigned int index = 0;
+          int index = 0;
           for (; index < ptr->children_.size(); index++ ) {
             if( ptr->children_.at(index).child_id == id) break;
           }
@@ -151,18 +241,16 @@ event_based_actor* self) {
           int index_left = index-1;
           while(index_left >= 0 || index_right != ptr->children_.size()) {
             if (index_left >= 0) {
+              self->demonitor(ptr->children_.at(index_left).address);
               self->send_exit(ptr->children_.at(index_left).address, exit_reason::unknown);
-              ptr->children_.at(index_left).restart_count = 0;
               ptr->children_.at(index_left).process = nullptr;
-              ptr->children_.at(index_left).child_id = "";
               ptr->children_.at(index_left).address = nullptr;
               index_left--;
             }
             if (index_right != ptr->children_.size()) {
+              self->demonitor(ptr->children_.at(index_right).address);
               self->send_exit(ptr->children_.at(index_right).address, exit_reason::unknown);
-              ptr->children_.at(index_right).restart_count = 0;
               ptr->children_.at(index_right).process = nullptr;
-              ptr->children_.at(index_right).child_id = "";
               ptr->children_.at(index_right).address = nullptr;
               index_right++;
             }

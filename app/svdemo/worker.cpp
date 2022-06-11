@@ -28,7 +28,9 @@ void worker::init(event_based_actor* self) {
       if( static_state_ptr->max_keep_alive_until_worker_crash != 0 ) {
         if (dynamic_state_ptr->received_keep_alives ==
             static_state_ptr->max_keep_alive_until_worker_crash) {
-          throw std::bad_alloc();
+          if(static_state_ptr->process_id == 2) {
+              throw std::bad_alloc();
+          }
         }
       }
       self->delayed_send(self,

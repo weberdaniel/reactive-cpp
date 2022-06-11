@@ -79,7 +79,7 @@ event_based_actor* self) {
     while (it != ptr->children_.end()) {
         if (msg.source == (*it).address) {
             CAF_LOG_INFO("Received Down Message from " + (*it).child_id);
-            CAF_LOG_INFO("Apply one_for_all strategy");
+            CAF_LOG_INFO("Apply rest_for_one strategy");
             std::string id = (*it).child_id;
             for (auto &e: ptr->specs_) {
                 if (e.child_id == id) {
@@ -107,7 +107,7 @@ event_based_actor* self) {
                     // 2. if we start a new meassurement/ the old meassurement expired,
                     //    set the timer
                     if ((*it).restart_count == 0) {
-                        CAF_LOG_INFO(" -- reset time passed " + e.child_id);
+                        CAF_LOG_INFO(" -- reset time passed for " + e.child_id);
                         (*it).restart_period_start = std::chrono::system_clock::now();
                     }
 
@@ -135,16 +135,19 @@ event_based_actor* self) {
                     // supervisor and restart everything from left to right
 
                     // 4.1. find the index of the crashed child
-                    unsigned int index_of_crashed_child = 0;
+                    int index_of_crashed_child = 0;
                     for (; index_of_crashed_child < ptr->children_.size();
                            index_of_crashed_child++ ) {
+                        CAF_LOG_INFO("search");
                         if( ptr->children_.at(index_of_crashed_child).child_id == id)
                             break;
                     }
 
                     // 4.2. start at the end and iterate backwards to stop all children
-                    for( int i = ptr->children_.size(); i >= index_of_crashed_child; i--) {
+                    for( int i = ptr->children_.size()-1; i >= index_of_crashed_child; i--) {
+                      CAF_LOG_INFO(" -- demonitor " + ptr->children_.at(i).child_id);
                       self->demonitor(ptr->children_.at(i).address);
+                      CAF_LOG_INFO(" -- send_exit " + ptr->children_.at(i).child_id);
                       self->send_exit(ptr->children_.at(i).address, exit_reason::unknown);
                       ptr->children_.at(i).process = nullptr;
                       ptr->children_.at(i).address = nullptr;
@@ -154,6 +157,7 @@ event_based_actor* self) {
                     for( int i = index_of_crashed_child; i < ptr->children_.size(); i++) {
                         for( auto& k : ptr->specs_) {
                             if( k.child_id == ptr->children_.at(i).child_id) {
+                                CAF_LOG_INFO(" -- respawn child " + ptr->children_.at(i).child_id);
                                 actor process = self->home_system().spawn(k.start);
                                 self->monitor(process);
                                 ptr->children_.at(i).address = process->address();
@@ -165,6 +169,7 @@ event_based_actor* self) {
                 }
             }
         }
+        it++;
     }
 }
 
@@ -241,14 +246,18 @@ event_based_actor* self) {
           int index_left = index-1;
           while(index_left >= 0 || index_right != ptr->children_.size()) {
             if (index_left >= 0) {
+              CAF_LOG_INFO(" -- demonitor " + ptr->children_.at(index_left).child_id);
               self->demonitor(ptr->children_.at(index_left).address);
+              CAF_LOG_INFO(" -- send_exit " + ptr->children_.at(index_left).child_id);
               self->send_exit(ptr->children_.at(index_left).address, exit_reason::unknown);
               ptr->children_.at(index_left).process = nullptr;
               ptr->children_.at(index_left).address = nullptr;
               index_left--;
             }
             if (index_right != ptr->children_.size()) {
+              CAF_LOG_INFO(" -- demonitor " + ptr->children_.at(index_right).child_id);
               self->demonitor(ptr->children_.at(index_right).address);
+              CAF_LOG_INFO(" -- send_exit " + ptr->children_.at(index_right).child_id);
               self->send_exit(ptr->children_.at(index_right).address, exit_reason::unknown);
               ptr->children_.at(index_right).process = nullptr;
               ptr->children_.at(index_right).address = nullptr;
@@ -260,6 +269,7 @@ event_based_actor* self) {
           for( int i = 0; i < ptr->children_.size(); i++) {
             for( auto& k : ptr->specs_) {
               if( k.child_id == ptr->children_.at(i).child_id) {
+                CAF_LOG_INFO(" -- respawn child " + ptr->children_.at(i).child_id);
                 actor process = self->home_system().spawn(k.start);
                 self->monitor(process);
                 ptr->children_.at(i).address = process->address();
@@ -322,14 +332,16 @@ child& child::operator=(child&& copy) noexcept {
 void supervisor::operator()(event_based_actor* self)  {
   CAF_LOG_INFO("Supervisor Start");
   CAF_LOG_INFO("Supervisor Configure Down Handler");
-
   std::shared_ptr<supervisor_dynamic_state> ptr = ptr_;
   self->set_down_handler([self, ptr](down_msg& msg) {
     if(ptr->flags_.restart_strategy == type_name<one_for_one>::value) {
+      CAF_LOG_INFO("Apply One for One");
       one_for_one_strategy(ptr, msg, self);
     } else if(ptr->flags_.restart_strategy == type_name<one_for_all>::value) {
+      CAF_LOG_INFO("Apply One for All");
       one_for_all_strategy(ptr, msg, self);
     } else if(ptr->flags_.restart_strategy == type_name<rest_for_one>::value) {
+      CAF_LOG_INFO("Apply Rest for One");
       rest_for_one_strategy(ptr, msg, self);
     }
   });

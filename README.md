@@ -109,10 +109,21 @@ The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-rest_for_one.png" width="50%" alt><br>
 </div>
 
- 
 
 ## Aims and Goals
 
 The goal of this project is to implement an Erlang supervision hierarchy inside a C++ high performance application, as closly as possible resembling the principles of Erlang, but in the domain of high performance computing. The Ultimate Goal actually would be to create something like the Erlang/OTP for CAF, like the CAF-Open-Telecom-Platform CAF/OTP.
+  
+## Contribution  
 
+In SCRUM you usually find a DEFINITION OF DONE, telling what is expected of the code quality. In this case there is no scrum team, but still a Definition of Done is used as far as possible (Reviews are not always possible)
+
+# The Definition of Done:
+  
+- Fullfillment of Google Coding Style (cpplint must give 0 errors)
+- C++ Core Guidelines must be kept : https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+- Another Person must review the code
+- Unit Test must be > 80%
+- Memory Check with Valgrind
+- Code Coverage > 80%
 

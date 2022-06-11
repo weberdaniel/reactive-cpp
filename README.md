@@ -113,6 +113,6 @@ The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design
 
 ## Aims and Goals
 
-The goal of this project is to implement an Erlang supervision hierarchy inside a C++ high performance application, as closly as possible resembling the principles of Erlang, but in the domain of high performance computing.
+The goal of this project is to implement an Erlang supervision hierarchy inside a C++ high performance application, as closly as possible resembling the principles of Erlang, but in the domain of high performance computing. The Ultimate Goal actually would be to create something like the Erlang/OTP for CAF, like the CAF-Open-Telecom-Platform CAF/OTP.
 
 

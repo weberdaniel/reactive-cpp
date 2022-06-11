@@ -16,7 +16,7 @@ struct worker_static_state {
     uint32_t process_id {0};
     std::string process_name;
     std::chrono::milliseconds forward_message_delay_ms {0};
-    std::chrono::seconds keep_alive_delay_sec {1};
+    std::chrono::milliseconds keep_alive_delay_ms {100};
     uint32_t max_keep_alive_until_worker_crash {3};
 };
 

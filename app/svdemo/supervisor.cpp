@@ -1,10 +1,92 @@
 #include "supervisor.h"
 
+void one_for_one_strategy(
+const std::shared_ptr<supervisor_dynamic_state>& ptr,
+const down_msg& msg,
+event_based_actor* self) {
+  auto it = ptr->children_.begin();
+  while (it != ptr->children_.end()) {
+    if (msg.source == (*it).address) {
+      CAF_LOG_INFO("Received Down Message from " + (*it).child_id);
+      std::string id = (*it).child_id;
+      for (auto &e: ptr->specs_) {
+        if (e.child_id == id) {
+          auto duration =
+            std::chrono::system_clock::now().time_since_epoch();
+          auto millis =
+            std::chrono::duration_cast<std::chrono::milliseconds>(duration)
+            .count();
+          auto delta = millis -
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+            (*it).restart_period_start.time_since_epoch()).count();
+
+          CAF_LOG_INFO("Iterating Child " + e.child_id);
+          CAF_LOG_INFO(" -- time passed (ms): " + std::to_string(delta));
+          CAF_LOG_INFO(" -- restarts during time passed (#): "
+            + std::to_string((*it).restart_count)
+            + " (max. " + std::to_string(ptr->flags_.restart_intensity) + ")");
+
+          // 1. reset the restart count if period expired
+          if (delta > ptr->flags_.restart_period.count()) {
+            CAF_LOG_INFO(" -- reset restarts during time passed " + e.child_id);
+            (*it).restart_count = 0;
+            (*it).restart_period_start = std::chrono::system_clock::now();
+          }
+
+          // 2. if we start a new meassurement/ the old meassurement expired,
+          //    set the timer
+          if ((*it).restart_count == 0) {
+            CAF_LOG_INFO(" -- reset time passed " + e.child_id);
+            (*it).restart_period_start = std::chrono::system_clock::now();
+          }
+
+          // 3. if we reached the maximum attempts give up
+          if ((*it).restart_count == ptr->flags_.restart_intensity) {
+            CAF_LOG_INFO(" -- maximum restarts reached for " + e.child_id);
+            CAF_LOG_INFO(" -- shut down all children ");
+            for (auto &a: ptr->specs_) {
+              self->send_exit((*it).process.address(),
+              exit_reason::unknown);
+            }
+            CAF_LOG_INFO(" -- shut down self:");
+            self->quit();
+            return;
+          }
+
+          // 4. if we don't give up, do a restart
+          CAF_LOG_INFO(" -- respawn child " + e.child_id);
+          actor process = self->home_system().spawn(e.start);
+          self->monitor(process);
+          (*it).address = process->address();
+          (*it).process = std::move(process);
+          (*it).restart_count++;
+        }
+      }
+    }
+    it++;
+  }
+}
+
+void rest_for_one_strategy(
+  const std::shared_ptr<supervisor_dynamic_state>& ptr,
+  const down_msg& msg,
+  event_based_actor* self) {
+
+}
+
+void one_for_all_strategy(
+        const std::shared_ptr<supervisor_dynamic_state>& ptr,
+        const down_msg& msg,
+        event_based_actor* self) {
+
+}
+
 void supervisor::init(const std::vector<child_specification>& specs,
 supervisor_flags flags) {
   ptr_->specs_ = specs;
   ptr_->flags_ = flags;
 }
+
 child::child( child&& copy) noexcept :
   // transfer copy content into this
   child_id(std::move(copy.child_id)),
@@ -45,62 +127,18 @@ child& child::operator=(child&& copy) noexcept {
 void supervisor::operator()(event_based_actor* self)  {
   CAF_LOG_INFO("Supervisor Start");
   CAF_LOG_INFO("Supervisor Configure Down Handler");
+
   std::shared_ptr<supervisor_dynamic_state> ptr = ptr_;
   self->set_down_handler([self, ptr](down_msg& msg) {
-    auto it = ptr->children_.begin();
-    while (it != ptr->children_.end()) {
-      if (msg.source == (*it).address) {
-        CAF_LOG_INFO("Received Down Message " + (*it).child_id);
-        std::string id = (*it).child_id;
-        for( auto& e : ptr->specs_ ) {
-          if( e.child_id == id ) {
-
-            // 1. reset the restart count if period expired
-            std::chrono::nanoseconds delta = std::chrono::system_clock::now() -
-            (*it).restart_period_start;
-              CAF_LOG_INFO("           -- delta : " + std::to_string(delta.count()));
-              if (duration_cast<std::chrono::seconds>(delta) > ptr->flags_.restart_period) {
-               CAF_LOG_INFO("Supervisor Reset Restart Count: ");
-               CAF_LOG_INFO("           -- name : " + e.child_id);
-               CAF_LOG_INFO("           -- delta : " + std::to_string(delta.count()));
-               (*it).restart_count = 0;
-               (*it).restart_period_start = std::chrono::system_clock::now();
-               return;
-            }
-
-            // 2. if we start a new meassurement, set the timer
-            if ((*it).restart_count == 0) {
-              CAF_LOG_INFO("Set the Start Time");
-              (*it).restart_period_start = std::chrono::system_clock::now();
-            }
-
-            // 3. if we reached the maximum attempts give up
-            if ((*it).restart_count == ptr->flags_.restart_intensity) {
-              CAF_LOG_INFO("Maximum Restart has been reached.");
-              CAF_LOG_INFO("Shut down all children:");
-              for( auto& a: ptr->specs_) {
-                self->send_exit((*it).process.address(), exit_reason::unknown);
-              }
-              CAF_LOG_INFO("Shut down self:");
-              self->quit();
-              return;
-            }
-
-            // 4. if we don't give up yet, do a restart
-            CAF_LOG_INFO("Respawn Child: " + e.child_id);
-            actor process = self->home_system().spawn(e.start);
-            self->monitor(process);
-            (*it).address = process->address();
-            (*it).process = std::move(process);
-            (*it).restart_count++;
-            CAF_LOG_INFO("Set the Start Time");
-            (*it).restart_period_start = std::chrono::system_clock::now();
-          }
-        }
-      }
-    it++;
+    if(ptr->flags_.restart_strategy == type_name<one_for_one>::value) {
+      one_for_one_strategy(ptr, msg, self);
+    } else if(ptr->flags_.restart_strategy == type_name<one_for_all>::value) {
+      one_for_all_strategy(ptr, msg, self);
+    } else if(ptr->flags_.restart_strategy == type_name<rest_for_one>::value) {
+      rest_for_one_strategy(ptr, msg, self);
     }
   });
+
   CAF_LOG_INFO("Supervisor Start Children: ");
   for( auto& e : ptr_->specs_ ) {
     CAF_LOG_INFO("Supervisor Start Child: " + e.child_id);

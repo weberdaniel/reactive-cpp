@@ -32,7 +32,7 @@ void worker::init(event_based_actor* self) {
         }
       }
       self->delayed_send(self,
-        static_state_ptr->keep_alive_delay_sec, keep_alive_v);
+        static_state_ptr->keep_alive_delay_ms, keep_alive_v);
     },
   };
 
@@ -61,7 +61,7 @@ void worker::init(event_based_actor* self) {
   operational.assign(keep_alive_handler.or_else(forwarding_handler));
   // start keep_alive_cycle
   self->delayed_send(self,
-  static_state_ptr->keep_alive_delay_sec, keep_alive_v);
+  static_state_ptr->keep_alive_delay_ms, keep_alive_v);
   // register name, will be deleted automatically on actor death
   self->home_system().registry().put( static_state_ptr->process_name
   + "_" + std::to_string(static_state_ptr->process_id), self );

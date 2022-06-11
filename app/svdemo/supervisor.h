@@ -56,7 +56,7 @@ struct child {
 struct supervisor_flags {
   caf::string_view restart_strategy;
   uint32_t restart_intensity;
-  std::chrono::seconds restart_period;
+  std::chrono::milliseconds restart_period;
   caf::string_view auto_shutdown;
 
   supervisor_flags(caf::string_view restart_strategy,
@@ -65,7 +65,7 @@ struct supervisor_flags {
   restart_intensity(restart_intensity), restart_period(restart_period),
   auto_shutdown(auto_shutdown) {};
   supervisor_flags() : restart_strategy(type_name<one_for_one>::value),
-  restart_intensity(10), restart_period(std::chrono::seconds(5)),
+  restart_intensity(3), restart_period(std::chrono::milliseconds(930)),
   auto_shutdown(type_name<never>::value) {};
 };
 

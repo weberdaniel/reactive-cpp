@@ -54,20 +54,36 @@ void supervisor::operator()(event_based_actor* self)  {
         std::string id = (*it).child_id;
         for( auto& e : ptr->specs_ ) {
           if( e.child_id == id ) {
-            // 1. if meassurement interval experied, reset everything
-            auto delta = std::chrono::system_clock::now() -
+
+            // 1. reset the restart count if period expired
+            std::chrono::nanoseconds delta = std::chrono::system_clock::now() -
             (*it).restart_period_start;
-            if (delta > ptr->flags_.restart_period) {
-              (*it).restart_count = 0;
+              CAF_LOG_INFO("           -- delta : " + std::to_string(delta.count()));
+              if (duration_cast<std::chrono::seconds>(delta) > ptr->flags_.restart_period) {
+               CAF_LOG_INFO("Supervisor Reset Restart Count: ");
+               CAF_LOG_INFO("           -- name : " + e.child_id);
+               CAF_LOG_INFO("           -- delta : " + std::to_string(delta.count()));
+               (*it).restart_count = 0;
+               (*it).restart_period_start = std::chrono::system_clock::now();
+               return;
             }
 
             // 2. if we start a new meassurement, set the timer
             if ((*it).restart_count == 0) {
+              CAF_LOG_INFO("Set the Start Time");
               (*it).restart_period_start = std::chrono::system_clock::now();
             }
 
             // 3. if we reached the maximum attempts give up
             if ((*it).restart_count == ptr->flags_.restart_intensity) {
+              CAF_LOG_INFO("Maximum Restart has been reached.");
+              CAF_LOG_INFO("Shut down all children:");
+              for( auto& a: ptr->specs_) {
+                self->send_exit((*it).process.address(), exit_reason::unknown);
+              }
+              CAF_LOG_INFO("Shut down self:");
+              self->quit();
+              return;
             }
 
             // 4. if we don't give up yet, do a restart
@@ -77,6 +93,8 @@ void supervisor::operator()(event_based_actor* self)  {
             (*it).address = process->address();
             (*it).process = std::move(process);
             (*it).restart_count++;
+            CAF_LOG_INFO("Set the Start Time");
+            (*it).restart_period_start = std::chrono::system_clock::now();
           }
         }
       }

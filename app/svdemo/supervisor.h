@@ -65,7 +65,7 @@ struct supervisor_flags {
   restart_intensity(restart_intensity), restart_period(restart_period),
   auto_shutdown(auto_shutdown) {};
   supervisor_flags() : restart_strategy(type_name<one_for_one>::value),
-  restart_intensity(1), restart_period(std::chrono::seconds(5)),
+  restart_intensity(10), restart_period(std::chrono::seconds(5)),
   auto_shutdown(type_name<never>::value) {};
 };
 

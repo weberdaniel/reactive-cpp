@@ -20,6 +20,7 @@ and can be used to span complex and distributed supervision hierarchies (called 
 $ git clone https://github.com/weberdaniel/supervisor-demo <br>
 $ cd supervisor-demo <br>
 $ mkdir build <br>
+$ cd build <br>
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 

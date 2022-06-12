@@ -1,12 +1,16 @@
+// Copyright 2022 Daniel Weber
 #ifndef ACTORDEMO_WORKER_H
 #define ACTORDEMO_WORKER_H
 #pragma once
 #include <string>
 #include <memory>
 #include <utility>
-#include "types.h"
+#include "svdemo/types.h"
 
-using namespace caf;
+using caf::event_based_actor;
+using caf::behavior;
+using caf::message_handler;
+using caf::actor;
 
 // represents the state subset that never changes, even if the
 // worker is restarted. instead of static state, you could also
@@ -30,11 +34,11 @@ struct worker_dynamic_state {
     uint32_t received_messages {0};
 
     worker_dynamic_state() = default;
-    worker_dynamic_state( const worker_dynamic_state&)
+    worker_dynamic_state(const worker_dynamic_state&)
     = delete;
     worker_dynamic_state& operator=(const worker_dynamic_state&)
     = delete;
-    worker_dynamic_state( worker_dynamic_state&& copy) noexcept
+    worker_dynamic_state(worker_dynamic_state&& copy) noexcept
     = delete;
     worker_dynamic_state& operator=(worker_dynamic_state&& copy) noexcept
     = delete;
@@ -53,10 +57,10 @@ class worker {
   worker(const worker& ref) { static_state = ref.static_state; }
   ~worker() = default;
   void init(event_based_actor* self);
-  void operator()(event_based_actor* self) { init(self); } // entry point
+  void operator()(event_based_actor* self) { init(self); }  // entry point
 
  protected:
   behavior operational;
   std::shared_ptr<worker_static_state> static_state;
 };
-#endif //ACTORDEMO_WORKER_H
+#endif  // ACTORDEMO_WORKER_H

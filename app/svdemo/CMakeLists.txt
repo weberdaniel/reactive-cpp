@@ -25,8 +25,13 @@ if(CAF_FOUND)
           DESCRIPTION "A simple test")
 
   add_executable(svdemo
-          main.cpp
-          supervisor.h worker.cpp worker.h messages.h types.h supervisor.cpp)
+  svdemo/supervisor.h 
+  svdemo/worker.h 
+  svdemo/messages.h 
+  svdemo/types.h 
+  src/worker.cpp
+  src/main.cpp
+  src/supervisor.cpp)
 
   set(CAF_LOG_LEVEL TRACE)
 

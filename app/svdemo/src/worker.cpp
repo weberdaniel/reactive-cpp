@@ -1,4 +1,5 @@
-#include "worker.h"
+// Copyright 2022 Daniel Weber
+#include "svdemo/worker.h"
 
 worker::worker(const std::string& process_name, uint32_t process_id,
 std::chrono::milliseconds forward_message_delay_ms) {
@@ -23,12 +24,12 @@ void worker::init(event_based_actor* self) {
   // the worker can be restarted by a supervisor.
 
   message_handler keep_alive_handler {
-    [static_state_ptr,dynamic_state_ptr,self](keep_alive) {
+    [static_state_ptr, dynamic_state_ptr, self](keep_alive) {
       dynamic_state_ptr->received_keep_alives++;
-      if( static_state_ptr->max_keep_alive_until_worker_crash != 0 ) {
+      if (static_state_ptr->max_keep_alive_until_worker_crash != 0) {
         if (dynamic_state_ptr->received_keep_alives ==
             static_state_ptr->max_keep_alive_until_worker_crash) {
-          if(static_state_ptr->process_id == 2) {
+          if (static_state_ptr->process_id == 2) {
               throw std::bad_alloc();
           }
         }
@@ -45,12 +46,13 @@ void worker::init(event_based_actor* self) {
   message_handler forwarding_handler {
     [static_state_ptr, dynamic_state_ptr, self](const mail& request) {
     // forward msg to the next actor if it originates from the previous
-      if(request.source == static_state_ptr->process_id-1) {
+      if (request.source == static_state_ptr->process_id-1) {
         auto target =
-          self->home_system().registry().get<actor>(static_state_ptr->process_name +
+          self->home_system().registry().
+          get<actor>(static_state_ptr->process_name +
           "_" + std::to_string(static_state_ptr->process_id+1) );
         // check if the "next" worker does actually exist.
-        if( target->address() != nullptr ) {
+        if (target->address() != nullptr) {
           mail response;
           response.source = static_state_ptr->process_id;
           response.destination = static_state_ptr->process_id + 1;
@@ -65,8 +67,8 @@ void worker::init(event_based_actor* self) {
   self->delayed_send(self,
   static_state_ptr->keep_alive_delay_ms, keep_alive_v);
   // register name, will be deleted automatically on actor death
-  self->home_system().registry().put( static_state_ptr->process_name
-  + "_" + std::to_string(static_state_ptr->process_id), self );
+  self->home_system().registry().put(static_state_ptr->process_name
+  + "_" + std::to_string(static_state_ptr->process_id), self);
   // swtich into operational mode
   self->become(operational);
 }

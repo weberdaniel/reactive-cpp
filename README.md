@@ -88,6 +88,9 @@ The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design
 <em>Child process is being restarted by the supervisor</em>
 </div>
   
+The Erlang specification of a supervisor can be found here:
+https://www.erlang.org/doc/man/supervisor.html
+  
 #### One for One Strategy
   
 <br><br>

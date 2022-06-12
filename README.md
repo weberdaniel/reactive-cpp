@@ -23,18 +23,15 @@ $ mkdir build <br>
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
-### Step B: Repeat to create the actual build artifacts:
+### Step B: Repeat to create executables:
 
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
-<b> Note: </b> While this might seem tedious, it enables to separate creation of
-dependencies from creation of build artifacts, e.g. to cache the first step in a
-docker container.
-
 ### Step C: Run:
 
-$ ./app/svdemo/svdemo
+$ cd .. <br>
+$ ./build/app/svdemo/svdemo --config-file=./app/svdemo/caf-application.conf
 
 ### Build & Run in Docker Container
 

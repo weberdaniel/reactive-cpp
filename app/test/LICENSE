@@ -1,4 +1,5 @@
-BEWARE! This example test code is borrowed from C++ Actor Framework (CAF), https://github.com/actor-framework/actor-framework
+The code in this directory is largley borrowed from example test code from C++ Actor Framework (CAF), 
+https://github.com/actor-framework/actor-framework
 
 Copyright (c) 2011-2021, Dominik Charousset
 All rights reserved.

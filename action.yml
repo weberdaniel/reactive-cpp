@@ -1,6 +1,0 @@
-# action.yml
-name: 'Default'
-description: 'Build the software on push'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'

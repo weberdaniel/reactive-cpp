@@ -13,14 +13,6 @@ C++ process and restarts it in case of an error. This shall resemble the capabil
 of an Erlang Supervisor - which has different supervising strategies (e.g. one_for_one) 
 and can be used to span complex and distributed supervision hierarchies (called applications).
 
-# Limitations
-
-Currently one_for_one, one_for_all, rest_for_one strategy is implemented,
-but not simple_one_for_one.
-
-Also currently this only works with function object (functor) based actors, not
-class based actors or function based actors.
-
 ## Build & Run
 
 ### Step A: Build and Download external dependencies:
@@ -123,6 +115,12 @@ https://www.erlang.org/doc/man/supervisor.html
 ## Aims and Goals
 
 The goal of this project is to implement an Erlang supervision hierarchy inside a C++ high performance application, as closly as possible resembling the principles of Erlang, but in the domain of high performance computing. 
+  
+## Limitations
+
+Currently one_for_one, one_for_all, rest_for_one strategy is implemented,
+but not simple_one_for_one. Also currently this only works with function object 
+(functor) based actors, not class based actors or function based actors.
     
 ## Contribution  
 

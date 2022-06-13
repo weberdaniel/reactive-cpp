@@ -115,9 +115,7 @@ https://www.erlang.org/doc/man/supervisor.html
 ## Aims and Goals
 
 The goal of this project is to implement an Erlang supervision hierarchy inside a C++ high performance application, as closly as possible resembling the principles of Erlang, but in the domain of high performance computing. 
-  
-The ultimate Goal actually would be to create something like the Erlang/OTP for CAF, like the <b> CAF-Open-Telecom-Platform CAF/OTP </b>.
-  
+    
 ## Contribution  
 
 In SCRUM you usually find a DEFINITION OF DONE, telling what is expected of the code quality. In this case there is no scrum team, but still a Definition of Done is used as far as possible (Reviews are not always possible)

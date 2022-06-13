@@ -17,8 +17,8 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 ### Step A: Build and Download external dependencies:
 
-$ git clone https://github.com/weberdaniel/supervisor-demo <br>
-$ cd supervisor-demo <br>
+$ git clone https://github.com/weberdaniel/caf-supervisor <br>
+$ cd caf-supervisor <br>
 $ mkdir build <br>
 $ cd build <br>
 $ cmake .. <br> 

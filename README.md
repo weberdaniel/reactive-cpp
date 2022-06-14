@@ -36,7 +36,7 @@ $ ./build/app/svdemo/svdemo --config-file=./app/svdemo/caf-application.conf
 
 ### Build & Run in Docker Container
 
-T.B.D.
+Coming soon
 
 ## Actor Frameworks and Reactive Design
 

@@ -20,11 +20,11 @@ using caf::actor_addr;
 struct child_specification {
   std::string child_id;
   std::function<void(event_based_actor*)> start;  // replaces erlang MFA args
-  caf::string_view restart;
+  std::string_view restart;
   bool significant;
-  caf::string_view shutdown;
+  std::string_view shutdown;
   std::chrono::milliseconds wait_time;
-  caf::string_view type;
+  std::string_view type;
 
   child_specification() : start(), restart(type_name<transient>::value),
   significant(false), shutdown(type_name<wait>::value),
@@ -62,14 +62,14 @@ struct child {
 // this implementation
 
 struct supervisor_flags {
-  caf::string_view restart_strategy;
+  std::string_view restart_strategy;
   uint32_t restart_intensity;
   std::chrono::milliseconds restart_period;
-  caf::string_view auto_shutdown;
+  std::string_view auto_shutdown;
 
-  supervisor_flags(caf::string_view restart_strategy,
+  supervisor_flags(std::string_view restart_strategy,
   uint32_t restart_intensity, std::chrono::seconds restart_period,
-  caf::string_view auto_shutdown) : restart_strategy(restart_strategy),
+  std::string_view auto_shutdown) : restart_strategy(restart_strategy),
   restart_intensity(restart_intensity), restart_period(restart_period),
   auto_shutdown(auto_shutdown) {}
   supervisor_flags() : restart_strategy(type_name<rest_for_one>::value),

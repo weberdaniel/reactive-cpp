@@ -15,8 +15,7 @@ RUN wget --no-check-certificate https://github.com/sgerrand/alpine-pkg-glibc/rel
 RUN wget --no-check-certificate https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-bin-2.29-r0.apk
 RUN apk add --no-cache --allow-untrusted glibc-2.29-r0.apk 
 RUN apk add --no-cache --allow-untrusted glibc-bin-2.29-r0.apk
-RUN cd /project && git clone https://github.com/weberdaniel/actor-framework.org &&
-    cd actor-framework && git checkout 1-incorporate-libunwind
+RUN cd /project && git clone https://github.com/weberdaniel/actor-framework.org && cd actor-framework && git checkout 1-incorporate-libunwind
 RUN cd /project/actor-framework && \
     mkdir build && \
     cd build  &&  \

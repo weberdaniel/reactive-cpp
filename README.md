@@ -15,7 +15,7 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 # Build & Run:
 
-## Use Github Package (180MB Download)
+## Use Github Package (180MB Download | Platform Independent)
 
 $ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>
 $ docker run ghcr.io/weberdaniel/caf-supervisor

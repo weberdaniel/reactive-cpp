@@ -27,7 +27,7 @@ $ cd caf-supervisor <br>
 $ docker build -t svdemo . <br>
 $ docker run svdemo
 
-## Build & Run Locally (~ 5MB Download | Tested on Linux Ubuntu 20.04)
+## Build & Run Locally (Without additional Download | Tested on Linux Ubuntu 20.04)
 
 ### Step Zero:
 

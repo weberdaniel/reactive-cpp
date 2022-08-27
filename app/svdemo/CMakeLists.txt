@@ -10,16 +10,22 @@ ExternalProject_Get_Property(actorframework binary_dir)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 find_package(Unwind REQUIRED)
-find_package(CAF COMPONENTS internal core io
-                 CONFIG
-                 NO_PACKAGE_ROOT_PATH
-                 NO_CMAKE_PATH
-                 NO_CMAKE_ENVIRONMENT_PATH
-                 NO_SYSTEM_ENVIRONMENT_PATH
-                 NO_CMAKE_SYSTEM_PATH
-                 NO_CMAKE_PACKAGE_REGISTRY
-                 NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
-                 HINTS ${binary_dir} )
+if(NOT DOCKER)
+  message("-- Docker NOT used: Locating CAF in external/caf: ...")
+  find_package(CAF COMPONENTS internal core io
+                   CONFIG
+                   NO_PACKAGE_ROOT_PATH
+                   NO_CMAKE_PATH
+                   NO_CMAKE_ENVIRONMENT_PATH
+                   NO_SYSTEM_ENVIRONMENT_PATH
+                   NO_CMAKE_SYSTEM_PATH
+                   NO_CMAKE_PACKAGE_REGISTRY
+                   NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
+                   HINTS ${binary_dir} )
+else() 
+  message("-- Docker used: Locating CAF somewhere: ...")
+  find_package(CAF COMPONENTS internal core io PATHS /project/actorframework)
+endif()
 
 if(CAF_FOUND)
   message("-- Creating Target svdemo: CAF found ...")

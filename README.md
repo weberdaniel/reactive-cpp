@@ -49,7 +49,7 @@ $ ./build/app/svdemo/svdemo --config-file=./app/svdemo/caf-application.conf
 $ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>
 $ docker run ghcr.io/weberdaniel/caf-supervisor
 
-## Build & Run in Docker Alpine Linux Container (~300MB Download | Platform Independent)
+## Build & Run in Docker Alpine Linux Container (~300MB Download | Platform Independent | Very Slow )
 
 $ git clone https://github.com/weberdaniel/caf-supervisor <br>
 $ cd caf-supervisor <br>

@@ -1,3 +1,4 @@
 #!/bin/sh
 set -x 
-/project/svdemo/build/app/svdemo/svdemo --config-file=/project/svdemo/app/svdemo/caf-application.conf
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/project
+/project/svdemo --config-file=/project/caf-application.conf

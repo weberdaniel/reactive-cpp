@@ -5,7 +5,7 @@
 ##################################################
 # create environment for build (including CAF)
 ##################################################
-FROM alpine:latest AS svdemocafstage
+FROM alpine:latest AS buildstage-actorframework
 WORKDIR /project
 EXPOSE 80
 EXPOSE 3128
@@ -24,7 +24,7 @@ RUN cd /project/actor-framework && \
 ##################################################
 # create the actual build artifact
 ##################################################
-FROM svdemocafstage as svdemostage
+FROM buildstage-actorframework as buildstage-svdemo
 WORKDIR /project
 RUN mkdir /project/svdemo
 COPY . /project/svdemo
@@ -34,5 +34,20 @@ RUN mkdir /project/svdemo/build && cd /project/svdemo/build && cmake -DDOCKER=ON
 ENTRYPOINT ["/project/svdemo/run.sh"]
 
 #########################################################
-# OLD Alpine Linux Image
+# Create a deploy stage
 #########################################################
+FROM alpine:latest as caf-supervisor
+WORKDIR /project
+RUN apk add libstdc++
+RUN apk add libunwind
+COPY --from=buildstage-svdemo /project/svdemo/build/app/svdemo/svdemo .
+COPY --from=buildstage-svdemo /project/svdemo/run.sh .
+COPY --from=buildstage-svdemo /project/svdemo/app/svdemo/caf-application.conf .
+COPY --from=buildstage-svdemo /project/actor-framework/build/libcaf_core/libcaf_core.so* /project/
+COPY --from=buildstage-svdemo /project/actor-framework/build/libcaf_io/libcaf_io.so* /project/
+COPY --from=buildstage-svdemo /project/actor-framework/build/libcaf_net/libcaf_net.so* /project/
+RUN ls
+RUN export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/project && ldd libcaf_core.so
+RUN export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/project && ldd libcaf_io.so
+RUN export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/project && ldd libcaf_net.so
+ENTRYPOINT ["/project/run.sh"]

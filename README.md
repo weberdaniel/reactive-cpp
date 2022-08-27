@@ -17,15 +17,14 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 ## Build & Run Locally (Without additional Download | Tested on Linux Ubuntu 20.04)
 
-### Step Zero:
+### Step A: Install libunwind 
 
-Install dependency: libunwind <br>
 $ sudo apt-get install libunwind-dev <br>
 
 (Reason: I have creaed my own Actor-Framework fork which makes use of libunwind instead of
  libexecinfo to be compatible with the alpine linux docker image).
 
-### Step A: Build and Download external dependencies:
+### Step B: Build and Download external dependencies:
 
 $ git clone https://github.com/weberdaniel/caf-supervisor <br>
 $ cd caf-supervisor <br>
@@ -34,12 +33,12 @@ $ cd build <br>
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
-### Step B: Repeat to create executables:
+### Step C: Repeat to create executables:
 
 $ cmake .. <br> 
 $ make -j 24 # in case of 24 cpu cores <br>
 
-### Step C: Run:
+### Step D: Run:
 
 $ cd .. <br>
 $ ./build/app/svdemo/svdemo --config-file=./app/svdemo/caf-application.conf

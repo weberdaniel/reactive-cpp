@@ -38,8 +38,7 @@ ENTRYPOINT ["/project/svdemo/run.sh"]
 #########################################################
 FROM alpine:latest as caf-supervisor
 WORKDIR /project
-RUN apk add libstdc++
-RUN apk add libunwind
+RUN apk add libstdc++ libunwind
 COPY --from=buildstage-svdemo /project/svdemo/build/app/svdemo/svdemo .
 COPY --from=buildstage-svdemo /project/svdemo/run.sh .
 COPY --from=buildstage-svdemo /project/svdemo/app/svdemo/caf-application.conf .
@@ -47,7 +46,4 @@ COPY --from=buildstage-svdemo /project/actor-framework/build/libcaf_core/libcaf_
 COPY --from=buildstage-svdemo /project/actor-framework/build/libcaf_io/libcaf_io.so* /project/
 COPY --from=buildstage-svdemo /project/actor-framework/build/libcaf_net/libcaf_net.so* /project/
 RUN ls
-RUN export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/project && ldd libcaf_core.so
-RUN export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/project && ldd libcaf_io.so
-RUN export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/project && ldd libcaf_net.so
 ENTRYPOINT ["/project/run.sh"]

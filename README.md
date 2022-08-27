@@ -13,9 +13,9 @@ C++ process and restarts it in case of an error. This shall resemble the capabil
 of an Erlang Supervisor - which has different supervising strategies (e.g. one_for_one) 
 and can be used to span complex and distributed supervision hierarchies (called applications).
 
-## Use existing github container image (180MB Download)
+## Use Github Package (180MB Download)
 
-$ docker pull ghcr.io/weberdaniel/caf-supervisor:latest
+$ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>
 $ docker run ghcr.io/weberdaniel/caf-supervisor
 
 ## Build & Run in Docker Alpine Linux Container (Platform Independent)

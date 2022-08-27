@@ -17,9 +17,8 @@ RUN apk add --no-cache --allow-untrusted glibc-2.29-r0.apk
 RUN apk add --no-cache --allow-untrusted glibc-bin-2.29-r0.apk
 RUN cd /project && git clone https://github.com/weberdaniel/actor-framework && cd actor-framework && git checkout 1-incorporate-libunwind
 RUN cd /project/actor-framework && \
-    mkdir build && \
+    ./configure --build-type=Debug --log-level=TRACE --disable-examples --disable-tools --enable-utility-targets --enable-runtime-checks --enable-shared-libs && \
     cd build  &&  \
-    cmake .. && \
     make
 
 ##################################################
@@ -27,10 +26,12 @@ RUN cd /project/actor-framework && \
 ##################################################
 FROM svdemocafstage as svdemostage
 WORKDIR /project
+RUN mkdir /project/svdemo
+COPY . /project/svdemo
 RUN ls /project
-RUN ls /project/run.sh
-RUN cd /project/build && cmake .. && make && chmod 777 /project/build/app/svdemo && chmod 777 /project/run.sh
-ENTRYPOINT ["/project/run.sh"]
+RUN cd /project/actor-framework/build; find -name *.so
+RUN mkdir /project/svdemo/build && cd /project/svdemo/build && cmake -DDOCKER=ON .. && make && chmod 777 /project/svdemo/build/app/svdemo/svdemo && chmod 777 /project/svdemo/run.sh
+ENTRYPOINT ["/project/svdemo/run.sh"]
 
 #########################################################
 # OLD Alpine Linux Image

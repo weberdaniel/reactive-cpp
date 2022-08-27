@@ -1,8 +1,7 @@
 cmake_minimum_required( VERSION 3.12 )
 
-message("-- Creating Target svdemo: Try to find CAF ...")
+message(STATUS "-- Creating Target svdemo: Try to find CAF ...")
 
-ExternalProject_Get_Property(actorframework binary_dir)
 
 # only use the specific installation of CAF in external/ folder
 # disable all other search locations
@@ -11,8 +10,9 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 find_package(Unwind REQUIRED)
 if(NOT DOCKER)
-  message("-- Docker NOT used: Locating CAF in external/caf: ...")
-  find_package(CAF COMPONENTS internal core io
+  ExternalProject_Get_Property(actorframework binary_dir)
+  message(STATUS "-- Docker NOT used: Locating CAF in external/caf: ...")
+  find_package(CAF COMPONENTS core io
                    CONFIG
                    NO_PACKAGE_ROOT_PATH
                    NO_CMAKE_PATH
@@ -22,13 +22,30 @@ if(NOT DOCKER)
                    NO_CMAKE_PACKAGE_REGISTRY
                    NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
                    HINTS ${binary_dir} )
-else() 
-  message("-- Docker used: Locating CAF somewhere: ...")
-  find_package(CAF COMPONENTS internal core io PATHS /project/actorframework)
+endif()
+
+if(DOCKER) 
+  message(STATUS "-- Docker used: Locating CAF somewhere: ...")
+  set(CAF_ROOT_DIR "/project/actor-framework/build")
+  find_package(CAF COMPONENTS core io
+                   CONFIG
+                   NO_PACKAGE_ROOT_PATH
+                   NO_CMAKE_PATH
+                   NO_CMAKE_ENVIRONMENT_PATH
+                   NO_SYSTEM_ENVIRONMENT_PATH
+                   NO_CMAKE_SYSTEM_PATH
+                   NO_CMAKE_PACKAGE_REGISTRY
+                   NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
+		   HINTS ${CAF_ROOT_DIR} )
+  if(CAF_FOUND)
+    message(STATUS "-- CAF found")
+  else() 
+    message(FATAL_ERROR "-- CAF not found")
+  endif()
 endif()
 
 if(CAF_FOUND)
-  message("-- Creating Target svdemo: CAF found ...")
+  message(STATUS "-- Creating Target svdemo: CAF found ...")
   project( svdemo
           VERSION 0.1.0
           DESCRIPTION "A simple test")
@@ -59,7 +76,7 @@ if(CAF_FOUND)
   endif()
 
   message("-- Creating Target svdemo: link CAF ...")
-  set_target_properties(CAF::internal PROPERTIES IMPORTED_GLOBAL TRUE)
+  #set_target_properties(CAF::internal PROPERTIES IMPORTED_GLOBAL TRUE)
   set_target_properties(CAF::core PROPERTIES IMPORTED_GLOBAL TRUE)
   set_target_properties(CAF::io PROPERTIES IMPORTED_GLOBAL TRUE)
 

@@ -19,9 +19,4 @@ if(NOT DOCKER)
   INSTALL_COMMAND cmake -E echo "-- Skip install step.")
 endif()
 
-if(DOCKER)
-  message("-- Creating Target ActorFramework: Try to search on system... docker is used!")
-  find_package(CAF COMPONENTS internal core io PATHS /project/actor-framework)
-endif()
-
 message("-- Creating Target ActorFramework - done")

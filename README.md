@@ -20,14 +20,14 @@ and can be used to span complex and distributed supervision hierarchies (called 
 $ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>
 $ docker run ghcr.io/weberdaniel/caf-supervisor
 
-## Build & Run in Docker Alpine Linux Container (Platform Independent)
+## Build & Run in Docker Alpine Linux Container (~300MB Download | Platform Independent)
 
 $ git clone https://github.com/weberdaniel/caf-supervisor <br>
 $ cd caf-supervisor <br>
 $ docker build -t svdemo . <br>
 $ docker run svdemo
 
-## Build & Run Locally (Tested on Linux Ubuntu 20.04)
+## Build & Run Locally (~ 5MB Download | Tested on Linux Ubuntu 20.04)
 
 ### Step Zero:
 

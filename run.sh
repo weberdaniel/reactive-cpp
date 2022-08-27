@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-build/app/svdemo --config-file app/svdemo/caf-application.conf
+/project/build/app/svdemo --config-file /project/app/svdemo/caf-application.conf

@@ -11,8 +11,12 @@ include(ExternalProject)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
 message("-- Creating Target ActorFramework")
-ExternalProject_Add(actorframework URL ${CMAKE_CURRENT_LIST_DIR}/actor-framework
-	CONFIGURE_COMMAND <SOURCE_DIR>/configure --dev-mode --enable-shared-libs 
+if(NOT DOCKER) 
+  message("-- Creating Target ActorFramework: Downloading... docker is NOT used!")
+  ExternalProject_Add(actorframework URL ${CMAKE_CURRENT_LIST_DIR}/actor-framework
+	CONFIGURE_COMMAND <SOURCE_DIR>/configure --build-type=Debug --log-level=TRACE --disable-examples --disable-tools --enable-utility-targets --enable-runtime-checks --enable-shared-libs 
 	--build-dir=<BINARY_DIR>
   INSTALL_COMMAND cmake -E echo "-- Skip install step.")
+endif()
+
 message("-- Creating Target ActorFramework - done")

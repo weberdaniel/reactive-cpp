@@ -12,6 +12,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
 message("-- Creating Target ActorFramework")
 ExternalProject_Add(actorframework URL ${CMAKE_CURRENT_LIST_DIR}/actor-framework
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --dev-mode --build-dir=<BINARY_DIR>
+	CONFIGURE_COMMAND <SOURCE_DIR>/configure --dev-mode --enable-shared-libs 
+	--build-dir=<BINARY_DIR>
   INSTALL_COMMAND cmake -E echo "-- Skip install step.")
 message("-- Creating Target ActorFramework - done")

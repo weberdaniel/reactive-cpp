@@ -15,18 +15,6 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 # Build & Run:
 
-## Use Github Package (180MB Download | Platform Independent)
-
-$ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>
-$ docker run ghcr.io/weberdaniel/caf-supervisor
-
-## Build & Run in Docker Alpine Linux Container (~300MB Download | Platform Independent)
-
-$ git clone https://github.com/weberdaniel/caf-supervisor <br>
-$ cd caf-supervisor <br>
-$ docker build -t svdemo . <br>
-$ docker run svdemo
-
 ## Build & Run Locally (Without additional Download | Tested on Linux Ubuntu 20.04)
 
 ### Step Zero:
@@ -55,6 +43,19 @@ $ make -j 24 # in case of 24 cpu cores <br>
 
 $ cd .. <br>
 $ ./build/app/svdemo/svdemo --config-file=./app/svdemo/caf-application.conf
+
+## Use Github Package (180MB Download | Platform Independent)
+
+$ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>
+$ docker run ghcr.io/weberdaniel/caf-supervisor
+
+## Build & Run in Docker Alpine Linux Container (~300MB Download | Platform Independent)
+
+$ git clone https://github.com/weberdaniel/caf-supervisor <br>
+$ cd caf-supervisor <br>
+$ docker build -t svdemo . <br>
+$ docker run svdemo
+
 
 ## Actor Frameworks and Reactive Design
 

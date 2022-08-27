@@ -13,14 +13,14 @@ C++ process and restarts it in case of an error. This shall resemble the capabil
 of an Erlang Supervisor - which has different supervising strategies (e.g. one_for_one) 
 and can be used to span complex and distributed supervision hierarchies (called applications).
 
-## Build & Run in Docker Alpine Linux Container
+## Build & Run in Docker Alpine Linux Container (Platform Independent)
 
 $ git clone https://github.com/weberdaniel/caf-supervisor <br>
 $ cd caf-supervisor <br>
 $ docker build -t svdemo . <br>
 $ docker run svdemo
 
-## Build & Run Locally
+## Build & Run Locally (Tested on Linux Ubuntu 20.04)
 
 ### Step Zero:
 

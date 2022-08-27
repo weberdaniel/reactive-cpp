@@ -13,7 +13,22 @@ C++ process and restarts it in case of an error. This shall resemble the capabil
 of an Erlang Supervisor - which has different supervising strategies (e.g. one_for_one) 
 and can be used to span complex and distributed supervision hierarchies (called applications).
 
-## Build & Run
+## Build & Run in Docker Alpine Linux Container
+
+$ git clone https://github.com/weberdaniel/caf-supervisor <br>
+$ cd caf-supervisor <br>
+$ docker build -t svdemo . <br>
+$ docker run svdemo
+
+## Build & Run Locally
+
+### Step Zero:
+
+Install dependency: libunwind
+$ sudo apt-get install libunwind-dev
+
+(Reason: I have creaed my own Actor-Framework fork which makes use of libunwind instead of
+ libexecinfo to be compatible with the alpine linux docker image).
 
 ### Step A: Build and Download external dependencies:
 
@@ -33,10 +48,6 @@ $ make -j 24 # in case of 24 cpu cores <br>
 
 $ cd .. <br>
 $ ./build/app/svdemo/svdemo --config-file=./app/svdemo/caf-application.conf
-
-### Build & Run in Docker Container
-
-Coming soon
 
 ## Actor Frameworks and Reactive Design
 

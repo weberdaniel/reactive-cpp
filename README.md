@@ -13,6 +13,8 @@ C++ process and restarts it in case of an error. This shall resemble the capabil
 of an Erlang Supervisor - which has different supervising strategies (e.g. one_for_one) 
 and can be used to span complex and distributed supervision hierarchies (called applications).
 
+# Build & Run:
+
 ## Use Github Package (180MB Download)
 
 $ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>

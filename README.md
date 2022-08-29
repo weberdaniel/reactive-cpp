@@ -15,7 +15,7 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 # Build & Run:
 
-## Build & Run Locally (Without additional Download | Tested on Linux Ubuntu 20.04)
+## Build & Run Locally (Recommended | Without additional Download | Tested on Linux Ubuntu 20.04)
 
 ### Step A: Install libunwind 
 

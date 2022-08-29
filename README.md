@@ -43,12 +43,12 @@ $ make -j 24 # in case of 24 cpu cores <br>
 $ cd .. <br>
 $ ./build/app/svdemo/svdemo --config-file=./app/svdemo/caf-application.conf
 
-## Use Github Package (180MB Download | Platform Independent)
+## Use Github Package (Not Recommended | 180MB Download | Platform Independent)
 
 $ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>
 $ docker run ghcr.io/weberdaniel/caf-supervisor
 
-## Build & Run in Docker Alpine Linux Container (~300MB Download | Platform Independent | Very Slow | Not Recommended )
+## Build & Run in Docker Alpine Linux Container (~300MB Download | Not Recommended | Platform Independent | Very Slow | Not Recommended )
 
 $ git clone https://github.com/weberdaniel/caf-supervisor <br>
 $ cd caf-supervisor <br>

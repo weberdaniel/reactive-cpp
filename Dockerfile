@@ -19,7 +19,7 @@ RUN cd /project && git clone https://github.com/weberdaniel/actor-framework && c
 RUN cd /project/actor-framework && \
     ./configure --build-type=Debug --log-level=TRACE --disable-examples --disable-tools --enable-utility-targets --enable-runtime-checks --enable-shared-libs && \
     cd build  &&  \
-    make
+    make -j
 
 ##################################################
 # create the actual build artifact
@@ -30,7 +30,7 @@ RUN mkdir /project/svdemo
 COPY . /project/svdemo
 RUN ls /project
 RUN cd /project/actor-framework/build; find -name *.so
-RUN mkdir /project/svdemo/build && cd /project/svdemo/build && cmake -DDOCKER=ON .. && make && chmod 777 /project/svdemo/build/app/svdemo/svdemo && chmod 777 /project/svdemo/run.sh
+RUN mkdir /project/svdemo/build && cd /project/svdemo/build && cmake -DDOCKER=ON .. && make -j && chmod 777 /project/svdemo/build/app/svdemo/svdemo && chmod 777 /project/svdemo/run.sh
 ENTRYPOINT ["/project/svdemo/run.sh"]
 
 #########################################################

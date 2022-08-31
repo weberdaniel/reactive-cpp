@@ -62,6 +62,8 @@ $ docker build -t svdemo .
 
 but this will take very long. Also take care not to use more jobs than you have cores on your machine and always leave some room for other applications on the machine, otherwise you might run out of memory.
 
+Also if you use BUILDKIT, never forget the number\_of\_build\_jobs argument, otherwise your machine will crash since it will use an unlimited amount of build jobs.
+
 ## Actor Frameworks and Reactive Design
 
 Actor Frameworks are a crucial building block for Artificial Intelligence. Actor Frameworks have been first introduced by 

@@ -53,10 +53,14 @@ $ docker run ghcr.io/weberdaniel/caf-supervisor
 $ git clone https://github.com/weberdaniel/caf-supervisor <br>
 $ cd caf-supervisor <br>
 $ export DOCKER\_BUILDKIT=1 <br>
-$ docker build -t svdemo . <br>
+$ docker build --no-cache --build-arg number\_of\_build\_jobs=23 -t svdemo . <br>
 $ docker run svdemo
 
-The DOCKER\_BUILDTKIT purpose is to enable parallel build, so all CPU cores will be working in the build process
+The DOCKER\_BUILDTKIT purpose is to enable parallel build, so all CPU cores (minus one) will be working in the build process. You can also leave out the BUILDKIT option and only do
+
+$ docker build -t svdemo .
+
+but this will take very long. Also take care not to use more jobs than you have cores on your machine and always leave some room for other applications on the machine.
 
 ## Actor Frameworks and Reactive Design
 

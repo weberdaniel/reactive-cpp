@@ -2,10 +2,12 @@
 # OLD Alpine Linux Image
 #########################################################
 
+
 ##################################################
 # create environment for build (including CAF)
 ##################################################
 FROM alpine:latest AS buildstage-actorframework
+ARG number_of_build_jobs
 WORKDIR /project
 EXPOSE 80
 EXPOSE 3128
@@ -19,18 +21,19 @@ RUN cd /project && git clone https://github.com/weberdaniel/actor-framework && c
 RUN cd /project/actor-framework && \
     ./configure --build-type=Debug --log-level=TRACE --disable-examples --disable-tools --enable-utility-targets --enable-runtime-checks --enable-shared-libs && \
     cd build  &&  \
-    make -j
+    make -j $number_of_build_jobs
 
 ##################################################
 # create the actual build artifact
 ##################################################
 FROM buildstage-actorframework as buildstage-svdemo
+ARG number_of_build_jobs
 WORKDIR /project
 RUN mkdir /project/svdemo
 COPY . /project/svdemo
 RUN ls /project
 RUN cd /project/actor-framework/build; find -name *.so
-RUN mkdir /project/svdemo/build && cd /project/svdemo/build && cmake -DDOCKER=ON .. && make -j && chmod 777 /project/svdemo/build/app/svdemo/svdemo && chmod 777 /project/svdemo/run.sh
+RUN mkdir /project/svdemo/build && cd /project/svdemo/build && cmake -DDOCKER=ON .. && make -j $number_of_build_jobs && chmod 777 /project/svdemo/build/app/svdemo/svdemo && chmod 777 /project/svdemo/run.sh
 ENTRYPOINT ["/project/svdemo/run.sh"]
 
 #########################################################

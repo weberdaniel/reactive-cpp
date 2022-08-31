@@ -60,7 +60,7 @@ The DOCKER\_BUILDTKIT purpose is to enable parallel build, so all CPU cores (min
 
 $ docker build -t svdemo .
 
-but this will take very long. Also take care not to use more jobs than you have cores on your machine and always leave some room for other applications on the machine.
+but this will take very long. Also take care not to use more jobs than you have cores on your machine and always leave some room for other applications on the machine, otherwise you might run out of memory.
 
 ## Actor Frameworks and Reactive Design
 

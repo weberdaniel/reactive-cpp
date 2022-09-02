@@ -120,8 +120,7 @@ The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design
 </div>
 <br>
   
-The Erlang specification of a supervisor can be found here:
-https://www.erlang.org/doc/man/supervisor.html
+The Erlang specification of a supervisor is slightly more complex and incorporates various strategys on how to recover an array of processes. For example if one child process crashes all need to be restarted. To understand what i build here in C++, you can look at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
   
 #### One for One Strategy
   

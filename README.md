@@ -154,7 +154,7 @@ but not simple_one_for_one. Also currently this only works with function object
     
 ## Contribution  
 
-In SCRUM you usually find a DEFINITION OF DONE, telling what is expected of the code quality. In this case there is no scrum team, but still a Definition of Done is used as far as possible (Reviews are not always possible)
+In SCRUM you usually find a DEFINITION OF DONE, telling what is expected of the code quality. In this case there is no scrum team, but still a Definition of Done is used as far as possible (Reviews are not always possible) - still i have to admit - whithout a proper review process working alone will never be comparable to working in a SCRUM team.
 
 ### The Definition of Done:
   

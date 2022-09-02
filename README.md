@@ -21,7 +21,8 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 First please note, i have created a fork of C++ Actor Framework which uses libunwind instead of
 libexec. It is not a big change, but it enables to use C++ Actor Framework development mode on
-Alpine Linux. Still though, libubsan and libasan are not supported on Alpine.
+Alpine Linux. Still though, libubsan and libasan are not supported on Alpine so you cant use
+address sanitizers and undefined behaviour sanitizers.
 
 $ sudo apt-get install libunwind-dev <br>
 

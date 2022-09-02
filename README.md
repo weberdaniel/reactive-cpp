@@ -19,10 +19,11 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 ### Step A: Install libunwind 
 
-$ sudo apt-get install libunwind-dev <br>
+First please note, i have created a fork of C++ Actor Framework which uses libunwind instead of
+libexec. It is not a big change, but it enables to use C++ Actor Framework development mode on
+Alpine Linux. Still though, libubsan and libasan are not supported on Alpine.
 
-(Reason: I have creaed my own Actor-Framework fork which makes use of libunwind instead of
- libexecinfo to be compatible with the alpine linux docker image).
+$ sudo apt-get install libunwind-dev <br>
 
 ### Step B: Build and Download external dependencies:
 

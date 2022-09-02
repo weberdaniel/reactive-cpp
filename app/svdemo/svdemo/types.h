@@ -38,5 +38,6 @@ CAF_ADD_ATOM(supervisor, wait);
 CAF_ADD_ATOM(supervisor, pinging_atom);
 CAF_ADD_ATOM(supervisor, get_child);
 CAF_ADD_ATOM(supervisor, keep_alive);
+CAF_ADD_ATOM(supervisor, trigger_create_new_message);
 CAF_END_TYPE_ID_BLOCK(supervisor)
 #endif  // ACTORDEMO_TYPES_H

@@ -94,29 +94,30 @@ event_based_actor* self) {
           .count();
           auto delta = millis -
           std::chrono::duration_cast<std::chrono::milliseconds>(
-          (*it).restart_period_start.time_since_epoch()).count();
+          ptr->restart_period_start_.time_since_epoch()).count();
 
           CAF_LOG_INFO("Iterating Child " + e.child_id);
           CAF_LOG_INFO(" -- time passed (ms): " + std::to_string(delta));
           CAF_LOG_INFO(" -- restarts during time passed (#): "
-          + std::to_string((*it).restart_count)
+          + std::to_string(ptr->restart_count_)
           + " (max. " + std::to_string(ptr->flags_.restart_intensity) + ")");
 
           // 1. reset the restart count if period expired
           if (delta > ptr->flags_.restart_period.count()) {
             CAF_LOG_INFO(" -- reset restarts during time passed " + e.child_id);
-            (*it).restart_period_start = std::chrono::system_clock::now();
+            ptr->restart_period_start_ = std::chrono::system_clock::now();
+            ptr->restart_count_ = 0;
           }
 
           // 2. if we start a new meassurement/ the old meassurement expired,
           //    set the timer
-          if ((*it).restart_count == 0) {
+          if (ptr->restart_count_ == 0) {
             CAF_LOG_INFO(" -- reset time passed for " + e.child_id);
-            (*it).restart_period_start = std::chrono::system_clock::now();
+            ptr->restart_period_start_ = std::chrono::system_clock::now();
           }
 
           // 3. if we reached the maximum attempts give up entirely
-          if ((*it).restart_count == ptr->flags_.restart_intensity) {
+          if (ptr->restart_count_ == ptr->flags_.restart_intensity) {
             CAF_LOG_INFO(" -- maximum restarts reached for " + e.child_id);
             CAF_LOG_INFO(" -- shut down all children ");
             for (auto &a : ptr->children_) {
@@ -137,6 +138,8 @@ event_based_actor* self) {
           // the rest_for_one, the last child will be stopped first until
           // we reach the crashed supervisor. Then we restart the crashed
           // supervisor and restart everything from left to right
+
+          ptr->restart_count_++;
 
           // 4.1. find the index of the crashed child
           int index_of_crashed_child = 0;
@@ -168,7 +171,6 @@ event_based_actor* self) {
                 self->monitor(process);
                 ptr->children_.at(i).address = process->address();
                 ptr->children_.at(i).process = std::move(process);
-                ptr->children_.at(i).restart_count++;
               }
             }
           }
@@ -359,8 +361,14 @@ void supervisor::operator()(event_based_actor* self)  {
     }
   });
 
+  // add one to the child counter for each child
+  auto fptr = self->home_system().metrics().gauge_family("supervisor",
+  "children",{{"wtf","bro"}},"helptext", "ms", false);
+  auto count = fptr->get_or_add({{"method", "put"}});
+
   CAF_LOG_INFO("Supervisor Start Children: ");
   for ( auto& e : ptr_->specs_ ) {
+    count->inc();
     CAF_LOG_INFO("Supervisor Start Child: " + e.child_id);
     actor child_actor = self->home_system().spawn(e.start);
     self->monitor(child_actor);

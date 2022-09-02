@@ -14,11 +14,20 @@ using caf::actor_system;
 
 std::vector<child_specification> init_workers(int n) {
   std::vector<child_specification> children;
-  for (int i = 1; i <= n; i++) {
+  for (int i = 0; i <= n; i++) {
     child_specification specification;
     specification.child_id = std::string("worker_") + std::to_string(i);
-    specification.start = std::move(
-      worker("worker", i, std::chrono::milliseconds(100)));
+    // the first process should start sending messages, all others only forward
+    // those messages
+    if( i != 0) {
+      specification.start = std::move(worker("worker", i,
+           std::chrono::milliseconds(100),
+           false));
+    } else {
+      specification.start = std::move(worker("worker", i,
+      std::chrono::milliseconds(100),
+      true));
+    }
     children.push_back(std::move(specification));
   }
   return children;

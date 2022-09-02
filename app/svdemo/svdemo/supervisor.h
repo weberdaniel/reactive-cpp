@@ -73,7 +73,7 @@ struct supervisor_flags {
   restart_intensity(restart_intensity), restart_period(restart_period),
   auto_shutdown(auto_shutdown) {}
   supervisor_flags() : restart_strategy(type_name<rest_for_one>::value),
-  restart_intensity(3), restart_period(std::chrono::milliseconds(930)),
+  restart_intensity(50), restart_period(std::chrono::milliseconds(1000)),
   auto_shutdown(type_name<never>::value) {}
 };
 
@@ -85,6 +85,13 @@ struct supervisor_dynamic_state {
   std::vector<child_specification> specs_;
   std::vector<child> children_;
   supervisor_flags flags_;
+  std::chrono::time_point<std::chrono::system_clock> restart_period_start_;
+  // this is used for strategies like rest_for_one, where you cannot
+  // usefully meassure restart intensity at children level. so there is
+  // only a global restart count for each event. for more simple strategies
+  // like one_for_one you can actually caculate the restart intensity per
+  // child
+  uint32_t restart_count_ {0};
 
   supervisor_dynamic_state() = default;
   supervisor_dynamic_state(const supervisor_dynamic_state&)

@@ -18,10 +18,12 @@ using caf::actor;
 
 struct worker_static_state {
     uint32_t process_id {0};
+    bool worker_creates_messages {false};
     std::string process_name;
-    std::chrono::milliseconds forward_message_delay_ms {0};
     std::chrono::milliseconds keep_alive_delay_ms {100};
     uint32_t max_keep_alive_until_worker_crash {3};
+    std::chrono::milliseconds create_new_message_delay_ms {30};
+    uint32_t create_new_message_size_bytes;
 };
 
 // represents the state subset of worker that may change during
@@ -53,7 +55,7 @@ struct worker_dynamic_state {
 class worker {
  public:
   explicit worker(const std::string& process_name, uint32_t process_id,
-  std::chrono::milliseconds forward_message_delay_ms);
+  std::chrono::milliseconds create_new_message_delay_ms, bool worker_creates_messages);
   worker(const worker& ref) { static_state = ref.static_state; }
   ~worker() = default;
   void init(event_based_actor* self);

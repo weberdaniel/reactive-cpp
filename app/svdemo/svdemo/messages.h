@@ -11,6 +11,7 @@
 struct mail {
   uint32_t source {0};  // 0 == invalid source
   uint32_t destination {0};  // 0 == invalid destination
+  uint32_t time_to_live {64};
   std::string content;
 };
 

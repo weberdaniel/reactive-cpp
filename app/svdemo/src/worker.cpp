@@ -2,11 +2,12 @@
 #include "svdemo/worker.h"
 
 worker::worker(const std::string& process_name, uint32_t process_id,
-std::chrono::milliseconds forward_message_delay_ms) {
+std::chrono::milliseconds create_new_message_delay_ms, bool worker_creates_messages ) {
   static_state = std::make_shared<worker_static_state>();
   static_state->process_name = process_name;
   static_state->process_id = process_id;
-  static_state->forward_message_delay_ms = forward_message_delay_ms;
+  static_state->create_new_message_delay_ms = create_new_message_delay_ms;
+  static_state->worker_creates_messages = worker_creates_messages;
 }
 
 // while worker::operator() is the entry point for spawning an actor,
@@ -23,8 +24,27 @@ void worker::init(event_based_actor* self) {
   // bad_alloc. this shall illustrate that even after throwing a bad_alloc,
   // the worker can be restarted by a supervisor.
 
-  message_handler keep_alive_handler {
-    [static_state_ptr, dynamic_state_ptr, self](keep_alive) {
+  operational = {
+    [static_state_ptr, dynamic_state_ptr, self](trigger_create_new_message) {
+        if(static_state_ptr->worker_creates_messages) {
+            self->delayed_send(self,
+              static_state_ptr->create_new_message_delay_ms,
+              trigger_create_new_message_v);
+            mail new_message;
+            new_message.content = std::move(std::string("a", static_state_ptr->create_new_message_size_bytes));
+            new_message.time_to_live = 64;
+            new_message.source = static_state_ptr->process_id;
+            auto target = self->home_system().registry().get<actor>(static_state_ptr->process_name +
+              "_" + std::to_string(static_state_ptr->process_id + 1));
+            if (target->address() == nullptr) {
+              CAF_LOG_INFO("Message Dropped");
+            } else {
+              CAF_LOG_INFO("Message sent");
+              self->send(target, new_message);
+            }
+        }
+      },
+      [static_state_ptr, dynamic_state_ptr, self](keep_alive) {
       dynamic_state_ptr->received_keep_alives++;
       if (static_state_ptr->max_keep_alive_until_worker_crash != 0) {
         if (dynamic_state_ptr->received_keep_alives ==
@@ -37,35 +57,46 @@ void worker::init(event_based_actor* self) {
       self->delayed_send(self,
         static_state_ptr->keep_alive_delay_ms, keep_alive_v);
     },
-  };
-
-  // the forwarding handler receives a mail and checks if the sources comes
-  // from the "previous" worker, e.g. "worker_0". Then it will forward that
-  // message to the "next" worker in the chain/circle, e.g. "worker_2".
-
-  message_handler forwarding_handler {
     [static_state_ptr, dynamic_state_ptr, self](const mail& request) {
-    // forward msg to the next actor if it originates from the previous
+      // forward msg to the next actor if it originates from the previous
       if (request.source == static_state_ptr->process_id-1) {
         auto target =
-          self->home_system().registry().
+        self->home_system().registry().
           get<actor>(static_state_ptr->process_name +
           "_" + std::to_string(static_state_ptr->process_id+1) );
-        // check if the "next" worker does actually exist.
-        if (target->address() != nullptr) {
+          // check if the "next" worker does actually exist.
           mail response;
           response.source = static_state_ptr->process_id;
-          response.destination = static_state_ptr->process_id + 1;
-          response.content = "hello world!";
-          self->send(target, response);
-        }
+          response.content = request.content;
+          response.time_to_live = request.time_to_live;
+          if(response.time_to_live == 0) {
+            CAF_LOG_INFO("end of life for message reached.");
+          } else {
+            if (target.address() != nullptr) {
+              response.destination = static_state_ptr->process_id + 1;
+            } else {
+              response.destination = 0;
+              target = self->home_system().registry().
+                get<actor>(static_state_ptr->process_name + "_0");
+            }
+            if (target->address() != nullptr) {
+              CAF_LOG_INFO("Message forwarded");
+              self->send(target, response);
+            } else {
+              CAF_LOG_INFO("Message to be forwarded has been dropped");
+            }
+          }
       }
     }
   };
-  operational.assign(keep_alive_handler.or_else(forwarding_handler));
+
   // start keep_alive_cycle
   self->delayed_send(self,
   static_state_ptr->keep_alive_delay_ms, keep_alive_v);
+  if(static_state_ptr->worker_creates_messages) {
+    self->delayed_send(self,
+    static_state_ptr->create_new_message_delay_ms, trigger_create_new_message_v);
+  }
   // register name, will be deleted automatically on actor death
   self->home_system().registry().put(static_state_ptr->process_name
   + "_" + std::to_string(static_state_ptr->process_id), self);

@@ -44,6 +44,9 @@ $ make -j 24 # in case of 24 cpu cores <br>
 $ cd .. <br>
 $ ./build/app/svdemo/svdemo --config-file=./app/svdemo/caf-application.conf
 
+The Config file can be omitted, but then you will not see anything, since you will
+not get Debugging messages.
+
 ## Use Github Package (Not Recommended | High Download | Platform Independent)
 
 $ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>

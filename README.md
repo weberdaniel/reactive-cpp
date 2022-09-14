@@ -69,7 +69,9 @@ but this will take very long. Also take care not to use more jobs than you have 
 
 Also if you use BUILDKIT, never forget the number\_of\_build\_jobs argument, otherwise your machine will crash since it will use an unlimited amount of build jobs.
 
-## Build & Run with Docker Compose
+## Build & Run with Docker Compose (Ongoing)
+
+Alternativly to specifing the build-args on the command line, you can specify identical environment variables in for example .bashrc:
 
 docker compose build --no-cache --build-arg number_of_build_jobs=23 --build-arg http_proxy=http://URL:PORT --build-arg https_proxy=http://URL:PORT
 

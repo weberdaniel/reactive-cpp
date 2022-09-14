@@ -1,7 +1,13 @@
 services:
   application:
-    build: .
-    ports:
-      - "8000:5000"
+    build: 
+      context: .
+      args:
+        - http_proxy
+        - https_proxy
+        - number_of_build_jobs=12
+      network: host
   prometheus:
     build: ./prometheus
+    ports:
+      - "8000:5000"

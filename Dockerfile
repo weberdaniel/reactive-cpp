@@ -2,12 +2,16 @@
 # OLD Alpine Linux Image
 #########################################################
 
-
 ##################################################
 # create environment for build (including CAF)
 ##################################################
 FROM alpine:latest AS buildstage-actorframework
 ARG number_of_build_jobs
+ARG http_proxy
+ARG https_proxy
+ENV http_proxy ${http_proxy}
+ENV https_proxy ${https_proxy}
+RUN echo "Proxy: $http_proxy $https_proxy"
 WORKDIR /project
 EXPOSE 80
 EXPOSE 3128
@@ -32,6 +36,11 @@ RUN cd /project/actor-framework && \
 ##################################################
 FROM buildstage-actorframework as buildstage-svdemo
 ARG number_of_build_jobs
+ARG http_proxy
+ARG https_proxy
+ENV http_proxy ${http_proxy}
+ENV https_proxy ${https_proxy}
+RUN echo "Proxy: $http_proxy $https_proxy"
 WORKDIR /project
 RUN mkdir /project/svdemo
 COPY . /project/svdemo
@@ -44,8 +53,13 @@ ENTRYPOINT ["/project/svdemo/run.sh"]
 # Create a deploy stage
 #########################################################
 FROM alpine:latest as caf-supervisor
+ARG http_proxy
+ARG https_proxy
+ENV http_proxy ${http_proxy}
+ENV https_proxy ${https_proxy}
+RUN echo "Proxy: $http_proxy $https_proxy"
 WORKDIR /project
-RUN apk add libstdc++ libunwind
+RUN apk add wget libstdc++ libunwind
 COPY --from=buildstage-svdemo /project/svdemo/build/app/svdemo/svdemo .
 COPY --from=buildstage-svdemo /project/svdemo/run.sh .
 COPY --from=buildstage-svdemo /project/svdemo/app/svdemo/caf-application.conf .

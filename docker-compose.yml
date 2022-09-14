@@ -8,6 +8,10 @@ services:
         - number_of_build_jobs=12
       network: host
   prometheus:
-    build: ./prometheus
+    build: 
+      context: ./prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
-      - "8000:5000"
+      - "9090:9090"
+    restart: always

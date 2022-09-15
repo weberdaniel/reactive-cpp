@@ -15,10 +15,14 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 ## Build & Run:
 
+\# 1. define proxy
 export http_proxy=  <br>
 export https_proxy=  <br>
+\# 2. define number of threads (not more than cpus!) 
 export number_of_build_jobs= <br>
+\# 3. enable parallel docker builds
 export DOCKER\_BUILDKIT=1  <br>
+\# 4. go for it
 docker compose build  <br>
 docker compose run   <br>
 

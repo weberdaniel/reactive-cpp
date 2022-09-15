@@ -15,21 +15,16 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 ## Build & Run:
 
-This is clearly the best way, it will download all sources and will build everything locally
-in lightweigt Alpine docker containers and create the docker images locally. This avoids 
-large downloads. Note to define all variables, especially define the number_of_build_jobs,
-and don't make it exceed 
-
-export http_proxy=/&§)$&)  # set the proxy for downloading sources
-export https_proxy=)=&=)& # set the proxy for downloading sources
-export number_of_build_jobs=20 # don't use more threads than cpu cores
-export DOCKER\_BUILDKIT=1 # enable parallel build in docker
-docker compose build # build everything
-docker compose run # start everything
+export http_proxy=/&§)$&)  # set the proxy for downloading sources <br>
+export https_proxy=)=&=)& # set the proxy for downloading sources <br>
+export number_of_build_jobs=20 # don't use more threads than cpu cores <br>
+export DOCKER\_BUILDKIT=1 # enable parallel build in docker <br>
+docker compose build # build everything <br>
+docker compose run # start everything <br>
 
 afterwards you can login to the Grafana dashboard in your browser via
 
-http://localhost:3000
+http://localhost:3000 <br>
 
 ## Actor Frameworks and Reactive Design
 

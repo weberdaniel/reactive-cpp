@@ -1,3 +1,6 @@
+networks:
+  grafana: 
+
 services:
   application:
     build: 
@@ -7,11 +10,27 @@ services:
         - https_proxy
         - number_of_build_jobs=12
       network: host
+    networks:
+      - grafana
   prometheus:
     build: 
       context: ./prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
-      - "9090:9090"
+      - 9090:9090
     restart: always
+    networks:
+      - grafana
+  grafana:
+    build:
+      context: ./grafana
+      args:
+        - http_proxy
+        - https_proxy
+        - number_of_build_jobs=12
+      network: host 
+    ports:
+      - 3000:3000
+    networks:
+      - grafana

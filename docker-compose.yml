@@ -24,14 +24,11 @@ services:
     networks:
       - grafana
   grafana:
-    build:
-      context: ./grafana
-      args:
-        - http_proxy
-        - https_proxy
-        - number_of_build_jobs=12
-      network: host 
+    image: grafana/grafana:latest
     ports:
       - 3000:3000
+    volumes:
+      - "./grafana/provisioning/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yml"
+      - "./grafana/provisioning/dashboards/:/etc/grafana/provisioning/dashboards/"
     networks:
       - grafana

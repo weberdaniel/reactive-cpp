@@ -15,12 +15,12 @@ and can be used to span complex and distributed supervision hierarchies (called 
 
 ## Build & Run:
 
-export http_proxy=/&§)$&)  # set the proxy for downloading sources <br>
-export https_proxy=)=&=)& # set the proxy for downloading sources <br>
-export number_of_build_jobs=20 # don't use more threads than cpu cores <br>
-export DOCKER\_BUILDKIT=1 # enable parallel build in docker <br>
-docker compose build # build everything <br>
-docker compose run # start everything <br>
+export http_proxy=  <br>
+export https_proxy=  <br>
+export number_of_build_jobs= <br>
+export DOCKER\_BUILDKIT=1  <br>
+docker compose build  <br>
+docker compose run   <br>
 
 afterwards you can login to the Grafana dashboard in your browser via
 

@@ -1,2 +1,2 @@
 FROM grafana/grafana-oss:latest as grafana
-ADD test /etc
+COPY grafana.ini /etc/grafana/grafana.ini

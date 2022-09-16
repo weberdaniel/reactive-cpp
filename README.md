@@ -54,6 +54,10 @@ reverse order (2 to 5).
 
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/output.png" width="30%" alt><br>
 
+Note also that before terminating the children, a demonitor operation takes place, otherwise
+there would be a cyclic behavior, e.g. an actor terminates, the supervisor kicks in, an
+actor terminates, the supervisor kicks in. 
+
 ## Actor Frameworks and Reactive Design
 
 Actor Frameworks are a crucial building block for Artificial Intelligence. Actor Frameworks have been first introduced by 

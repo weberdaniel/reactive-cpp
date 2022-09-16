@@ -29,12 +29,19 @@ $> export DOCKER\_BUILDKIT=1  <br>
 $> git clone https://github.com/weberdaniel/caf-supervisor
 
 \# 5. build & run it <br>
+$> cd caf-supervisor <br>
 $> docker compose build  <br>
 $> docker compose run   <br>
 
 afterwards you can login to the Grafana dashboard in your browser via
 
 http://localhost:3000 <br>
+
+username:admin <br>
+password:admin
+
+Goto "Dashboards". Select the pre-configured "New Dashboard". There you can see the
+currently running number of actors in a simple widget. That will be extended soon.
 
 ## Actor Frameworks and Reactive Design
 

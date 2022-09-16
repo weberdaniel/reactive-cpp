@@ -43,11 +43,11 @@ password:admin
 Goto "Dashboards". Select the pre-configured "New Dashboard". There you can see the
 currently running number of actors in a simple widget. That will be extended soon.
 
-<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/example.png" alt><br>
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/example.png" width="30%" alt><br>
 
 The output shows how in the rest for one strategy supervisor restarts its children:
 
-<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/output.png" alt><br>
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/output.png" width="30%" alt><br>
 
 ## Actor Frameworks and Reactive Design
 

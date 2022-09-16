@@ -41,11 +41,16 @@ username:admin <br>
 password:admin
 
 Goto "Dashboards". Select the pre-configured "New Dashboard". There you can see the
-currently running number of actors in a simple widget. That will be extended soon.
+currently running number of actors in a simple widget. That will be extended soon, 
+currently this is 5 child actors, 1 supervisor actor and the main application actor,
+which is a total of 7 actors:
 
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/example.png" width="30%" alt><br>
 
-The output shows how in the rest for one strategy supervisor restarts its children:
+The output shows how in the rest for one strategy supervisor restarts its children. You see
+that child worker 2 dies because of an std::bad_alloc exception. Then the rest_for_one strategy
+kicks in. The workers are killed from the end of the array (5 to 2) and then restarted in 
+reverse order (2 to 5).
 
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/output.png" width="30%" alt><br>
 

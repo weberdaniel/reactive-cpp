@@ -37,7 +37,7 @@ afterwards you can login to the Grafana dashboard in your browser via
 
 http://localhost:3000 <br>
 
-username:admin
+username:admin <br>
 password:admin
 
 ## Actor Frameworks and Reactive Design

@@ -25,7 +25,10 @@ $> export number_of_build_jobs= <br>
 \# 3. enable parallel docker builds <br>
 $> export DOCKER\_BUILDKIT=1  <br>
 
-\# 4. go for it <br>
+\# 4. get it
+$> git clone https://github.com/weberdaniel/caf-supervisor
+
+\# 5. build & run it <br>
 $> docker compose build  <br>
 $> docker compose run   <br>
 

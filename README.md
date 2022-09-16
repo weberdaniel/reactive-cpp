@@ -40,6 +40,9 @@ http://localhost:3000 <br>
 username:admin <br>
 password:admin
 
+Goto "Dashboards". Select the pre-configured "New Dashboard". There you can see the
+currently running number of actors in a simple widget. That will be extended soon.
+
 ## Actor Frameworks and Reactive Design
 
 Actor Frameworks are a crucial building block for Artificial Intelligence. Actor Frameworks have been first introduced by 

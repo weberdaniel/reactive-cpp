@@ -37,6 +37,9 @@ afterwards you can login to the Grafana dashboard in your browser via
 
 http://localhost:3000 <br>
 
+username:admin
+password:admin
+
 ## Actor Frameworks and Reactive Design
 
 Actor Frameworks are a crucial building block for Artificial Intelligence. Actor Frameworks have been first introduced by 

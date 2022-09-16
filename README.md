@@ -29,6 +29,7 @@ $> export DOCKER\_BUILDKIT=1  <br>
 $> git clone https://github.com/weberdaniel/caf-supervisor
 
 \# 5. build & run it <br>
+$> cd caf-supervisor <br>
 $> docker compose build  <br>
 $> docker compose run   <br>
 

@@ -13,61 +13,25 @@ C++ process and restarts it in case of an error. This shall resemble the capabil
 of an Erlang Supervisor - which has different supervising strategies (e.g. one_for_one) 
 and can be used to span complex and distributed supervision hierarchies (called applications).
 
-# Build & Run:
+## Build & Run:
 
-## Build & Run Locally (Recommended | Without additional Download | Tested on Linux Ubuntu 20.04)
+\# 1. define proxy <br>
+$> export http_proxy=  <br>
+$> export https_proxy=  <br>
 
-### Step A: Install libunwind 
+\# 2. define number of threads (not more than cpus!)  <br>
+$> export number_of_build_jobs= <br>
 
-First please note, i have created a fork of C++ Actor Framework which uses libunwind instead of
-libexecinfo. It is not a big change, but it enables to use C++ Actor Framework development mode on
-Alpine Linux. Still though, libubsan and libasan are not supported on Alpine so you cant use
-address sanitizers and undefined behaviour sanitizers.
+\# 3. enable parallel docker builds <br>
+$> export DOCKER\_BUILDKIT=1  <br>
 
-$ sudo apt-get install libunwind-dev <br>
+\# 4. go for it <br>
+$> docker compose build  <br>
+$> docker compose run   <br>
 
-### Step B: Build and Download external dependencies:
+afterwards you can login to the Grafana dashboard in your browser via
 
-$ git clone https://github.com/weberdaniel/caf-supervisor <br>
-$ cd caf-supervisor <br>
-$ mkdir build <br>
-$ cd build <br>
-$ cmake .. <br> 
-$ make -j 24 # in case of 24 cpu cores <br>
-
-### Step C: Repeat to create executables:
-
-$ cmake .. <br> 
-$ make -j 24 # in case of 24 cpu cores <br>
-
-### Step D: Run:
-
-$ cd .. <br>
-$ ./build/app/svdemo/svdemo --config-file=./app/svdemo/caf-application.conf
-
-The Config file can be omitted, but then you will not see anything, since you will
-not get Debugging messages.
-
-## Use Github Package (Not Recommended | High Download | Platform Independent)
-
-$ docker pull ghcr.io/weberdaniel/caf-supervisor:latest <br>
-$ docker run ghcr.io/weberdaniel/caf-supervisor
-
-## Build & Run in Docker Alpine Linux Container ( Not Recommended | High Download | Platform Independent  )
- 
-$ git clone https://github.com/weberdaniel/caf-supervisor <br>
-$ cd caf-supervisor <br>
-$ export DOCKER\_BUILDKIT=1 <br>
-$ docker build --no-cache --build-arg number\_of\_build\_jobs=23 -t svdemo . <br>
-$ docker run svdemo
-
-The DOCKER\_BUILDTKIT purpose is to enable parallel build, so all CPU cores (minus one) will be working in the build process. You can also leave out the BUILDKIT option and only do
-
-$ docker build -t svdemo .
-
-but this will take very long. Also take care not to use more jobs than you have cores on your machine and always leave some room for other applications on the machine, otherwise you might run out of memory.
-
-Also if you use BUILDKIT, never forget the number\_of\_build\_jobs argument, otherwise your machine will crash since it will use an unlimited amount of build jobs.
+http://localhost:3000 <br>
 
 ## Actor Frameworks and Reactive Design
 

@@ -1,0 +1,34 @@
+networks:
+  grafana: 
+
+services:
+  application:
+    build: 
+      context: .
+      args:
+        - http_proxy
+        - https_proxy
+        - number_of_build_jobs=12
+      network: host
+    ports:
+      - 8080:8080
+    networks:
+      - grafana
+  prometheus:
+    build: 
+      context: ./prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    networks:
+      - grafana
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - "./grafana/provisioning/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yml"
+      - "./grafana/provisioning/dashboards/:/etc/grafana/provisioning/dashboards/"
+    networks:
+      - grafana

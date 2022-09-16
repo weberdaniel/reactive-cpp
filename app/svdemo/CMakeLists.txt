@@ -76,7 +76,7 @@ if(CAF_FOUND)
   endif()
 
   message("-- Creating Target svdemo: link CAF ...")
-  #set_target_properties(CAF::internal PROPERTIES IMPORTED_GLOBAL TRUE)
+  set_target_properties(CAF::internal PROPERTIES IMPORTED_GLOBAL TRUE)
   set_target_properties(CAF::core PROPERTIES IMPORTED_GLOBAL TRUE)
   set_target_properties(CAF::io PROPERTIES IMPORTED_GLOBAL TRUE)
 

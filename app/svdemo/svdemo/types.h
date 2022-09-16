@@ -3,6 +3,7 @@
 #define ACTORDEMO_TYPES_H
 
 #include "caf/all.hpp"
+#include "caf/io/all.hpp"
 #include "svdemo/messages.h"
 #pragma once
 

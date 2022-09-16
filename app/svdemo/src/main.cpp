@@ -8,6 +8,7 @@
 using caf::event_based_actor;
 using caf::actor;
 using caf::actor_system;
+using caf::actor_system_config;
 
 // this function will create specifications for number n of
 // workers
@@ -53,4 +54,4 @@ void caf_main(actor_system& system) {  // NOLINT
   system.await_actors_before_shutdown();
 }
 
-CAF_MAIN(caf::id_block::supervisor)
+CAF_MAIN(caf::id_block::supervisor, caf::io::middleman)

@@ -39,14 +39,11 @@ http://localhost:3000 <br>
 
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/example.png" width="30%" alt><br>
 
-The log in the terminal of docker compose up, shows how in the rest for one strategy supervisor restarts its children. You see that child worker 2 dies because of an std::bad_alloc exception. Then the rest_for_one strategy kicks in. The workers are killed from the end of the array (5 to 2) and then restarted in 
-reverse order (2 to 5).
+The log in the terminal where you typed "docker compose up", shows how the supervisor restarts its children. You see that child worker number 2 dies because of an std::bad_alloc exception. Then the rest_for_one strategy of the supervisor kicks in. The workers are killed from the end of to the front (5 to 2) and then restarted in reverse order (2 to 5).
 
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/output.png" width="30%" alt><br>
 
-Note also that before terminating the children, a demonitor operation takes place, otherwise
-there would be a cyclic behavior, e.g. an actor terminates, the supervisor kicks in, an
-actor terminates, the supervisor kicks in. 
+Note also that before terminating the children, a demonitor operation takes place, to avoid cyclic restarting.
 
 ## Actor Frameworks and Reactive Design
 

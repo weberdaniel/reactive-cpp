@@ -19,6 +19,11 @@ C++ process and restarts it in case of an error. This shall resemble the capabil
 of an Erlang Supervisor - which has different supervising strategies (e.g. one_for_one) 
 and can be used to span complex and distributed supervision hierarchies (called applications).
 
+<div align="center">
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/restart.png" width="50%" alt><br>
+<em>Child process is being restarted by the supervisor</em>
+</div>
+
 ## Build & Run:
 
 \# 1. define proxy <br>

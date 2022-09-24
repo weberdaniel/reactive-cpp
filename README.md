@@ -16,8 +16,9 @@
 This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
 on the example of a lightweight C++ supervisor process that monitors another lightweight 
 C++ process and restarts it in case of an error. This shall resemble the capabilities
-of an Erlang Supervisor - which has different supervising strategies (e.g. one_for_one) 
-and can be used to span complex and distributed supervision hierarchies (called applications).
+of an Erlang Supervisor. Erlang Supervisors are able to maintain 99.9999999% software
+reliability. Since C++ Actor Framework provides integration to Prometheus, all is
+directly monitored and seamlessly integrated into Grafana.
 
 <div align="center">
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/restart.png" width="50%" alt><br>

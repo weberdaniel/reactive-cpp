@@ -1,9 +1,14 @@
 # Supervisor for C++ Actor Framework (CAF)
 
-<div align="center">
-<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/crash-me-if-you-can.png" alt><br>
-<em>License: CC-BY-NC-ND by Fred Hebert (www.learnyousomeerlang.com)</em>
-</div>
+<table>
+<tbody>
+<tr>
+<td width="33%"> <div align="center"><img src="https://www.actor-framework.org/static/img/caf-logo.png" width="200"> </div> </td>
+<td width="33%"> <div align="center"><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/clion_logo.png" width="200"> </td>
+<td width="33%"> <div align="center"><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/crash-me-if-you-can.png" width="200"></td>
+</tr>
+</tbody>
+</table>
 
 <br>
 

@@ -1,4 +1,4 @@
-# Supervisor for C++ Actor Framework (CAF)
+# C++ Actor Framework Supervisor
 
 <table>
 <tbody>

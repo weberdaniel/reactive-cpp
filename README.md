@@ -75,16 +75,7 @@ Some highlights:
 
 ### An example design pattern: "Crash me if you can"
   
-The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the applcation usecase - in any other usecase - the process will just crash and be restarted. The result looks like the following:
-
-<br><br>
-<div align="center">
-<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/restart.png" width="50%" alt><br>
-<em>Child process is being restarted by the supervisor</em>
-</div>
-<br>
-  
-The Erlang specification of a supervisor is slightly more complex and incorporates various strategys on how to recover an array of processes. For example if one child process crashes all need to be restarted. To understand what i build here in C++, you can look at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
+The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the applcation usecase - in any other usecase - the process will just crash and be restarted. The Erlang specification of a supervisor is slightly more complex and incorporates various strategys on how to recover an array of processes. For example if one child process crashes all need to be restarted. To understand, you can look at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
   
 #### One for One Strategy
   

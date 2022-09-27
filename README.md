@@ -62,19 +62,6 @@ Some highlights:
   
 There are various restart strategies, which can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
     
-One-for-One, One-for-All, Rest-For-One Strategy :
- <table>
-    <tr>
-      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="100%" alt style="fill: blue"><br>
-</td>
-      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_all.png" width="100%" alt style="fill: blue"><br>
-</td>
-      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-rest_for_one.png" width="100%" alt style="fill: blue"><br>
-</td>
-    </tr>
-  </table>
-  
-  
 ## Aims and Goals
 
 The goal of this project is to implement a supervision hierarchy inside a C++ high performance application.

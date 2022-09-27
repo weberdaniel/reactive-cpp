@@ -104,14 +104,5 @@ simple_one_for_one strategy is missing. Only works with function object based ac
     
 ## Contribution  
 
-In SCRUM you usually find a DEFINITION OF DONE, telling what is expected of the code quality. In this case there is no scrum team, but still a Definition of Done is used as far as possible.
-
-### The Definition of Done:
-  
-- Fullfillment of Google Coding Style (cpplint must give 0 errors)
-- C++ Core Guidelines must be kept : https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
-- Another Person must review the code
-- Unit Test must be > 80%
-- Memory Check with Valgrind
-- Code Coverage > 80%
+Stick to Google Coding Stylguide and C++ Core Guidelines!
 

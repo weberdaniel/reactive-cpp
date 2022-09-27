@@ -70,9 +70,9 @@ Some highlights:
 </tbody>
 </table>
 
-### An example design pattern: "Crash me if you can"
+### "Crash me if you can": Restart Strategies
   
-The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the application usecase - in any other usecase - the process will just crash and be restarted. There are various restart strategies, which can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
+There are various restart strategies, which can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
     
 One-for-One, One-for-All, Rest-For-One Strategy :
  <table>

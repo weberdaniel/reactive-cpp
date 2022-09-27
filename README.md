@@ -73,11 +73,9 @@ Some highlights:
 ### An example design pattern: "Crash me if you can"
   
 The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the application usecase - in any other usecase - the process will just crash and be restarted. There are various restart strategies, which can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
-  
-#### One for One Strategy
-  
-<br><br>
-  <table>
+    
+One-for-One, One-for-All, Rest-For-One Strategy :
+ <table>
     <tr>
       <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="100%" alt style="fill: blue"><br>
 </td>
@@ -87,23 +85,8 @@ The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design
 </td>
     </tr>
   </table>
-<div align="center">
-<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="50%" alt style="fill: blue"><br>
-</div>
   
-#### One for All Strategy
-<br><br>
-<div align="center">
-<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_all.png" width="50%" alt><br>
-</div>
   
-#### Rest for One Strategy
-<br><br>
-<div align="center">
-<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-rest_for_one.png" width="50%" alt><br>
-</div>
-
-
 ## Aims and Goals
 
 The goal of this project is to implement a supervision hierarchy inside a C++ high performance application.

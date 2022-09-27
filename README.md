@@ -11,20 +11,18 @@ C++ process and restarts it in case of an error.
 
 ## Build & Run:
 
-\# 1. define proxy <br>
+\# 1. Optional: define proxy <br>
 $> export http_proxy=  <br>
 $> export https_proxy=  <br>
 
-\# 2. define number of threads (not more than cpus!)  <br>
+\# 2. Recommended: define number of threads (not more than cpus!) and do parallel build  <br>
 $> export number_of_build_jobs= <br>
-
-\# 3. enable parallel docker builds <br>
 $> export DOCKER\_BUILDKIT=1  <br>
 
-\# 4. get it <br>
+\# 3. get it <br>
 $> git clone https://github.com/weberdaniel/caf-supervisor
 
-\# 5. build & run it <br>
+\# 4. build & run it <br>
 $> cd caf-supervisor <br>
 $> docker compose build  <br>
 $> docker compose up <br>

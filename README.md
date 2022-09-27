@@ -79,11 +79,11 @@ The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design
 <br><br>
   <table>
     <tr>
-      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="50%" alt style="fill: blue"><br>
+      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="100%" alt style="fill: blue"><br>
 </td>
-      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="50%" alt style="fill: blue"><br>
+      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="100%" alt style="fill: blue"><br>
 </td>
-      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="50%" alt style="fill: blue"><br>
+      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="100%" alt style="fill: blue"><br>
 </td>
     </tr>
   </table>

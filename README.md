@@ -79,9 +79,9 @@ One-for-One, One-for-All, Rest-For-One Strategy :
     <tr>
       <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="100%" alt style="fill: blue"><br>
 </td>
-      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="100%" alt style="fill: blue"><br>
+      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_all.png" width="100%" alt style="fill: blue"><br>
 </td>
-      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="100%" alt style="fill: blue"><br>
+      <td><img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-rest_for_one.png" width="100%" alt style="fill: blue"><br>
 </td>
     </tr>
   </table>

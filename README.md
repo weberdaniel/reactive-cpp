@@ -1,8 +1,7 @@
 # C++ Actor Framework Supervisor
 
-This project shall demonstrate the capabilities of the C++ Actor Framework (CAF)
-on the example of a lightweight C++ supervisor process that monitors another lightweight 
-C++ process and restarts it in case of an error.
+This project shall demonstrate the capabilities of a reactive software design with the C++ Actor Framework (CAF)
+on the example of a lightweight C++ supervisor process that monitors another lightweight C++ process and restarts it in case of an error.
 
 <div align="center">
 <img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/restart.png" width="50%" alt><br>
@@ -65,7 +64,7 @@ Some highlights:
 <tbody>
 <tr>
 <td width="33%"> <img align='left' src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/reactive_design.jpg" width="100%">  </td>
-<td> The principle of reactive software design patterns reaches back to the 1970s. A famous example of a reactive software design is the AXD301 Ericsson switch, which provides a nine-nines reliability (99.9999999%), which is basically a millisecond of downtime per year. Since highly distributed software architectures are common - reactive design patterns have been rediscovered and become relevant on hardware related software domains as well. Examples for this are the IoT. But also tech companies aim for a decentralized fault-tolerant data center technology. For example Microsoft is testing out underwater distributed data centers. Multi-core CPUs can be regarded as distributed systems as well. Therefore the design principles of devices like the Ericsson switch AXD301 are getting rediscovered and become implemented on other programming domains as well. Since today any kind of software can be regarded as a part of a distributed architecture, reactive design patterns can be applied to almost any software that should be fault-tolerant and highly reliable. This is reflected in the creation of the Reactive Manifesto in order to spread word about the design concepts: https://www.reactivemanifesto.org
+<td> The principle of reactive software design patterns reaches back to the 1970s. A famous example of a reactive software design is the AXD301 Ericsson switch, which provides a nine-nines reliability (99.9999999%), which is basically a millisecond of downtime per year. Since highly distributed software architectures are very common today - reactive design patterns have been rediscovered (see Docker Swarm) but can also become relevant on hardware related software domains as well (performance): Examples for this is the IoT. Multi-core CPUs can be regarded as distributed systems as well.. Since today any kind of software can be regarded as a part of a distributed architecture, reactive design patterns can be applied to almost any software on any OSI layer. This is reflected in the creation of the Reactive Manifesto in order to spread word about the design concepts: https://www.reactivemanifesto.org
 (Book Cover: Reactive Design Patterns, Roland Kuhn)  </td>
 </tr>
 </tbody>
@@ -73,7 +72,7 @@ Some highlights:
 
 ### An example design pattern: "Crash me if you can"
   
-The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the applcation usecase - in any other usecase - the process will just crash and be restarted. The Erlang specification of a supervisor is slightly more complex and incorporates various strategys on how to recover an array of processes. For example if one child process crashes all need to be restarted. To understand, you can look at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
+The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the application usecase - in any other usecase - the process will just crash and be restarted. There are various restart strategies, which can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
   
 #### One for One Strategy
   
@@ -97,17 +96,15 @@ The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design
 
 ## Aims and Goals
 
-The goal of this project is to implement an Erlang supervision hierarchy inside a C++ high performance application, as closly as possible resembling the principles of Erlang, but in the domain of high performance computing. 
+The goal of this project is to implement a supervision hierarchy inside a C++ high performance application.
   
 ## Limitations
 
-Currently one_for_one, one_for_all, rest_for_one strategy is implemented,
-but not simple_one_for_one. Also currently this only works with function object 
-(functor) based actors, not class based actors or function based actors.
+simple_one_for_one strategy is missing. Only works with function object based actors.
     
 ## Contribution  
 
-In SCRUM you usually find a DEFINITION OF DONE, telling what is expected of the code quality. In this case there is no scrum team, but still a Definition of Done is used as far as possible (Reviews are not always possible) - still i have to admit - whithout a proper review process working alone will never be comparable to working in a SCRUM team.
+In SCRUM you usually find a DEFINITION OF DONE, telling what is expected of the code quality. In this case there is no scrum team, but still a Definition of Done is used as far as possible.
 
 ### The Definition of Done:
   

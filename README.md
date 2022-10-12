@@ -60,10 +60,7 @@ Some highlights:
 
 ### "Crash me if you can": Restart Strategies and Reactive Design
   
-There are various restart strategies, which can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
-
-A good introduction into reactive software design can be found in the book Reactive Design Patterns published by Manning under the ISBN
-978-1617291807
+There are various restart strategies (one_for_one, one_for_all, simple_one_for_one, rest_for_one) can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html. A good introduction into reactive software design can be found in the book Reactive Design Patterns published by Manning under the ISBN 978-1617291807 written by Roland Kuhn.
     
 ## Aims and Goals
 

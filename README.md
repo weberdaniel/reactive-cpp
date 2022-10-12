@@ -1,4 +1,4 @@
-# C++ Actor Framework Supervisor
+# Reactive C++: C++ Actor Framework Supervisor
 
 This project shall demonstrate the capabilities of a reactive software design with the C++ Actor Framework (CAF)
 on the example of a lightweight C++ supervisor process that monitors another lightweight C++ process and restarts it in case of an error.
@@ -58,9 +58,12 @@ Some highlights:
 - used for high-performance network analysis (Zeek)
 - Actors blend into Qt Widgets seamlessly by deriving from caf::mixin::actor_widget<QWdiget> 
 
-### "Crash me if you can": Restart Strategies
+### "Crash me if you can": Restart Strategies and Reactive Design
   
 There are various restart strategies, which can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
+
+A good introduction into reactive software design can be found in the book Reactive Design Patterns published by Manning under the ISBN
+978-1617291807
     
 ## Aims and Goals
 

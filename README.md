@@ -1,4 +1,4 @@
-# Reactive C++: C++ Actor Framework Supervisor
+# C++ Actor Framework Supervisor
 
 This project shall demonstrate the capabilities of a reactive software design with the C++ Actor Framework (CAF)
 on the example of a lightweight C++ supervisor process that monitors another lightweight C++ process and restarts it in case of an error.
@@ -58,10 +58,42 @@ Some highlights:
 - used for high-performance network analysis (Zeek)
 - Actors blend into Qt Widgets seamlessly by deriving from caf::mixin::actor_widget<QWdiget> 
 
-### "Crash me if you can": Restart Strategies and Reactive Design
+### Reactive Software Design: Make your software fault tolerant!
   
-There are various restart strategies (one_for_one, one_for_all, simple_one_for_one, rest_for_one) which can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html. A good introduction into reactive software design can be found in the book Reactive Design Patterns published by Manning under the ISBN 978-1617291807 written by Roland Kuhn.
-    
+<table>
+<tbody>
+<tr>
+<td width="33%"> <img align='left' src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/reactive_design.jpg" width="100%">  </td>
+<td> The principle of reactive software design patterns reaches back to the 1970s. A famous example of a reactive software design is the AXD301 Ericsson switch, which provides a nine-nines reliability (99.9999999%), which is basically a millisecond of downtime per year. Since highly distributed software architectures are very common today - reactive design patterns have been rediscovered (see Docker Swarm) but can also become relevant on hardware related software domains as well (performance): Examples for this is the IoT. Multi-core CPUs can be regarded as distributed systems as well.. Since today any kind of software can be regarded as a part of a distributed architecture, reactive design patterns can be applied to almost any software on any OSI layer. This is reflected in the creation of the Reactive Manifesto in order to spread word about the design concepts: https://www.reactivemanifesto.org
+(Book Cover: Reactive Design Patterns, Roland Kuhn)  </td>
+</tr>
+</tbody>
+</table>
+
+### An example design pattern: "Crash me if you can"
+  
+The 'Let it crash'/'Crash me if you can' pattern is one of the elementary design patterns of the domain. In order to build fault-tolerant software, a common design pattern is to  only code for the application usecase - in any other usecase - the process will just crash and be restarted. There are various restart strategies, which can be looked up at the definition in Erlang which is given here: https://www.erlang.org/doc/man/supervisor.html
+  
+#### One for One Strategy
+  
+<br><br>
+<div align="center">
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_one.png" width="50%" alt style="fill: blue"><br>
+</div>
+  
+#### One for All Strategy
+<br><br>
+<div align="center">
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-one_for_all.png" width="50%" alt><br>
+</div>
+  
+#### Rest for One Strategy
+<br><br>
+<div align="center">
+<img src="https://github.com/weberdaniel/supervisor-demo/raw/main/doc/images/sup-rest_for_one.png" width="50%" alt><br>
+</div>
+
+
 ## Aims and Goals
 
 The goal of this project is to implement a supervision hierarchy inside a C++ high performance application.

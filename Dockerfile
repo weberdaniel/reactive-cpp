@@ -23,8 +23,8 @@ RUN echo
 RUN wget --no-check-certificate https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk
 RUN wget --no-check-certificate https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk 
 RUN wget --no-check-certificate https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-bin-2.29-r0.apk
-RUN apk add --no-cache --allow-untrusted glibc-2.29-r0.apk 
-RUN apk add --no-cache --allow-untrusted glibc-bin-2.29-r0.apk
+#RUN apk add --no-cache --allow-untrusted glibc-2.29-r0.apk 
+#RUN apk add --no-cache --allow-untrusted glibc-bin-2.29-r0.apk
 RUN cd /project && git clone https://github.com/weberdaniel/actor-framework && cd actor-framework && git checkout 1-incorporate-libunwind
 RUN cd /project/actor-framework && \
     ./configure --build-type=Debug --log-level=TRACE --disable-examples --disable-tools --enable-utility-targets --enable-runtime-checks --enable-shared-libs && \

@@ -19,7 +19,7 @@ $> export number_of_build_jobs= <br>
 $> export DOCKER\_BUILDKIT=1  <br>
 
 \# 3. get it <br>
-$> git clone https://github.com/weberdaniel/caf-supervisor
+$> git clone https://github.com/weberdaniel/reactive-cpp
 
 \# 4. build & run it <br>
 $> cd caf-supervisor <br>
@@ -27,6 +27,7 @@ $> docker compose build  <br>
 $> docker compose up <br>
 
 afterwards you can login to the Grafana dashboard in your browser via
+(this is not yet fully functional)
 
 http://localhost:3000 <br>
 
@@ -104,5 +105,16 @@ simple_one_for_one strategy is missing. Only works with function object based ac
     
 ## Contribution  
 
-Stick to Google Coding Stylguide and C++ Core Guidelines!
+Stick to Google Coding Stylguide and C++ Core Guidelines! 
 
+## Definition of Done / Agile
+
+Use a proper Definition of Done, like 
+
+- 80% Code Coverage in Unit Tests
+- 1 Person must review the code before commit
+- Full C++ Core Guidelines compatibility
+- Full C++ Google Coding Styleguide compatibility
+- Only fully operational builds into the master branch
+- Use feature branches
+- Check for Memory Leaks with Valgrind

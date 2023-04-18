@@ -5,7 +5,7 @@
 ##################################################
 # create environment for build (including CAF)
 ##################################################
-FROM alpine:latest AS buildstage-actorframework
+FROM alpine:3.16 AS buildstage-actorframework
 ARG number_of_build_jobs
 ARG http_proxy
 ARG https_proxy
@@ -52,7 +52,7 @@ ENTRYPOINT ["/project/svdemo/run.sh"]
 #########################################################
 # Create a deploy stage
 #########################################################
-FROM alpine:latest as caf-supervisor
+FROM alpine:3.16 as caf-supervisor
 ARG http_proxy
 ARG https_proxy
 ENV http_proxy ${http_proxy}

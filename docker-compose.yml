@@ -30,10 +30,3 @@ services:
       - 3000:3000
     networks:
       - grafana
-  timescaledb:
-    build:
-      context: ./timescaledb
-    ports:
-      - 5432:5432
-    networks:
-      - grafana

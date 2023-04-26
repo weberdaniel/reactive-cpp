@@ -1,2 +1,0 @@
-FROM timescale/timescaledb:latest-pg15
-ENV POSTGRES_PASSWORD=randompassword

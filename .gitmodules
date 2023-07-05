@@ -1,3 +1,6 @@
 [submodule "external/caf/actor-framework"]
 	path = external/caf/actor-framework
 	url = https://github.com/weberdaniel/actor-framework.git
+[submodule "external/libpqxx/libpqxx"]
+	path = external/libpqxx/libpqxx
+	url = https://github.com/jtv/libpqxx.git

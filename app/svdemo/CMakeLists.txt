@@ -2,16 +2,14 @@ cmake_minimum_required( VERSION 3.12 )
 
 message(STATUS "-- Creating Target svdemo: Try to find CAF ...")
 
-
 # only use the specific installation of CAF in external/ folder
 # disable all other search locations
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
 find_package(Unwind REQUIRED)
 if(NOT DOCKER)
+  message(STATUS "-- Creating Target svdemo: Docker NOT used: Locating CAF somewhere: ...")
   ExternalProject_Get_Property(actorframework binary_dir)
-  message(STATUS "-- Docker NOT used: Locating CAF in external/caf: ...")
+  message(STATUS "-- Creating Target svdemo: Docker NOT used: Locating CAF in external/caf: ...")
   find_package(CAF COMPONENTS core io
                    CONFIG
                    NO_PACKAGE_ROOT_PATH
@@ -22,10 +20,16 @@ if(NOT DOCKER)
                    NO_CMAKE_PACKAGE_REGISTRY
                    NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
                    HINTS ${binary_dir} )
+  if(CAF_FOUND)
+    message(STATUS "-- Creating Target svdemo: Docker NOT used: CAF found")
+  else() 
+    message(STATUS "-- Creating Target svdemo: Docker NOT used: CAF not found")
+  endif()
 endif()
 
 if(DOCKER) 
-  message(STATUS "-- Docker used: Locating CAF somewhere: ...")
+  message(STATUS "-- Creating Target svdemo: Docker used: Locating CAF somewhere: ...")
+  message(STATUS "-- Creating Target svdemo: Docker used: set rootdir /project/actor-framework/build: ...")
   set(CAF_ROOT_DIR "/project/actor-framework/build")
   find_package(CAF COMPONENTS core io
                    CONFIG
@@ -38,14 +42,15 @@ if(DOCKER)
                    NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
 		   HINTS ${CAF_ROOT_DIR} )
   if(CAF_FOUND)
-    message(STATUS "-- CAF found")
+    message(STATUS "-- Creating Target svdemo: Docker used: CAF found")
   else() 
-    message(FATAL_ERROR "-- CAF not found")
+    message(FATAL_ERROR "-- Creating Target svdemo: Docker used: CAF not found")
   endif()
 endif()
 
+
 if(CAF_FOUND)
-  message(STATUS "-- Creating Target svdemo: CAF found ...")
+	message(STATUS "-- Creating Target svdemo: CAF found ...")
   project( svdemo
           VERSION 0.1.0
           DESCRIPTION "A simple test")

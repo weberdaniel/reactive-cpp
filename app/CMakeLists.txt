@@ -1,2 +1,2 @@
-#add_subdirectory(test)
 add_subdirectory(svdemo)
+add_subdirectory(test)

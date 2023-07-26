@@ -2,8 +2,16 @@
 
 #include <string>
 #include <utility>
+#include <cstdio>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 
 #include "caf/all.hpp"
+#include "caf/detail/base64.hpp"
+#include "caf/io/all.hpp"
+
 #include "caf/detail/scope_guard.hpp"
 
 CAF_PUSH_WARNINGS
@@ -78,7 +86,8 @@ void ChatWidget::sendChatMessage() {
     auto utf8 = QStringView{line}.mid(1).toUtf8();
     auto sv = caf::string_view{utf8.constData(),
                                static_cast<size_t>(utf8.size())};
-    split(words, sv, is_any_of(" "));
+    // TODO: fix this bug, there is a problem with caf::split
+    //caf::split(words, sv, is_any_of(" "));
     if (words.size() == 3 && words[0] == "join") {
       if (auto x = system().groups().get(words[1], words[2]))
         send_as(as_actor(), as_actor(), join_atom_v, std::move(*x));
